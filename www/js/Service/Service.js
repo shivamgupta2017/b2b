@@ -164,7 +164,6 @@ app.factory('Services', function($http, $rootScope, $timeout,$ionicLoading, $q, 
 });
 
 app.service('findItemIndex', function($q) {
-
     this.findItemIndexInCartList = function(Array, property, action, size_id) 
     {
             var result = -1;

@@ -1,7 +1,7 @@
 "use strict";
 
 //angular.module('starter.controllers', []).
-app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Constant) {
+app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Constant, UiServices, $http, Additional_services) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -43,14 +43,27 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   };
 });
 
-app.controller('PlaylistsCtrl', function($scope, Services, Constant) 
+app.controller('PlaylistsCtrl', function($scope, Services, Constant, UiServices, Additional_services) 
 {
+
 
   //alert('shivam :'+Constant.base_url.service_url);
   /*Services.webServiceCallPost('','').then(function()
   {
   });
   */
+  
+ /*UiServices.confirmation_popup('title','lassan').then(function(res){
+
+    alert('res :'+res);
+
+ });*/
+  
+  //Additional_services.show_alert('shivam','lassan');
+
+ // UiServices.alert_popup('title','templates');
+
+
 
   
 
