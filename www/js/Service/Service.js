@@ -4,58 +4,23 @@ app.factory('Services', function($http, $rootScope, $timeout,$ionicLoading, $q, 
     return {
         webServiceCallPost: function(data, action) 
         {
-    //          alert('shivam : done');                      
-            //alert("data 1st parameter :"+JSON.stringify(data));
-            //alert("action 2st parameter :"+JSON.stringify(action));
-            var data_send = JSON.stringify(data);
-            var deferred = $q.defer();
-                /*return $.ajax({
-                    type: "POST",
-                    url: appConst.base_url.service_url + action,
-                    crossDomain: true,
-                    dataType: "json",
-                    data: data,
-                    timeout: 2000000,
-                    async: true,
-                    success: function(response) {
-                        console.log("response \n:"+JSON.stringify(response));
-                        deferred.resolve();
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                        //alert("errorrrr");
-                        $ionicLoading.hide();
-                       // alert("status   :"+xhr.status);
-                        if (xhr.status == 0) {
+             var deferred = $q.defer();
+        $http({
+                 method: 'POST',
+                 url: Constant.base_url.service_url+action,
+                 data: data,
 
-                            window.plugins.toast.showShortBottom($translate.instant("timedOutError"));
-                        } else if (xhr.status == 404) {
-                            window.plugins.toast.showShortBottom($translate.instant("timedOutError"));
-                        } else {
-                            window.plugins.toast.showShortBottom($translate.instant("timedOutError"));
-                        }
-                    },
-                    beforeSend: function() {},
-                    complete: function() {}
-                });*/
+              }).then(function successCallback(response) 
+              {
+                    deferred.resolve(response);     
+                    
+              }, function errorCallback(response) 
+              {
+                    deferred.reject(response);
+              });
+              
+            return deferred.promise;
 
-
-
-                
-            /*} else {
-                window.plugins.toast.showShortBottom($translate.instant("checkNetWorkConnection"));
-                $ionicLoading.hide();
-                var response1 = [{
-                    "data": []
-                }, {
-                    "response": {
-                        "message": $translate.instant("checkNetWorkConnection"),
-                        "status": 0
-                    }
-                }];
-                return $http.get('').then(function(response) {
-                    return response1;
-                });
-            }*/
         },
         webServiceCallGoogleGet: function(data, action) {
             var deferred = $q.defer();

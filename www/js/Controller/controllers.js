@@ -16,7 +16,8 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
 
   $scope.loginData = {};
   $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
+    scope: $scope,
+    animaiton: 'slide-in-up'
   }).then(function(modal) {
     $scope.modal = modal;
   });
@@ -30,16 +31,20 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
     $scope.modal.show();
    };
 
-  // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
+   
 
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
+
+   Services.webServiceCallPost($scope.loginData, 'test').then(function(response)
+    {
+      alert('shivam'+JSON.stringify(response));
+    });
+    
+    
+
   };
+
+
 });
 
 app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices, Additional_services, $filter) 
@@ -73,11 +78,6 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
     { title: 'Rap', id: 5 },
     { title: 'Cowbell', id: 6 }
   ];
-
-
-
-
-
 });
 
 app.controller('PlaylistCtrl', function($scope, $stateParams) 
