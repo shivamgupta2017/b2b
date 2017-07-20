@@ -1,7 +1,7 @@
 "use strict";
 
 //angular.module('starter.controllers', []).
-app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Constant, UiServices, $http, Additional_services) {
+app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Constant, UiServices, $http, Additional_services, $filter) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -15,7 +15,6 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   //});
 
   $scope.loginData = {};
-
   $ionicModal.fromTemplateUrl('templates/login.html', {
     scope: $scope
   }).then(function(modal) {
@@ -29,7 +28,7 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   // Open the login modal
   $scope.login = function() {
     $scope.modal.show();
-  };
+   };
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
@@ -43,9 +42,12 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   };
 });
 
-app.controller('PlaylistsCtrl', function($scope, Services, Constant, UiServices, Additional_services) 
+app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices, Additional_services, $filter) 
 {
 
+
+
+//  $filter('ItemsFilter')('sfsf');
 
   //alert('shivam :'+Constant.base_url.service_url);
   /*Services.webServiceCallPost('','').then(function()
@@ -63,10 +65,6 @@ app.controller('PlaylistsCtrl', function($scope, Services, Constant, UiServices,
 
  // UiServices.alert_popup('title','templates');
 
-
-
-  
-
   $scope.playlists = [
     { title: 'Reggae', id: 1 },
     { title: 'Chill', id: 2 },
@@ -75,6 +73,11 @@ app.controller('PlaylistsCtrl', function($scope, Services, Constant, UiServices,
     { title: 'Rap', id: 5 },
     { title: 'Cowbell', id: 6 }
   ];
+
+
+
+
+
 });
 
 app.controller('PlaylistCtrl', function($scope, $stateParams) 

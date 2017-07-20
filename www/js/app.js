@@ -50,12 +50,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
         }
       }
     })
-    .state('app.playlists', {
-      url: '/playlists',
+    .state('app.dashboard', {
+      url: '/dashboard',
       views: {
         'menuContent': {
-          templateUrl: 'templates/playlists.html',
-          controller: 'PlaylistsCtrl'
+          templateUrl: 'templates/dashboard.html',
+          controller: 'dashboardCtrl'
         }
       }
     })
@@ -69,5 +69,5 @@ app.config(function($stateProvider, $urlRouterProvider) {
       }
     }
   });
-  $urlRouterProvider.otherwise('/app/playlists');
+  $urlRouterProvider.otherwise('/app/dashboard');
 });

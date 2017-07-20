@@ -1,8 +1,7 @@
 "use strict";
 app.factory('UiServices', function($http, $rootScope, $timeout,$ionicLoading, $q, Constant, $ionicPopup)	{
 		return {
-
-            confirmation_popup: function(title, template) 
+             confirmation_popup: function(title, template) 
             {
       			var deffered = $q.defer();   
             	var confirm = $ionicPopup.confirm({
@@ -35,11 +34,10 @@ app.factory('Additional_services', function()
     return {
         show_alert: function(your_name, data)
         {
-
             alert(your_name+':'+data);
-
-
         }
     };
 }); 	
+
+
 
