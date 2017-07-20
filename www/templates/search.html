@@ -1,5 +1,26 @@
-<ion-view view-title="Search">
-  <ion-content>
-    <h1>Search</h1>
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title">search</h1>
+    <div class="buttons">
+      <button class="button button-positive" ng-click="close_search_modal()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content overflow-scroll="true" padding="true" class="has-header">
+  <div class="list list-inset">
+      <label class="item item-input">
+        <i class="icon ion-search placeholder-icon"></i>
+          <input type="text" placeholder="Search" ng-model="search" ng-click="search_model()">
+      </label>
+  </div>
+
+   <ion-list>
+   <!-- | orderBy:'product_name' | ItemsFilter:search -->
+      <ion-item ng-repeat="datas in data | ItemsFilter:search" ng-click="product_name_clicked(datas.product_id)">
+        {{datas.product_name}}
+      </ion-item>
+    </ion-list>
+
+
+
   </ion-content>
-</ion-view>
+</ion-modal-view>

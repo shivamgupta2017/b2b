@@ -1,15 +1,21 @@
-<ion-view view-title="">
-  <ion-content>
+<ion-view>
+
+    <ion-nav-title style="margin-left:0px;">
+      <img class="home-logo" src="img/l5.png"  style="width:30vw; vertical-align: middle; margin: 0 auto; background-color:white">
+    </ion-nav-title>
+  
+
+  <ion-content  overflow-scroll="true" padding="true" class="has-header">
   	<div class="list list-inset">
   		<label class="item item-input">
     		<i class="icon ion-search placeholder-icon"></i>
-    			<input type="text" placeholder="Search" ng-model="search">
+    			<input type="text" placeholder="Search" ng-click="search_model()">
   		</label>
 	</div>	
-    <ion-list>
+    <!-- <ion-list>
       <ion-item collection-repeat="playlist in playlists | orderBy:'title' | ItemsFilter:search">
         {{playlist.title}}
       </ion-item>
-    </ion-list>
+    </ion-list> -->
   </ion-content>
 </ion-view>

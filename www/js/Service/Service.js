@@ -1,17 +1,18 @@
 "use strict";
 app.factory('Services', function($http, $rootScope, $timeout,$ionicLoading, $q, Constant) {
-    $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+    $http.defaults.headers.post = "application/json";
     return {
         webServiceCallPost: function(data, action) 
-        {
+        {   alert('shviam :'+ JSON.stringify(data));
              var deferred = $q.defer();
         $http({
                  method: 'POST',
                  url: Constant.base_url.service_url+action,
-                 data: data,
+                 data: JSON.stringify(data)
 
               }).then(function successCallback(response) 
-              {
+              {         
+                alert(JSON.stringify(response));
                     deferred.resolve(response);     
                     
               }, function errorCallback(response) 
