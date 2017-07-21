@@ -3,16 +3,16 @@ app.factory('Services', function($http, $rootScope, $timeout,$ionicLoading, $q, 
     $http.defaults.headers.post = "application/json";
     return {
         webServiceCallPost: function(data, action) 
-        {   alert('shviam :'+ JSON.stringify(data));
+        {   
+
              var deferred = $q.defer();
-        $http({
+            $http({
                  method: 'POST',
                  url: Constant.base_url.service_url+action,
                  data: JSON.stringify(data)
 
               }).then(function successCallback(response) 
               {         
-                alert(JSON.stringify(response));
                     deferred.resolve(response);     
                     
               }, function errorCallback(response) 

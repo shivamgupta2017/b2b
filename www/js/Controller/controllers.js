@@ -1,12 +1,16 @@
 "use strict";
-//angular.module('starter.controllers', []).
-app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Constant, UiServices, $http, Additional_services, $filter, $localStorage) {
+app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Constant, UiServices, $http, Additional_services, $filter, $localStorage, $rootScope) {
 
   //$ionicView.enter event:
   //$scope.$on('$ionicView.enter', function(e) {
   //});
 
+
+
+  $rootScope.constant_image_url=Constant.base_url.image_url;
+
   $scope.loginData = {};
+
   $ionicModal.fromTemplateUrl('templates/login.html', {
     scope: $scope,
     animaiton: 'slide-in-up'
@@ -18,7 +22,7 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
     $scope.modal.hide();
   };
 
-  // Open the login modal
+
   $scope.login = function() {
     $scope.modal.show();
    };
@@ -36,9 +40,10 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
 });
 app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices, Additional_services, $filter, $ionicModal, $localStorage) 
 {
-
   $localStorage.selected_items=[];
+  $scope.selected_items = $localStorage.selected_items;
 
+  
   Services.webServiceCallPost('', 'get_products').then(function(response)
     {
       $scope.data = response.data[0].data;
@@ -55,6 +60,7 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
   {
     $scope.modal = modal;
   });
+
   $scope.search_model=function()
   {
     $scope.modal.show();
@@ -69,19 +75,23 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
 
     $scope.modal.hide();
     var extra_data={
+      product_id: product_id
     }
-    extra_data.product_id=product_id;
+    
 
     Services.webServiceCallPost(extra_data, 'get_product_details').then(function(response)
     {
         if(response.data[1].response.status==1)
         {
-          // $localStorage.selected_items.push(response.);          
+          $localStorage.selected_items.push(response.data[0].data[0]);  
+          $scope.selected_items = $localStorage.selected_items;
+          
         }
     });
 
 
   }
+
 
 
 
