@@ -1,0 +1,42 @@
+<ion-view view-title="">
+
+			<ion-nav-title style="margin-left:25px;">
+		    	  <img class="home-logo" src="img/l5.png"  style="margin-left: 35%; height: 80%; width:30vw; vertical-align: middle; margin: 0 auto; background-color:white;">
+		    </ion-nav-title>
+
+			<ion-nav-buttons side="left">
+				<button ng-click="backa()" class="button back-button buttons button-clear header-item">
+					<i class="icon ion-android-arrow-back"></i>
+				</button>
+			</ion-nav-buttons>
+ 
+  <ion-content class="has-header padding-top" style="margin-top: 2%;">
+
+  <ion-list>
+  			<ion-item ng-repeat="orders in order_details track by $index" ng-click="get_order_details(orders.id, orders.user_id)">
+  				
+  				<div>
+  					<div>
+  						<span>{{orders.name}}</span>
+ 	 					
+  					</div>
+  					<div>
+  					<span>
+  						{{orders.weight | number:0 }}{{' '+orders.unit}} x {{orders.quantity}}
+  					</span>	
+  					<span style="float: right; color: red;">
+  					{{orders.price}}x{{orders.quantity}}={{orders.price*orders.quantity |  currency:"₹":0}}
+  					</span>
+  					</div>
+  				</div>
+  			
+  			</ion-item>
+
+
+  		</ion-list>
+  
+
+
+
+  </ion-content>
+</ion-view>

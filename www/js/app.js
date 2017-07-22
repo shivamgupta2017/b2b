@@ -42,11 +42,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
     }
   })
 
-  .state('app.browse', {
-      url: '/browse',
+  .state('app.recent_orders', {
+      url: '/recent_orders',
       views: {
         'menuContent': {
-          templateUrl: 'templates/browse.html'
+          templateUrl: 'templates/recent_orders.html',
+          controller: 'recent_ordersCtrl'
         }
       }
     })
@@ -60,12 +61,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
       }
     })
 
-  .state('app.single', {
-    url: '/playlists/:playlistId',
+  .state('app.view_order_details', {
+    url: '/view_order_details/:order_id',
     views: {
       'menuContent': {
-        templateUrl: 'templates/playlist.html',
-        controller: 'PlaylistCtrl'
+        templateUrl: 'templates/view_order_details.html',
+        controller: 'view_order_detailsCtrl'
       }
     }
   });

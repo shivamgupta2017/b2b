@@ -4,31 +4,54 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   //$ionicView.enter event:
   //$scope.$on('$ionicView.enter', function(e) {
   //});
+
+
 $scope.$on('$ionicView.enter', function()
 {
   $scope.user_data=$localStorage.user_data;
 });
   
   
+      $ionicModal.fromTemplateUrl('templates/login.html', 
+      {
+          scope: $scope
+      }).then(function(modal) 
+      {
+        $scope.modal = modal;
+      });
 
+      $ionicModal.fromTemplateUrl('templates/raise_my_concern.html', 
+      {
+          scope: $scope
+      }).then(function(modal) 
+      {
+        $scope.raise_concern_model = modal;
+      });
 
   $rootScope.constant_image_url=Constant.base_url.image_url;
 
   $scope.loginData = {};
-  $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
+  
+  $scope.raise_my_concern=function()
+  {
     
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
+    $scope.raise_concern_model.show();
 
+  }
   $scope.closeLogin = function() {
     $scope.modal.hide();
   };
-
+  $scope.close_raise_concern_model = function() {
+    $scope.raise_concern_model.hide();
+  };
+  $scope.recent_orders=function()
+  {
+    $state.go('app.recent_orders');
+  }
 
    $scope.login = function() 
    {
+      
         $scope.modal.show();
    };
    $scope.logout=function()
@@ -58,11 +81,14 @@ $scope.$on('$ionicView.enter', function()
 });
 app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices, Additional_services, $filter, $ionicModal, $localStorage, $state) 
 {
-  //$localStorage.selected_items=[];
+
+
+   // /UiServices.show_loader();  
+
+  if($localStorage.selected_items==undefined)
+    $localStorage.selected_items=[];
+
   $scope.selected_items = $localStorage.selected_items;
-
-  
-
   Services.webServiceCallPost('', 'get_products').then(function(response)
     {
       $scope.data = response.data[0].data;
@@ -105,6 +131,7 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
 
           angular.forEach(response.data[0], function(value, key) 
           {
+
             var extra_data=
             {
               quantity: 1
@@ -134,9 +161,25 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
   }
   $scope.save_order=function()
   {
-      var req_obj={};
-          req_obj.products=[];
-          req_obj.user_id='7';
+    
+    if(angular.isUndefined($localStorage.user_data))
+    {
+      var req_obj=
+      {
+        user_id: '7',
+        delivery_date: '2017-7-22'        
+      };
+    }
+    else
+    {
+      var req_obj=
+      {
+        user_id: $localStorage.user_data,
+        delivery_date: '2017-7-22'        
+      };
+
+    }
+          req_obj.order_products=[];
           angular.forEach($scope.selected_items, function(value, key) 
           {
               
@@ -147,19 +190,13 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
                 unit_mapping_id: value.product_details[0].unit.unit_product_mapping_id
               }
               
-              req_obj.products.push(extra_data);
+              req_obj.order_products.push(extra_data);
           });
-          
-          alert('shivam :'+JSON.stringify(req_obj));
-          Services.webServiceCallPost(req_obj, 'get_product_details').then(function(response)
+          alert('shviam :'+JSON.stringify(req_obj));
+          Services.webServiceCallPost(req_obj, 'create_order').then(function(response)
           {
-            alert();
+            alert('res :'+JSON.stringify(response));
           });
-
-
-
-
-
   }
 
 
@@ -173,8 +210,35 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
  // UiServices.alert_popup('title','templates');
   
 });
+app.controller('recent_ordersCtrl', function(Services, $scope, $state){
 
-app.controller('PlaylistCtrl', function($scope, $stateParams) 
-{
-  alert('playlistctrl');
+    var req_data={
+      user_id: '7'
+    };
+   
+    Services.webServiceCallPost(req_data, 'get_orders').then(function(response)
+    {
+      if(response.data[1].response.status==1)
+      {
+        $scope.recent_orders_data=response.data[0].data;
+      }
+    });
+
+    $scope.get_order_details=function(order_id, user_id)
+    {
+      $state.go('app.view_order_details', {order_id: order_id});
+    }
+
 });
+app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services) 
+{
+    var sending_data={order_id: $stateParams.order_id};
+      Services.webServiceCallPost(sending_data, 'get_order_details').then(function(response)
+      {
+          if(response.data[1].response.status==1)
+          {
+            $scope.order_details=response.data[0].data;
+          }
+      });
+});
+

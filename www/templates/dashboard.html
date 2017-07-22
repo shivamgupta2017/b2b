@@ -1,4 +1,4 @@
-<ion-view>
+<ion-view cache-view="false">
 
     <ion-nav-title style="margin-left:0px;">
       <img class="home-logo" src="img/l5.png"  style="width:30vw; vertical-align: middle; margin: 0 auto; background-color:white">
@@ -48,7 +48,7 @@
     
     </div>
   </div>
-  <button class="button button-assertive" ng-click="save_order()">mike test</button>
+  <button class="button button-assertive button-block" ng-click="save_order()" ng-show="selected_items.length>0">Order Now</button>
 </div>
 
 

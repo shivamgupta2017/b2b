@@ -1,9 +1,9 @@
 "use strict";
-app.factory('Services', function($http, $rootScope, $timeout,$ionicLoading, $q, Constant) {
+app.factory('Services', function($http, $rootScope, $timeout,$ionicLoading, $q, Constant, UiServices) {
     $http.defaults.headers.post = "application/json";
     return {
         webServiceCallPost: function(data, action) 
-        {   
+        { 
 
              var deferred = $q.defer();
             $http({
@@ -19,7 +19,7 @@ app.factory('Services', function($http, $rootScope, $timeout,$ionicLoading, $q, 
               {
                     deferred.reject(response);
               });
-              
+                          
             return deferred.promise;
 
         },

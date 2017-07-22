@@ -1,0 +1,29 @@
+<ion-view cache-view="false" view-title="">
+	<ion-nav-title style="margin-left:25px;">
+	    	  <img class="home-logo" src="img/l5.png"  style="margin-left: 35%; height: 80%; width:30vw; vertical-align: middle; margin: 0 auto; background-color:white;">
+	    </ion-nav-title>
+
+		<ion-nav-buttons side="left">
+			<button ng-click="backa()" class="button back-button buttons button-clear header-item">
+				<i class="icon ion-android-arrow-back"></i>
+			</button>
+		</ion-nav-buttons>
+  	<ion-content class="has-header padding-top">
+ 
+  		<ion-list>
+  			<ion-item ng-repeat="orders in recent_orders_data track by $index" ng-click="get_order_details(orders.id, orders.user_id)">
+  				<div>
+  					<div>{{'Order date: '}}{{orders.order_date}}</div>
+  					 <div>{{'delivery date :'+orders.delivery_date}}</div>
+  					<div>{{'delivery status: '+orders.order_status}}</div>
+  					<div ng-show="orders.payment_status==0">{{'payment pending'}}</div> 
+  					<div ng-show="orders.payment_status==1">{{'payment done'}}|</div>
+  				</div>
+  			
+  			</ion-item>
+
+
+  		</ion-list>
+
+  	</ion-content>
+</ion-view>

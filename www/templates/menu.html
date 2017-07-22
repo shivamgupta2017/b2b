@@ -25,8 +25,11 @@
         <ion-item menu-close ng-click="logout()" ng-show="user_data!=''" >
           Logout
         </ion-item>
-        <ion-item menu-close href="#/app/search">
-          Search
+        <ion-item menu-close ng-click="recent_orders()" ng-show="user_data!=''" >
+          Recent Orders
+        </ion-item>
+        <ion-item menu-close ng-click="raise_my_concern()">
+          Raise Concern
         </ion-item>
         <ion-item menu-close href="#/app/browse">
           Browse

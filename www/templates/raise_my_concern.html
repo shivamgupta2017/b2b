@@ -1,0 +1,53 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-light">
+          <button class="button back-button buttons button-clear header-item" ng-click="close_raise_concern_model()">
+            <i class="icon ion-android-arrow-back"></i>
+          </button>
+  </ion-header-bar >
+
+  <ion-content class="has-header padding-top" style="margin-top: 10%">
+  <h3 style="text-align: center;">{{'raise concern'}}</h3>
+      <form name="signForm" novalidate >
+          
+          <div  class="signin-input-holder" style="width: 90%; margin: 5%;"> 
+            <ion-list style="padding-top: 10%;">
+              
+              <ion-item class="item-input" style="border:1px solid #ddd; padding:0px; border-radius:5px;">
+                <input type="text" placeholder="Name" required autocomplete="off">
+              </ion-item>
+
+              <ion-item class="item-input" style="border:1px solid #ddd; padding:0px; border-radius:5px;">
+              <select ng-init="" ng-model="">
+                           
+              </select>
+              </ion-item>
+
+              <ion-item  class="item-input " style="border:1px solid #ddd; margin-top:10px; padding:0px; border-radius:5px;">
+                <input type="email" name="email" placeholder="Email" required autocomplete="off">
+              </ion-item>
+
+
+              <ion-item  class="item-input " style="border:1px solid #ddd; margin-top:10px; padding:0px; border-radius:5px;">
+                <input type="text" name="mobile No" placeholder="Contact no" required autocomplete="off">
+              </ion-item>
+
+
+              <ion-item class="item-input " style="border:1px solid #ddd;  margin-top:10px; padding:5px; border-radius:5px;">
+                <textarea  name="message" placeholder="Let us know how can we serve you better?"  rows="5" ng-model="User.message" required autocomplete="off"></textarea>
+              </ion-item>
+
+            </ion-list>
+
+            <div class="assertive">{{fError}}</div>
+        
+
+          <div class="footer-button">
+            <h5 class="color-grapefruit m-t-b-0" ng-show="signUpError"> {{signUpError}}</h5>
+            <button class="button button-dark button-block button-round animated bounceIn" ng-click="validate()" >Submit</button>
+          </div>
+        </div>
+    </form>
+
+
+  </ion-content>
+</ion-modal-view>
