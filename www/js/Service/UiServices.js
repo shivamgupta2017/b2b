@@ -23,9 +23,18 @@ app.factory('UiServices', function($http, $rootScope, $timeout,$ionicLoading, $q
                 {
                     alert('res :'+res);
                 });
+            },
+            show_loader: function()
+            {
+                
 
 
-            }	
+            },
+            hide_loader: function()
+            {
+                
+            }
+
 
     	};	
 	});
