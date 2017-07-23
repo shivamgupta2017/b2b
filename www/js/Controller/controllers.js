@@ -81,7 +81,7 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
 {
 
 
-   UiServices.show_loader();  
+   
 
   if($localStorage.selected_items==undefined)
     $localStorage.selected_items=[];
