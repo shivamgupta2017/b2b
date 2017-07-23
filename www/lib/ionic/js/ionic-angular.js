@@ -10659,6 +10659,7 @@ IonicModule
     restrict: 'E',
     require: ['?^$ionicScroll', 'ionInfiniteScroll'],
     template: function($element, $attrs) {
+      alert('aa');
       if ($attrs.icon) return '<i class="icon {{icon()}} icon-refreshing {{scrollingType}}"></i>';
       return '<ion-spinner icon="{{spinner()}}"></ion-spinner>';
     },

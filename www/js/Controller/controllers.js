@@ -11,7 +11,6 @@ $scope.$on('$ionicView.enter', function()
   $scope.user_data=$localStorage.user_data;
 });
   
-  
       $ionicModal.fromTemplateUrl('templates/login.html', 
       {
           scope: $scope
@@ -19,7 +18,6 @@ $scope.$on('$ionicView.enter', function()
       {
         $scope.modal = modal;
       });
-
       $ionicModal.fromTemplateUrl('templates/raise_my_concern.html', 
       {
           scope: $scope
@@ -83,7 +81,7 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
 {
 
 
-   // /UiServices.show_loader();  
+   UiServices.show_loader();  
 
   if($localStorage.selected_items==undefined)
     $localStorage.selected_items=[];
@@ -196,6 +194,7 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
           Services.webServiceCallPost(req_obj, 'create_order').then(function(response)
           {
             alert('res :'+JSON.stringify(response));
+            $localStorage.selected_items=[];
           });
   }
 

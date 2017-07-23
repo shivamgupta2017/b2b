@@ -26,7 +26,10 @@ app.factory('UiServices', function($http, $rootScope, $timeout,$ionicLoading, $q
             },
             show_loader: function()
             {
-               $ionicLoading.show({ template: '<ion-spinner icon="bubbles" class="spinner-assertive"></ion-spinner>' });                 
+               $ionicLoading.show(
+                {   showBackdrop: false,
+                    template: '<ion-spinner icon="crescent" class="spinner-balanced"></ion-spinner>' 
+                });                 
             },
             hide_loader: function()
             {
