@@ -164,7 +164,18 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
   }
   $scope.removeItem=function(index)
   { 
+    var lastindex=$localStorage.selected_items.length-1;
+    
     $localStorage.selected_items.splice(index, 1);
+    
+    $scope.total=0;
+    angular.forEach($localStorage.selected_items, function(value, key)
+    {
+      $scope.total=$scope.total+value.product_details[0].final_price;
+    });
+
+   
+    
   }
   $scope.open_date_picker=function()
   {
@@ -262,13 +273,14 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
  
   $scope.show_total=function(index)
   { 
-     $scope.total=0;   
+    $scope.total=0;   
+
     $localStorage.selected_items[index].product_details[0].final_price = $localStorage.selected_items[index].product_details[0].unit.price*$localStorage.selected_items[index].product_details[0].quantity;
     angular.forEach($localStorage.selected_items, function(value, key)
     {
       $scope.total=$scope.total+value.product_details[0].final_price;
     });
-    alert('ce :'+$scope.total);
+    
   }
 
  /*UiServices.confirmation_popup('title','lassan').then(function(res){

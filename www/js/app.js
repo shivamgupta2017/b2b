@@ -11,6 +11,18 @@ app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
+
+
+    notificationOpenedCallback = function(jsonData) 
+    {
+      alert('shivam notification done');
+      var state=jsonData.notification.payload.additionalData.state;
+      delete jsonData.notification.payload.additionalData.state;
+      $state.go(state,jsonData.notification.payload.additionalData);
+    };
+
+      window.plugins.OneSignal.startInit("93c7e511-bea9-41fe-93e5-6226c84c3619").handleNotificationOpened(notificationOpenedCallback).endInit();
+
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
