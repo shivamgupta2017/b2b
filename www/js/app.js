@@ -13,12 +13,12 @@ app.run(function($ionicPlatform) {
     // for form inputs)
 
 
-    notificationOpenedCallback = function(jsonData) 
+    var notificationOpenedCallback = function(jsonData) 
     {
-      alert('shivam notification done');
+      
       var state=jsonData.notification.payload.additionalData.state;
-      delete jsonData.notification.payload.additionalData.state;
-      $state.go(state,jsonData.notification.payload.additionalData);
+     delete jsonData.notification.payload.additionalData.state;
+     $state.go(state,jsonData.notification.payload.additionalData);
     };
 
       window.plugins.OneSignal.startInit("93c7e511-bea9-41fe-93e5-6226c84c3619").handleNotificationOpened(notificationOpenedCallback).endInit();
@@ -81,6 +81,19 @@ app.config(function($stateProvider, $urlRouterProvider) {
         controller: 'view_order_detailsCtrl'
       }
     }
-  });
+  })
+
+  .state('app.login', {
+    url: '/login',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/login.html',
+        controller: 'loginCtrl'
+      }
+    }
+  })
+
+
+  ;
   $urlRouterProvider.otherwise('/app/dashboard');
 });

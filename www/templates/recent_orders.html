@@ -8,21 +8,32 @@
 				<i class="icon ion-android-arrow-back"></i>
 			</button>
 		</ion-nav-buttons>
-  	<ion-content class="has-header padding-top">
- 
+  	
+    <ion-content class="has-header padding-top margin-top" style="padding-top: 5%; width: 100vw;">
+    
   		<ion-list>
-  			<ion-item ng-repeat="orders in recent_orders_data track by $index" ng-click="get_order_details(orders.id, orders.user_id)">
-  				
-          <div style="float: right !important;  border-color: black; border-width: 1px; border-style: solid; ">
-             {{orders.order_status}}
-          </div>
-            
+        <ion-item ng-repeat="orders in recent_orders_data track by $index" class="item-text-wrap" ng-click="get_order_details(orders.id, orders.user_id)" style="height:30vw;">
+          
+          
+            <div style="text-align: right; width: 80%; float: right !important;">
+               {{orders.order_status}}
+            </div>
+            <div style="width: 100%; height: auto;">
+               <div style="float: left;">{{orders.order_date}}</div>
+               <div style="float: right;">{{orders.delivery_date}}</div>
+            </div>
 
-  					 <p style="float: left !important; border-width: 1px; border-style: solid;">{{'Order date: '}}{{orders.order_date}}</p>
-  					 
-             <p style="float: right !important; border-width: 1px; border-style: solid;">{{'delivery date :'+orders.delivery_date}}</p>
-            
-  			</ion-item>
+             <div style="width: 100%; height: auto; position: absolute; bottom: 0px;" class="bar bar-dark" >
+              <div class="button-bar">
+                <button ng-show="orders.status==0 || orders.status==1" ng-click="" class="button button-small button-assertive">{{'View'}}</button>
+                <button ng-show="orders.status==0" ng-click="" class="button button-small button-assertive">{{'Update Order'}}</button>
+                <button ng-show="orders.status==1" ng-click="" class="button button-small button-assertive">{{'Verify Order'}}</button>
+                <button ng-show="orders.status==2" ng-click="" class="button button-small button-assertive">{{'View Invoice'}}</button>
+              </div>
+             </div>
+
+          
+        </ion-item>
   		</ion-list>
   	</ion-content>
 </ion-view>
