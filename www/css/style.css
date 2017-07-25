@@ -5,5 +5,13 @@
   width: 19% !important;
   height: 85px !important;
 }
+.abc{
+	background-color:white;
+	text-align:center;
+	color:black;
+	}
+.cell{
+   width: 33%
+}
 
 

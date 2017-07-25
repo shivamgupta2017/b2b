@@ -1,0 +1,35 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title">Login</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeLogin()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content class="has-header padding-top padding-bottom" style="margin-top: 5%; margin-bottom: 15%;">
+    
+
+    <ion-list>
+    <ion-item ng-repeat="items in selected_items" style="border-color: black; border-width: 1px; border-style: solid;">
+      <div class="row" style="border-color: black; border-width: 1px; border-style: solid;">
+       <div style="margin-right: 5%;">{{items.product_details[0].product_name}}</div>
+       <div style="margin-right: 5%;">{{items.product_details[0].quantity}}</div>
+       <div style="margin-right: 5%;">{{'x      '+items.product_details[0].unit.price}}</div>
+       <div style="right: 0; float: right; text-align: right; border-color: black; border-width: 1px; border-style: solid;">{{'=      '+items.product_details[0].quantity*items.product_details[0].unit.price}}</div>
+      </div>
+    </ion-item>
+    </ion-list>
+  </ion-content>
+
+  <ion-footer-bar class="bar bar-dark" ng-if="selected_items.length>0">
+  
+        <div class="button-bar">
+          
+          <div class="button button-assertive">&#8377;{{total}}
+
+          </div>
+        
+        </div>
+
+  </ion-footer-bar>
+
+</ion-modal-view>

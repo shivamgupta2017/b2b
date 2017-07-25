@@ -5,7 +5,7 @@
     </ion-nav-title>
   
 
-  <ion-content  overflow-scroll-y="true" padding="true" class="has-header">
+  <ion-content  overflow-scroll-y="true" padding="true" class="has-header" style="margin-bottom: 15%;">
     <!-- <ion-searchbar (input)="getItems($event)"></ion-searchbar>
      -->
   	<div class="list list-inset">
@@ -26,7 +26,7 @@
       <i style="font-size:12px; width:10%; float:right;" class="icon ion-android-close color-dark" ng-click="removeItem($index)"></i></div>
       <div style="height:25%; width:100%; text-align:left; float:left">
 
-        <select  style="display:inline-block; width:90%; border:1px solid #ddd; border-color: red; border-style: solid; border-width: 1px;" ng-init="selected_items[$index].product_details[0].unit = data.unit_details[0]" ng-model="selected_items[$index].product_details[0].unit" ng-options="v.weight+' '+v.unit for v in data.unit_details">
+        <select  class="abc" ng-init="selected_items[$index].product_details[0].unit = data.unit_details[0]" ng-model="selected_items[$index].product_details[0].unit" ng-options="v.weight+' '+v.unit for v in data.unit_details">
       </select>
       </div>
       
@@ -42,53 +42,28 @@
           +
         </div>
 
-        <div style="float:right; margin-right:10px; font-size:15px" ng-show="selectedproducts[$index].quantity">{{selectedproducts[$index].quantity*selectedproducts[$index].unit.weight+' '+selectedproducts[$index].unit.unit}}
+        <div style="float:right; margin-right:25px; font-size:15px" ng-init="show_total($index)">
+
+            &#8377;{{data.product_details[0].quantity*data.product_details[0].unit.price}}
+
         </div>
       </div>
     
     </div>
   </div>
-  <button class="button button-assertive button-block" ng-click="save_order()" ng-show="selected_items.length>0">Place order Now</button>
 </div>
+  <!-- value.product_details[0].unit.price -->
+  
 
-
-
-
-
-<!-- 
-
-    <div ng-if="selected_items.length>0" class="list card" ng-repeat="product in selected_items | orderBy: '$index'">
-      <div class="item item-body">
-        <img style="width: 50%; height: 7%; border-radius: 20%;" src={{constant_image_url+product.image}}>
-         <p style="text-align: center;">
-         <strong>
-         {{product.product_name}}
-         </strong>
-        </p>
-        <div style="border-color: red; border-width: 1px; border-style: solid;">
-          <div style="display: inline-block;">
-          <select style="background-color:white; text-align:center; color:black; display:inline-block; width:100%; border:1px solid #ddd; border-radius:5px; font-size:3.5vw" ng-init="s = product.unit_data[0]" ng-model="s" ng-options="v.weight+' '+v.unit for v in product.unit_data"></select>
-          </div>
-
-          <div>
-            <button class="button button-assertive button-small" ng-click="decrease_quantity()"><i class="icon ion-minus"></i></button>
-            {{'10'}}
-            <button class="button button-assertive button-small" ng-click="increase_quantity()"><i class="icon ion-plus"></i></button>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
-
-      <!-- <ion-card-content>
-        <ion-card-title>
-          {{selected.product_name}}
-        </ion-card-title>
-        <p>
-        The most popular industrial group ever, and largely
-        responsible for bringing the music to a mass audience.
-      </p>
-      </ion-card-content>
-    </ion-card> -->
   </ion-content>
+  <ion-footer-bar class="bar bar-dark" ng-if="selected_items.length>0">
+      <div class="button-bar">
+        <div class="button button-assertive" >&#8377;{{total}}</div>
+        <button class="button button-assertive" ng-click="open_detailed_design();">View Order</button>
+        <button class="button button-assertive" ng-click="save_order();">Place order</button>
+
+       </div>
+      
+
+  </ion-footer-bar>
 </ion-view>

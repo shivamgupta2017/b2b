@@ -1,5 +1,5 @@
 "use strict";
-app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Constant, UiServices, $http, Additional_services, $filter, $localStorage, $rootScope, $state) {
+app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Constant, UiServices, $http, Additional_services, $filter, $localStorage, $rootScope, $state, $cordovaDatePicker) {
 
   //$ionicView.enter event:
   //$scope.$on('$ionicView.enter', function(e) {
@@ -77,12 +77,13 @@ $scope.$on('$ionicView.enter', function()
   };
 
 });
-app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices, Additional_services, $filter, $ionicModal, $localStorage, $state) 
+app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices, Additional_services, $filter, $ionicModal, $localStorage, $state, $cordovaDatePicker, $q) 
 {
 
 
-   
-
+  
+  
+  
   if($localStorage.selected_items==undefined)
     $localStorage.selected_items=[];
 
@@ -92,7 +93,6 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
       $scope.data = response.data[0].data;
       console.log('shivam :'+JSON.stringify($scope.data));      
     });
-
 
 
   $ionicModal.fromTemplateUrl('templates/search.html', 
@@ -126,19 +126,24 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
     {
         if(response.data[1].response.status==1)
         {          
-
-          angular.forEach(response.data[0], function(value, key) 
-          {
-
             var extra_data=
             {
-              quantity: 1
+             quantity: 1,
+             final_price: 0
+
             }
-            angular.extend(value.product_details[0], extra_data);
+            angular.extend(response.data[0].data.product_details[0], extra_data);
+          $scope.temp=[];
+          $scope.temp.push(response.data[0].data);
+
+          angular.forEach($localStorage.selected_items, function(value, key) 
+          {
+            $scope.temp.push(value);
           });
 
-          $localStorage.selected_items.push(response.data[0].data);  
+          $localStorage.selected_items=$scope.temp;
           $scope.selected_items = $localStorage.selected_items;
+
         }
     });
 
@@ -147,20 +152,50 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
   $scope.dQuantity=function(index, quantity)
   {
     if(quantity>1)
-    $localStorage.selected_items[index].product_details[0].quantity = quantity-1;
+    {
+      $localStorage.selected_items[index].product_details[0].quantity = quantity-1;
+      $scope.show_total(index);
+    }
   }
   $scope.aQuantity=function(index, quantity)
   {
     $localStorage.selected_items[index].product_details[0].quantity = quantity+1;
+    $scope.show_total(index);
   }
   $scope.removeItem=function(index)
   { 
     $localStorage.selected_items.splice(index, 1);
   }
+  $scope.open_date_picker=function()
+  {
+       var options = {
+      date: new Date(),
+      mode: 'date', // or 'time'
+      minDate: new Date() - 10000,
+      allowOldDates: true,
+      allowFutureDates: false,
+      doneButtonLabel: 'DONE',
+      doneButtonColor: '#F2F3F4',
+      cancelButtonLabel: 'CANCEL',
+      cancelButtonColor: '#000000'
+    };
+
+
+    $cordovaDatePicker.show(options).then(function(date)
+    { 
+        $scope.save_order(date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate());         
+        
+    });
+
+    
+
+
+  }
   $scope.save_order=function()
   {
     
-    if(angular.isUndefined($localStorage.user_data))
+    alert('s :'+$scope.total);   
+    if($localStorage.user_data=='')
     {
       var req_obj=
       {
@@ -177,30 +212,64 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
       };
 
     }
+    //alert('shivam :'+JSON.stringify($scope.selected_items));
+
           req_obj.order_products=[];
+          var total=0;
+
+
           angular.forEach($scope.selected_items, function(value, key) 
           {
-              
               var extra_data=
               {
                 product_id: value.product_details[0].product_id,
                 quantity: value.product_details[0].quantity,
-                unit_mapping_id: value.product_details[0].unit.unit_product_mapping_id
+                unit_mapping_id: value.product_details[0].unit.unit_product_mapping_id,
+                product_unit: value.product_details[0].unit.unit
               }
-              
+
               req_obj.order_products.push(extra_data);
           });
-          alert('shviam :'+JSON.stringify(req_obj));
-          Services.webServiceCallPost(req_obj, 'create_order').then(function(response)
+
+
+
+
+  /*        Services.webServiceCallPost(req_obj, 'create_order').then(function(response)
           {
             alert('res :'+JSON.stringify(response));
             $localStorage.selected_items=[];
-          });
+          });*/
+  
+    }
+  $ionicModal.fromTemplateUrl('templates/order_details.html', 
+      {
+          scope: $scope
+      }).then(function(modal) 
+      {
+        $scope.open_order_details_model = modal;
+      });
+
+  $scope.open_detailed_design=function()
+  { 
+    $scope.order_details_total_at_model=0;
+    angular.forEach($scope.selected_items, function(value, key)
+    {
+      $scope.order_details_total_at_model= $scope.order_details_total_at_model+value.product_details[0].quantity*value.product_details[0].unit.price;
+    });
+    $scope.open_order_details_model.show();
   }
-
-
-
-
+  
+ 
+  $scope.show_total=function(index)
+  { 
+     $scope.total=0;   
+    $localStorage.selected_items[index].product_details[0].final_price = $localStorage.selected_items[index].product_details[0].unit.price*$localStorage.selected_items[index].product_details[0].quantity;
+    angular.forEach($localStorage.selected_items, function(value, key)
+    {
+      $scope.total=$scope.total+value.product_details[0].final_price;
+    });
+    alert('ce :'+$scope.total);
+  }
 
  /*UiServices.confirmation_popup('title','lassan').then(function(res){
     alert('res :'+res);
@@ -210,6 +279,7 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
   
 });
 app.controller('recent_ordersCtrl', function(Services, $scope, $state){
+
 
     var req_data={
       user_id: '7'
@@ -234,6 +304,8 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
     var sending_data={order_id: $stateParams.order_id};
       Services.webServiceCallPost(sending_data, 'get_order_details').then(function(response)
       {
+
+
           if(response.data[1].response.status==1)
           {
             $scope.order_details=response.data[0].data;
