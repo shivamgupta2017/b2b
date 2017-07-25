@@ -26,6 +26,13 @@ $scope.$on('$ionicView.enter', function()
    {
       $state.go('app.login');
    }  
+
+   $scope.logout=function()
+   {    
+        
+        $localStorage.user_data='';
+        $scope.user_data='';
+   }
   
   $scope.raise_my_concern=function()
   {
@@ -45,18 +52,15 @@ $scope.$on('$ionicView.enter', function()
 });
 app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices, Additional_services, $filter, $ionicModal, $localStorage, $state, $cordovaDatePicker, $q, $ionicPopup)  
 {
-  
-  
+    
   if($localStorage.selected_items==undefined)
   {
     $localStorage.selected_items=[];
   }
-
   $scope.selected_items = $localStorage.selected_items;
   Services.webServiceCallPost('', 'get_products').then(function(response)
     {
       $scope.data = response.data[0].data;
-      console.log('shivam :'+JSON.stringify($scope.data));      
     });
 
 
@@ -97,9 +101,8 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
             {
              quantity: 1,
              final_price: 0
-
             }
-            angular.extend(response.data[0].data.product_details[0], extra_data);
+          angular.extend(response.data[0].data.product_details[0], extra_data);
           $scope.temp=[];
           $scope.temp.push(response.data[0].data);
 
@@ -164,10 +167,6 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
         $scope.save_order(date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate());         
           
     });
-
-    
-
-
   }
   $scope.save_order=function(date)
   {
@@ -177,12 +176,15 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
     }
     else
     {
+
       var req_obj=
       {
         user_id: $localStorage.user_data,
         delivery_date: '2017-7-25'        
       };
     
+
+
       req_obj.order_products=[];
       var total=0;
 
@@ -204,6 +206,8 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
                  title: 'Create Order Confirmation',
                  template: '<center>Are you sure?</center>'
               }).then(function(res) 
+              
+
               {
                 
                  if(res) 
@@ -245,24 +249,22 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
  
   $scope.show_total=function(index)
   { 
+//    alert('toal'+$localStorage.selected_items[0].);
     $scope.total=0;   
-
-    $localStorage.selected_items[index].product_details[0].final_price = $localStorage.selected_items[index].product_details[0].unit.price*$localStorage.selected_items[index].product_details[0].quantity;
-    angular.forEach($localStorage.selected_items, function(value, key)
+//    alert('check L :'+JSON.stringify($localStorage.selected_items[0].product_details[0].final_price));
+    
+ // $localStorage.selected_items[index].product_details[0].final_price = $localStorage.selected_items[index].product_details[0].unit.price*$localStorage.selected_items[index].product_details[0].quantity;
+    
+   /* angular.forEach($localStorage.selected_items, function(value, key)
     {
       $scope.total=$scope.total+value.product_details[0].final_price;
-    });
-    
+    });*/
   }
 
- /*UiServices.confirmation_popup('title','lassan').then(function(res){
-    alert('res :'+res);
- });*/
-  //Additional_services.show_alert('shivam','lassan');
- // UiServices.alert_popup('title','templates');
-  
+
+
 });
-app.controller('recent_ordersCtrl', function(Services, $scope, $state){
+app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localStorage){
 
 
     var req_data={
@@ -296,16 +298,10 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
           }
       });
 });
-app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal)
+app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal, $localStorage, $state)
 {
 
   $scope.loginData = {};
-   $scope.logout=function()
-   {    
-
-        $localStorage.user_data='';
-        $scope.user_data='';
-   }
   $scope.doLogin = function() 
   {
 
@@ -313,10 +309,12 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
     {
       if(response.data[1].response.status==1)
       { 
+
         $scope.loginData={};
-        $scope.modal.hide();
         $localStorage.user_data = response.data[0].data.user_id;
         $scope.user_data = $localStorage.user_data;
+        $state.go('app.dashboard'); 
+
       }
     });
   }
