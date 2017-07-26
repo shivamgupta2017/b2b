@@ -19,7 +19,8 @@ app.factory('UiServices', function($http, $rootScope, $timeout,$ionicLoading, $q
                 $ionicPopup.alert({
                 template: template,
                 buttons:[{
-                    text:'las'
+                    text:'ok',
+                    Type: 'button-clear'
 
                 }]
                 }).then(function(res)

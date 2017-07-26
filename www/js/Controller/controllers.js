@@ -53,15 +53,11 @@ $scope.$on('$ionicView.enter', function()
     
   $scope.test=function()
   {
-      var div='<div class="card">';
-      div=div+'<div class="item item-text-wrap">';
-      div=div+'Your Order has been placed successfully, will place your order by your order date, we hope to have you again';
-      div=div+'</div></div>';
-    
-    UiServices.alert_popup(div);  
+      
   }
+
 });
-app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices, Additional_services, $filter, $ionicModal, $localStorage, $state, $cordovaDatePicker, $q, $ionicPopup)  
+app.controller('dashboardCtrl', function($scope, Services,$timeout,  Constant, UiServices, Additional_services, $filter, $ionicModal, $localStorage, $state, $cordovaDatePicker, $q, $ionicPopup)  
 {
     
 
@@ -72,7 +68,8 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
     $localStorage.selected_items=[];
   }
   $scope.selected_items = $localStorage.selected_items;
-  Services.webServiceCallPost('', 'get_products').then(function(response)
+  
+    Services.webServiceCallPost('', 'get_products').then(function(response)
     {
       $scope.data = response.data[0].data;
     });
@@ -91,22 +88,38 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
   {
 
     $scope.modal.show();
+    $timeout(function()
+      {
+        document.getElementById('focuskaro').focus();
+      },1000);
+    
   }
   $scope.close_search_modal=function()
   {
-
-    $scope.modal.hide();    
+      
+      $scope.modal.hide();    
   }
 
   $scope.product_name_clicked=function(product_id)
   { 
 
+    
+          var check_index = -1;
+          angular.forEach($localStorage.selected_items, function(value, key){
+          if(value.product_details[0].product_id===product_id)
+          {
+           check_index=0;
+          }
+      });
     $scope.modal.hide();
     var extra_data={
       product_id: product_id
     }
-    
 
+
+   if(check_index==-1)
+   {
+    UiServices.show_loader(); 
     Services.webServiceCallPost(extra_data, 'get_product_details').then(function(response)
     {
         if(response.data[1].response.status==1)
@@ -116,10 +129,10 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
              quantity: 1,
              final_price: 0
             }
+
           angular.extend(response.data[0].data.product_details[0], extra_data);
           $scope.temp=[];
           $scope.temp.push(response.data[0].data);
-
           angular.forEach($localStorage.selected_items, function(value, key) 
           {
             $scope.temp.push(value);
@@ -128,11 +141,11 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
 
           $localStorage.selected_items=$scope.temp;
           $scope.selected_items = $localStorage.selected_items;
-          alert('shivam : '+JSON.stringify($scope.selected_items));
+          UiServices.hide_loader(); 
         }
     });
 
-
+   }
   }
   $scope.dQuantity=function(index, quantity)
   {
@@ -229,6 +242,8 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
                     {
                          alert('res :'+JSON.stringify(response));
                          $localStorage.selected_items=[];
+                         var div='Your Order has been placed successfully, will place your order by your order date, we hope to have you again';
+                          UiServices.alert_popup(div);  
                     });  
                  } 
                  else 

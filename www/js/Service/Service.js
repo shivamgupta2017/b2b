@@ -4,7 +4,7 @@ app.factory('Services', function($http, $rootScope, $timeout,$ionicLoading, $q, 
     return {
         webServiceCallPost: function(data, action) 
         { 
-            UiServices.show_loader();  
+            //UiServices.show_loader();  
              var deferred = $q.defer();
             $http({
                  method: 'POST',
@@ -20,7 +20,7 @@ app.factory('Services', function($http, $rootScope, $timeout,$ionicLoading, $q, 
                     deferred.reject(response);
               });
                 
-            UiServices.hide_loader();          
+            //UiServices.hide_loader();          
             return deferred.promise;
 
         },
