@@ -14,13 +14,16 @@ app.factory('UiServices', function($http, $rootScope, $timeout,$ionicLoading, $q
 
             	return deffered.promise;
         	},
-            alert_popup: function(title, template)
+            alert_popup: function(template)
             {
                 $ionicPopup.alert({
-                    title: title,
-                    template: template
+                template: template,
+                buttons:[{
+                    text:'las'
+
+                }]
                 }).then(function(res)
-                {
+                {   
                     alert('res :'+res);
                 });
             },

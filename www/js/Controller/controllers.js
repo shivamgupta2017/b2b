@@ -49,10 +49,24 @@ $scope.$on('$ionicView.enter', function()
   {
     $state.go('app.recent_orders');
   }
+
+    
+  $scope.test=function()
+  {
+      var div='<div class="card">';
+      div=div+'<div class="item item-text-wrap">';
+      div=div+'Your Order has been placed successfully, will place your order by your order date, we hope to have you again';
+      div=div+'</div></div>';
+    
+    UiServices.alert_popup(div);  
+  }
 });
 app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices, Additional_services, $filter, $ionicModal, $localStorage, $state, $cordovaDatePicker, $q, $ionicPopup)  
 {
     
+
+
+
   if($localStorage.selected_items==undefined)
   {
     $localStorage.selected_items=[];
@@ -111,9 +125,10 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
             $scope.temp.push(value);
           });
 
+
           $localStorage.selected_items=$scope.temp;
           $scope.selected_items = $localStorage.selected_items;
-
+          alert('shivam : '+JSON.stringify($scope.selected_items));
         }
     });
 
@@ -134,14 +149,11 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
   }
   $scope.removeItem=function(index)
   { 
-    var lastindex=$localStorage.selected_items.length-1;
-    
     $localStorage.selected_items.splice(index, 1);
-    
     $scope.total=0;
     angular.forEach($localStorage.selected_items, function(value, key)
     {
-      $scope.total=$scope.total+value.product_details[0].final_price;
+      $scope.total=$scope.total+value.product_details[0].quantity*value.product_details[0].unit.price;
     });
 
    
@@ -170,6 +182,7 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
   }
   $scope.save_order=function(date)
   {
+    alert('shivam :'+$scope.total);
     if($localStorage.user_data=='')
     {
       $sate.go('app.login');
@@ -247,18 +260,15 @@ app.controller('dashboardCtrl', function($scope, Services, Constant, UiServices,
   }
   
  
-  $scope.show_total=function(index)
-  { 
-//    alert('toal'+$localStorage.selected_items[0].);
-    $scope.total=0;   
-//    alert('check L :'+JSON.stringify($localStorage.selected_items[0].product_details[0].final_price));
-    
- // $localStorage.selected_items[index].product_details[0].final_price = $localStorage.selected_items[index].product_details[0].unit.price*$localStorage.selected_items[index].product_details[0].quantity;
-    
-   /* angular.forEach($localStorage.selected_items, function(value, key)
+  $scope.show_total=function(final_price)
+  {
+     
+    $scope.total=0;
+    angular.forEach($localStorage.selected_items, function(value, key)
     {
-      $scope.total=$scope.total+value.product_details[0].final_price;
-    });*/
+      $scope.total=$scope.total+value.product_details[0].quantity*value.product_details[0].unit.price;
+      
+    });
   }
 
 
