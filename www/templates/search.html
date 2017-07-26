@@ -5,17 +5,24 @@
       <button class="button button-positive" ng-click="close_search_modal()">Close</button>
     </div>
   </ion-header-bar>
-  <ion-content overflow-scroll="true" padding="true" class="has-header">
-  <div class="list list-inset">
+
+  <div class="bar-subheader" style="margin-top:70px;">
+
+    <div class="list list-inset" style="">
       <label class="item item-input">
         <i class="icon ion-search placeholder-icon"></i>
           <input type="text" placeholder="Search" ng-model="search" id='focuskaro'>
       </label>
-  </div>
+    </div>
 
-   <ion-list>
+  </div>
+  <ion-content overflow-scroll="true" padding="true" class="has-header has-subheader" style="margin-top:35px">
+  
+
+   <ion-list >
       <ion-item ng-repeat="datas in data | ItemsFilter:search" ng-click="product_name_clicked(datas.product_id)">
         {{datas.product_name}}
+        <span style="float: right;"><i class="ion-arrow-right-c"></i></span>
       </ion-item>
     </ion-list>
 

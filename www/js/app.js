@@ -74,7 +74,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     })
 
   .state('app.view_order_details', {
-    url: '/view_order_details/:order_id',
+    url: '/view_order_details/:order_id/:order_verification/',
     views: {
       'menuContent': {
         templateUrl: 'templates/view_order_details.html',

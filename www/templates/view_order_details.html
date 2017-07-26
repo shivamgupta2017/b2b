@@ -5,34 +5,34 @@
 		    </ion-nav-title>
 
 			<ion-nav-buttons side="left">
-				<button ng-click="backa()" class="button back-button buttons button-clear header-item">
+				<button ng-click="go_back()" class="button back-button buttons button-clear header-item">
 					<i class="icon ion-android-arrow-back"></i>
 				</button>
 			</ion-nav-buttons>
  
   <ion-content class="has-header padding-top" style="margin-top: 2%;">
-
+  <button class="button button-assertive" ng-click="testimonial()">mic test</button>
   <ion-list>
-  			<ion-item ng-repeat="orders in order_details track by $index" ng-click="get_order_details(orders.id, orders.user_id)">
-  				
-  				<div>
-  					<div>
-  						<span>{{orders.name}}</span>
- 	 					
-  					</div>
-  					<div>
-  					<span>
-  						{{orders.weight | number:0 }}{{' '+orders.unit}} x {{orders.quantity}}
-  					</span>	
-  					<span style="float: right; color: red;">
-  					{{orders.price}}x{{orders.quantity}}={{orders.price*orders.quantity |  currency:"₹":0}}
-  					</span>
-  					</div>
-  				</div>
-  			
+  			<ion-item  ng-repeat="orders in order_details track by $index">
+  					<!-- <ion-label>Cucumber</ion-label> -->
+            <ion-checkbox ng-if="order_verification==1" ng-model="test[$index]">
+                  <div style="width: 100%;">
+                    <center><strong>{{orders.name}}</strong></center>
+                  </div>
+                  <div style="background: #34495E; color: #fff; border-radius: .4em; overflow: hidden; font-family: Montserrat, sans-serif;">
+                    <div class="row" style="font-weight: bold; color: #dd5;">
+                        <div class ="col">{{'unit'}}</div>
+                        <div class ="col">{{'quantity'}}</div>
+                        <div class ="col">{{'price'}}</div>
+                    </div>
+                    <div class="row" style="">
+                        <div class="col">{{orders.size | number: 0}}&nbsp{{orders.product_unit}}</div>
+                        <div class="col">{{orders.quantity}}</div>
+                        <div class="col">{{orders.price}}</div>  
+                    </div>
+                  </div>
+            </ion-checkbox>
   			</ion-item>
-
-
   		</ion-list>
   
 

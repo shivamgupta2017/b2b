@@ -68,10 +68,11 @@ app.controller('dashboardCtrl', function($scope, Services,$timeout,  Constant, U
     $localStorage.selected_items=[];
   }
   $scope.selected_items = $localStorage.selected_items;
-  
+    UiServices.show_loader(); 
     Services.webServiceCallPost('', 'get_products').then(function(response)
     {
       $scope.data = response.data[0].data;
+       UiServices.hide_loader(); 
     });
 
 
@@ -282,46 +283,72 @@ app.controller('dashboardCtrl', function($scope, Services,$timeout,  Constant, U
     angular.forEach($localStorage.selected_items, function(value, key)
     {
       $scope.total=$scope.total+value.product_details[0].quantity*value.product_details[0].unit.price;
-      
     });
   }
-
-
-
 });
-app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localStorage){
+
+
+
+app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localStorage, $ionicModal, $ionicHistory, UiServices){
 
 
     var req_data={
       user_id: '7'
     };
-   
+  
+      
+    
+
+    UiServices.show_loader();
     Services.webServiceCallPost(req_data, 'get_orders').then(function(response)
     {
       if(response.data[1].response.status==1)
       {
         $scope.recent_orders_data=response.data[0].data;
+        UiServices.hide_loader();
       }
     });
 
-    $scope.get_order_details=function(order_id, user_id)
+    $scope.get_order_details=function(order_id)
     {
       $state.go('app.view_order_details', {order_id: order_id});
     }
+    $scope.open_verification_model=function(order_id)
+    {
+      $state.go('app.view_order_details', {order_id: order_id, order_verification: 1});      
+    }
+    $scope.go_back=function()
+    {
+        $ionicHistory.goBack();
+    }
 
 });
-app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services) 
+
+
+
+app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services, $ionicHistory, UiServices) 
 {
+
+    $scope.test=[];   
     var sending_data={order_id: $stateParams.order_id};
-      Services.webServiceCallPost(sending_data, 'get_order_details').then(function(response)
+    $scope.order_verification = $stateParams.order_verification;
+     UiServices.show_loader();
+     Services.webServiceCallPost(sending_data, 'get_order_details').then(function(response)
       {
-
-
           if(response.data[1].response.status==1)
           {
             $scope.order_details=response.data[0].data;
+            UiServices.hide_loader();
           }
       });
+     $scope.testimonial=function()
+     {
+      alert('shivam :'+JSON.stringify($scope.test));
+     }
+      $scope.go_back=function()
+      {
+        $ionicHistory.goBack();
+      }
 });
 app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal, $localStorage, $state)
 {

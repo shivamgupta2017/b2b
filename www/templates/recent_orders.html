@@ -4,7 +4,7 @@
 	    </ion-nav-title>
 
 		<ion-nav-buttons side="left">
-			<button ng-click="backa()" class="button back-button buttons button-clear header-item">
+			<button ng-click="go_back()" class="button back-button buttons button-clear header-item">
 				<i class="icon ion-android-arrow-back"></i>
 			</button>
 		</ion-nav-buttons>
@@ -12,7 +12,7 @@
     <ion-content class="has-header padding-top margin-top" style="padding-top: 5%; width: 100vw;">
     
   		<ion-list>
-        <ion-item ng-repeat="orders in recent_orders_data track by $index" class="item-text-wrap" ng-click="get_order_details(orders.id, orders.user_id)" style="height:30vw;">
+        <ion-item ng-repeat="orders in recent_orders_data track by $index" class="item-text-wrap" ng-click="get_order_details(orders.id)" style="height:30vw;">
           
           
             <div style="text-align: right; width: 80%; float: right !important;">
@@ -26,9 +26,9 @@
              <div style="width: 100%; height: auto; position: absolute; bottom: 0px;" class="bar bar-dark" >
               <div class="button-bar">
                 <button ng-show="orders.status==0 || orders.status==1" ng-click="" class="button button-small button-assertive">{{'View'}}</button>
-                <button ng-show="orders.status==0" ng-click="" class="button button-small button-assertive">{{'Update Order'}}</button>
-                <button ng-show="orders.status==1" ng-click="" class="button button-small button-assertive">{{'Verify Order'}}</button>
-                <button ng-show="orders.status==2" ng-click="" class="button button-small button-assertive">{{'View Invoice'}}</button>
+                <button ng-show="orders.status==0" ng-click="fuckers()" class="button button-small button-assertive">{{'Update Order'}}</button>
+                <button ng-show="orders.status==1" ng-click="open_verification_model(orders.id); $event.stopPropagation();" class="button button-small button-assertive">{{'Verify Order'}}</button>
+                <button ng-show="orders.status==2" ng-click="fuckers()" class="button button-small button-assertive">{{'View Invoice'}}</button>
               </div>
              </div>
 

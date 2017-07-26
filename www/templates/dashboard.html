@@ -55,11 +55,8 @@
   </ion-content>
   <ion-footer-bar class="bar bar-dark" ng-if="selected_items.length>0">
       <div class="button-bar">
-  
-        <div class="button button-clear" >&#8377;{{total}}</div>
-  
-        <button class="button button-clear" ng-click="open_detailed_design();"><i class = "icon icon ion-ios-eye">View Order</i></button>
-        <button class="button button-clear" ng-click="save_order()">Place order<i class="icon ion-arrow-right-c"></i></button>
+        <button class="button button-clear" ng-click="open_detailed_design();"><i class = "icon icon ion-ios-eye">&nbsp;View Order</i></button>
+        <button class="button button-clear" ng-click="save_order()">&#8377;{{total}} &nbsp;&nbsp; <i class="icon ion-arrow-right-c"></i></button>
         <!-- open_date_picker(); -->
        </div>
       
