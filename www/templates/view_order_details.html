@@ -10,7 +10,7 @@
 				</button>
 			</ion-nav-buttons>
  
-  <ion-content class="has-header padding-top" style="margin-top: 2%;">
+  <ion-content overflow-scroll="true" padding="true" class="has-header padding-top" style="margin-top: 2%;">
   
   <ion-list ng-if="order_verification==0">
         <ion-item  ng-repeat="orders in order_details track by $index">
@@ -23,14 +23,15 @@
         </ion-item>
 
 </ion-list>
+</ion-content>
+<!--order verification-->
 
-<ion-list ng-if="order_verification==1">
-
+<ion-content overflow-scroll="true" padding="true" class="has-header padding-top has-footer" ng-if="order_verification==1">
+      <ion-list>
   			<ion-item  ng-repeat="orders in order_details track by $index" style="height: 85%;">
-
             <ion-checkbox ng-model="checked_items[$index]">
-              <div style="display: inline-block; text-align: center; width: 100%;"><b>{{orders.name}}</b></div>
-              <div class="row" style="width: 50%; float: right;">
+                <div style="display: inline-block; text-align: center; width: 100%;"><b>{{orders.name}}</b></div>
+                <div class="row" style="width: 50%; float: right;">
                 <div class="col">{{orders.size | number: 0}}&nbsp{{orders.product_unit}}</div>
                 <div class="col">{{'x'}}&nbsp{{orders.quantity}}</div>
                 <div class="col">{{orders.price | number: 0}}</div>  
@@ -38,7 +39,7 @@
             </ion-checkbox>
   			</ion-item>
   		</ion-list>
-  </ion-content>
+</ion-content>
   <ion-footer-bar class="bar bar-dark" ng-if="checked_items.length>0">
       <div class="button-bar">
         <button class="button button-clear" ng-click="accept_order()">Accept Order</i></button>

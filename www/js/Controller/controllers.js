@@ -57,7 +57,7 @@ $scope.$on('$ionicView.enter', function()
   }
 
 });
-app.controller('dashboardCtrl', function($scope, Services,$timeout,  Constant, UiServices, Additional_services, $filter, $ionicModal, $localStorage, $state, $cordovaDatePicker, $q, $ionicPopup)  
+app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, UiServices, Additional_services, $filter, $ionicModal, $localStorage, $state, $cordovaDatePicker, $q, $ionicPopup, $rootScope)  
 {
   if($localStorage.selected_items==undefined)
   {
@@ -68,7 +68,7 @@ app.controller('dashboardCtrl', function($scope, Services,$timeout,  Constant, U
     UiServices.show_loader(); 
     Services.webServiceCallPost('', 'get_products').then(function(response)
     {
-      $scope.data = response.data[0].data;
+      $rootScope.data = response.data[0].data;
        UiServices.hide_loader(); 
     });
 
@@ -131,12 +131,12 @@ app.controller('dashboardCtrl', function($scope, Services,$timeout,  Constant, U
           angular.extend(response.data[0].data.product_details[0], extra_data);
           $scope.temp=[];
           $scope.temp.push(response.data[0].data);
+        
           angular.forEach($localStorage.selected_items, function(value, key) 
           {
             $scope.temp.push(value);
           });
-
-
+        
           $localStorage.selected_items=$scope.temp;
           $scope.selected_items = $localStorage.selected_items;
           UiServices.hide_loader(); 
@@ -379,9 +379,15 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
 {
 
   $scope.loginData = {};
+  
+  	window.plugins.OneSignal.getIds(function(ids) 
+  	{ //chal raha hai
+		$scope.loginData.player_id=ids.userId;
+	});
+    		
+
   $scope.doLogin = function() 
   {
-
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
     {
       if(response.data[1].response.status==1)
@@ -396,8 +402,8 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
   }
 });
 
-app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout){
-	
+app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope){
+
 	$ionicModal.fromTemplateUrl('templates/search.html', 
   	{
     	scope: $scope,
@@ -483,10 +489,8 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 
       $scope.removeItem=function(index)
       {
-
       		$scope.product_details.splice(index, 1);
     		$scope.total=0;
-
 		    angular.forEach($scope.product_details, function(value, key)
 		    {
 
@@ -503,14 +507,13 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 	      {
 	        document.getElementById('focuskaro').focus();
 	      },1000);
-	    
   	}
 	 $scope.close_search_modal=function()
 	 {
-	      
 	      $scope.modal.hide();    
 	 }
-
-
-
+	 $scope.product_name_clicked=function(product_id)
+	 {
+	 	alert('shivam '+product_id);
+	 }
 });
