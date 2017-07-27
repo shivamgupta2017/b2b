@@ -100,14 +100,12 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 
   $scope.product_name_clicked=function(product_id)
   { 
-
-    
-          var check_index = -1;
-          angular.forEach($localStorage.selected_items, function(value, key){
-          if(value.product_details[0].product_id===product_id)
-          {
-           check_index=0;
-          }
+        var check_index = -1;
+        angular.forEach($localStorage.selected_items, function(value, key){
+        if(value.product_details[0].product_id===product_id)
+        {
+          check_index=0;
+        }
       });
     $scope.modal.hide();
     var extra_data={
@@ -131,12 +129,10 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
           angular.extend(response.data[0].data.product_details[0], extra_data);
           $scope.temp=[];
           $scope.temp.push(response.data[0].data);
-        
           angular.forEach($localStorage.selected_items, function(value, key) 
           {
             $scope.temp.push(value);
           });
-        
           $localStorage.selected_items=$scope.temp;
           $scope.selected_items = $localStorage.selected_items;
           UiServices.hide_loader(); 
