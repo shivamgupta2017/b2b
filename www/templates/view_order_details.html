@@ -9,40 +9,42 @@
 					<i class="icon ion-android-arrow-back"></i>
 				</button>
 			</ion-nav-buttons>
- 
-  <ion-content overflow-scroll="true" padding="true" class="has-header padding-top" style="margin-top: 2%;">
+ <!-- view order -->
+
+  <ion-content overflow-scroll-y="true" padding="true" class="has-header padding-top has-footer" style="margin-top: 2%;">
   
-  <ion-list ng-if="order_verification==0">
-        <ion-item  ng-repeat="orders in order_details track by $index">
-              <div style="display: inline-block; width: 100%;"><b>{{orders.name}}</b></div>
-              <div class="row" style="width: 100%; float: right;">
+      <ion-list ng-if="order_verification==0">
+              <ion-item  ng-repeat="orders in order_details track by $index">
+                    <div style="display: inline-block; width: 100%;"><b>{{orders.name}}</b></div>
+                    <div class="row" style="width: 100%; float: right;">
+                      <div class="col">{{orders.size | number: 0}}&nbsp{{orders.product_unit}}</div>
+                      <div class="col">{{'x'}}&nbsp{{orders.quantity}}</div>
+                      <div class="col">{{orders.price | number: 0}}</div>  
+                    </div>
+              </ion-item>
+
+      </ion-list>
+ 
+      <ion-list ng-if="order_verification==1">
+        <ion-item  ng-repeat="orders in order_details track by $index" style="height: 50%;">
+            <ion-checkbox ng-model="checked_items[$index]">
+                <div style="display: inline-block; text-align: center; width: 100%; border-width: 1px; border-color: red; border-style: solid;"><h3>{{orders.name}}</h3></div>
+                <div class="row" style="width: 50%; float: right; border-color: red; border-style: solid; border-width: 1px;">
                   <div class="col">{{orders.size | number: 0}}&nbsp{{orders.product_unit}}</div>
                   <div class="col">{{'x'}}&nbsp{{orders.quantity}}</div>
                   <div class="col">{{orders.price | number: 0}}</div>  
               </div>
-        </ion-item>
-
-</ion-list>
-</ion-content>
-<!--order verification-->
-
-<ion-content overflow-scroll="true" padding="true" class="has-header padding-top has-footer" ng-if="order_verification==1">
-      <ion-list>
-  			<ion-item  ng-repeat="orders in order_details track by $index" style="height: 85%;">
-            <ion-checkbox ng-model="checked_items[$index]">
-                <div style="display: inline-block; text-align: center; width: 100%;"><b>{{orders.name}}</b></div>
-                <div class="row" style="width: 50%; float: right;">
-                <div class="col">{{orders.size | number: 0}}&nbsp{{orders.product_unit}}</div>
-                <div class="col">{{'x'}}&nbsp{{orders.quantity}}</div>
-                <div class="col">{{orders.price | number: 0}}</div>  
-              </div>
             </ion-checkbox>
-  			</ion-item>
-  		</ion-list>
+        </ion-item>
+      </ion-list>
+
+
 </ion-content>
-  <ion-footer-bar class="bar bar-dark" ng-if="checked_items.length>0">
+
+  <ion-footer-bar class="bar bar-dark" ng-if="checked_items.indexOf(true)>=0">
       <div class="button-bar">
         <button class="button button-clear" ng-click="accept_order()">Accept Order</i></button>
+        
        </div>
   </ion-footer-bar>
 </ion-view>

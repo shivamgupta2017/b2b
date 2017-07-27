@@ -319,8 +319,8 @@ app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localSto
     $scope.update_order=function(order_id)
     {
 	   	$state.go('app.update_order_details', {order_id: order_id});
-	 	
     }
+
 
 });
 
@@ -372,6 +372,7 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
       	});
 
       }
+      
 
 
 });

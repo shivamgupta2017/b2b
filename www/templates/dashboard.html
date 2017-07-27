@@ -3,18 +3,18 @@
     <ion-nav-title style="margin-left:0px;">
       <img class="home-logo" src="img/l5.png"  style="width:30vw; vertical-align: middle; margin: 0 auto; background-color:white">
     </ion-nav-title>
-  
 
-  <ion-content  overflow-scroll-y="true" padding="true" class="has-header" style="margin-bottom: 15%;">
+    <div class="list list-inset bar-subheader" style="border-color: black; border-width: 1px; border-style: solid; margin-bottom: 25%; width: 95vw;">
+      <label class="item item-input">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" placeholder="Search" ng-click="search_model()">
+      </label>
+
+    </div>
+
+  <ion-content  overflow-scroll-y="true" padding="true" class="has-header padding-top has-footer has-subheader" style="margin-top: 7%; padding-bottom: 5%;">
     <!-- <ion-searchbar (input)="getItems($event)"></ion-searchbar>
      -->
-  	<div class="list list-inset">
-  		<label class="item item-input">
-    		<i class="icon ion-search placeholder-icon"></i>
-    		<input type="text" placeholder="Search" ng-click="search_model()">
-  		</label>
-	  </div>	
-
     <div style="width:95vw; margin:0 auto;">
       <div style="width:100%; height:27vw; border-bottom:1px solid black" ng-repeat="data in selected_items">
         <div style="width:25%; float:left; display:inline-block; height:100%;  border-radius:20%; background-image:url({{constant_image_url+data.product_details[0].image}}); background-size:contain;">     
