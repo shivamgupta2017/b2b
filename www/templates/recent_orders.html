@@ -1,4 +1,4 @@
-<ion-view cache-view="false" view-title="">
+<ion-view cache-view="true" view-title="">
 	<ion-nav-title style="margin-left:25px;">
 	    	  <img class="home-logo" src="img/l5.png"  style="margin-left: 35%; height: 80%; width:30vw; vertical-align: middle; margin: 0 auto; background-color:white;">
 	    </ion-nav-title>
@@ -12,7 +12,7 @@
     <ion-content class="has-header padding-top margin-top" style="padding-top: 5%; width: 100vw;">
     
   		<ion-list>
-        <ion-item ng-repeat="orders in recent_orders_data track by $index" class="item-text-wrap" ng-click="get_order_details(orders.id)" style="height:30vw;">
+        <ion-item ng-repeat="orders in recent_orders_data track by $index" class="item-text-wrap" ng-click="get_order_details(orders.id)" style="height:30vw; border-color: 1px solid #ddd;">
           
           
             <div style="text-align: right; width: 80%; float: right !important;">
@@ -23,10 +23,10 @@
                <div style="float: right;">{{orders.delivery_date}}</div>
             </div>
 
-             <div style="width: 100%; height: auto; position: absolute; bottom: 0px;" class="bar bar-dark" >
+             <div style="width: 100%; height: auto; position: absolute; bottom: 0px;">
               <div class="button-bar">
-                <button ng-show="orders.status==0 || orders.status==1" ng-click="" class="button button-small button-assertive">{{'View'}}</button>
-                <button ng-show="orders.status==0" ng-click="fuckers()" class="button button-small button-assertive">{{'Update Order'}}</button>
+                <button ng-show="orders.status==0 || orders.status==1" style="border-right-style: solid; border-right-width: 1px; border-right-style: solid;" ng-click="" class="button button-small button-assertive">{{'View'}}</button>
+                <button ng-show="orders.status==0" ng-click="update_order(orders.id); $event.stopPropagation();" class="button button-small button-assertive">{{'Update Order'}}</button>
                 <button ng-show="orders.status==1" ng-click="open_verification_model(orders.id); $event.stopPropagation();" class="button button-small button-assertive">{{'Verify Order'}}</button>
                 <button ng-show="orders.status==2" ng-click="fuckers()" class="button button-small button-assertive">{{'View Invoice'}}</button>
               </div>

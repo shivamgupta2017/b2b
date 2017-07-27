@@ -59,14 +59,11 @@ $scope.$on('$ionicView.enter', function()
 });
 app.controller('dashboardCtrl', function($scope, Services,$timeout,  Constant, UiServices, Additional_services, $filter, $ionicModal, $localStorage, $state, $cordovaDatePicker, $q, $ionicPopup)  
 {
-    
-
-
-
   if($localStorage.selected_items==undefined)
   {
     $localStorage.selected_items=[];
   }
+
   $scope.selected_items = $localStorage.selected_items;
     UiServices.show_loader(); 
     Services.webServiceCallPost('', 'get_products').then(function(response)
@@ -196,7 +193,6 @@ app.controller('dashboardCtrl', function($scope, Services,$timeout,  Constant, U
   }
   $scope.save_order=function(date)
   {
-    alert('shivam :'+$scope.total);
     if($localStorage.user_data=='')
     {
       $sate.go('app.login');
@@ -241,7 +237,6 @@ app.controller('dashboardCtrl', function($scope, Services,$timeout,  Constant, U
                  {
                     Services.webServiceCallPost(req_obj, 'create_order').then(function(response)
                     {
-                         alert('res :'+JSON.stringify(response));
                          $localStorage.selected_items=[];
                          var div='Your Order has been placed successfully, will place your order by your order date, we hope to have you again';
                           UiServices.alert_popup(div);  
@@ -311,7 +306,7 @@ app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localSto
 
     $scope.get_order_details=function(order_id)
     {
-      $state.go('app.view_order_details', {order_id: order_id});
+      $state.go('app.view_order_details', {order_id: order_id, order_verification: 0});
     }
     $scope.open_verification_model=function(order_id)
     {
@@ -321,6 +316,11 @@ app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localSto
     {
         $ionicHistory.goBack();
     }
+    $scope.update_order=function(order_id)
+    {
+	   	$state.go('app.update_order_details', {order_id: order_id});
+	 	
+    }
 
 });
 
@@ -329,26 +329,51 @@ app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localSto
 app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services, $ionicHistory, UiServices) 
 {
 
-    $scope.test=[];   
+    $scope.checked_items=[];   
     var sending_data={order_id: $stateParams.order_id};
     $scope.order_verification = $stateParams.order_verification;
      UiServices.show_loader();
      Services.webServiceCallPost(sending_data, 'get_order_details').then(function(response)
-      {
+     {
           if(response.data[1].response.status==1)
           {
             $scope.order_details=response.data[0].data;
             UiServices.hide_loader();
           }
       });
-     $scope.testimonial=function()
-     {
-      alert('shivam :'+JSON.stringify($scope.test));
-     }
       $scope.go_back=function()
       {
+
         $ionicHistory.goBack();
       }
+      $scope.accept_order=function()
+      {
+
+      	var req_data={};
+      	req_data.order_id= $scope.order_details[0].order_id; 
+      	 req_data.order_details= [];
+      
+      	
+ 		
+      	angular.forEach($scope.checked_items, function(value, key)
+      	{
+      		if(value)
+      		{	
+
+    			req_data.order_details.push($scope.order_details[key].product_id);	  		
+      		}
+      	});
+      	req_data.order_details=JSON.stringify(req_data.order_details);
+      	UiServices.show_loader();
+      	Services.webServiceCallPost(req_data, 'verify_order').then(function(response)
+      	{
+
+      		UiServices.hide_loader();
+      	});
+
+      }
+
+
 });
 app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal, $localStorage, $state)
 {
@@ -366,9 +391,126 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
         $localStorage.user_data = response.data[0].data.user_id;
         $scope.user_data = $localStorage.user_data;
         $state.go('app.dashboard'); 
-
       }
     });
   }
+});
+
+app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout){
+	
+	$ionicModal.fromTemplateUrl('templates/search.html', 
+  	{
+    	scope: $scope,
+    	animaiton: 'slide-in-up'
+  	}).then(function(modal) 
+  	{
+   	 $scope.modal = modal;
+  	});
+
+		
+	var sending_data=
+	{
+		order_id: $stateParams.order_id
+	};
+	
+
+	$scope.product_details=[];
+	UiServices.show_loader();
+     Services.webServiceCallPost(sending_data, 'get_order_details').then(function(response)
+     {
+          if(response.data[1].response.status==1)
+          {
+            $scope.order_details=response.data[0].data;
+            UiServices.hide_loader();
+            angular.forEach($scope.order_details, function(value, key)
+            {
+            	var extra_data=
+            	{
+            		product_id: value.product_id
+            	};
+            	UiServices.show_loader();
+          		Services.webServiceCallPost(extra_data, 'get_product_details').then(function(response)
+ 	   			{	
+					var temp =
+					{
+						quantity: 1
+					};
+					angular.extend(response.data[0].data.product_details[0], temp);
+  	   				$scope.product_details.push(response.data[0]);
+ 	   				UiServices.hide_loader();
+    			});
+          		
+            });
+            
+          }
+
+      });
+
+
+     $scope.update_now=function()
+     {
+     	alert('check :'+JSON.stringify($scope.product_details[0]));
+
+     }
+     $scope.show_total=function(index)
+     {
+     	$scope.total=0;
+   		angular.forEach($scope.product_details, function(value, key)
+    	{
+      		$scope.total=$scope.total+value.data.product_details[0].quantity*value.data.product_details[0].unit.price;
+    	});
+
+     }
+
+     $scope.go_back=function()
+      {
+
+        $ionicHistory.goBack();
+      }
+      $scope.aQuantity=function(index, quantity)
+      {
+      	$scope.product_details[index].data.product_details[0].quantity = quantity+1;
+      	$scope.show_total(index);
+      }
+      $scope.dQuantity=function(index, quantity)
+      {
+      	if(quantity>1)
+      	{
+	      	$scope.product_details[index].data.product_details[0].quantity = quantity-1;
+      		$scope.show_total();
+      	}
+      }
+
+      $scope.removeItem=function(index)
+      {
+
+      		$scope.product_details.splice(index, 1);
+    		$scope.total=0;
+
+		    angular.forEach($scope.product_details, function(value, key)
+		    {
+
+		      $scope.total=$scope.total+value.data.product_details[0].quantity*value.data.product_details[0].unit.price;
+		     
+		    });
+      }
+
+     $scope.search_model=function()
+  	{
+
+	    $scope.modal.show();
+	    $timeout(function()
+	      {
+	        document.getElementById('focuskaro').focus();
+	      },1000);
+	    
+  	}
+	 $scope.close_search_modal=function()
+	 {
+	      
+	      $scope.modal.hide();    
+	 }
+
+
 
 });

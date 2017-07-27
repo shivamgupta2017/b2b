@@ -22,6 +22,7 @@ app.run(function($ionicPlatform) {
     };
 
       window.plugins.OneSignal.startInit("93c7e511-bea9-41fe-93e5-6226c84c3619").handleNotificationOpened(notificationOpenedCallback).endInit();
+      window.plugins.OneSignal.enableInAppAlertNotification(false);
 
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -82,7 +83,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
       }
     }
   })
-
   .state('app.login', {
     url: '/login',
     views: {
@@ -92,8 +92,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
       }
     }
   })
+  .state('app.update_order_details' ,{
+
+     url: '/update_order/:order_id',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/update_order.html',
+        controller: 'update_orderCtrl'
+      }
+    }
 
 
-  ;
+  });
   $urlRouterProvider.otherwise('/app/dashboard');
 });
