@@ -10,32 +10,35 @@
         </button>
       </ion-nav-buttons>
     </ion-nav-bar>
-      <ion-nav-view class="slide-left-right" name="menuContent"></ion-nav-view>
+      <ion-nav-view class="slide-left-right" name="menuContent" animation="slide-left-right"></ion-nav-view>
   </ion-side-menu-content>
-  
   <ion-side-menu side="left">
-    <ion-header-bar class="bar-light">
-      <h1 class="title">Left</h1>
+
+    <ion-header-bar class="bar-light padding-bottom">
+      <a class="item item-thumbnail-left item-icon-right item-text-wrap" menu-close>
+       <img ng-src="img/icon.png" alt="image">
+        <p>{{'welcome'}}</p>
+        <h2 style="color:#444444">{{'shivam'}} {{ 'gupta'}}</h2>
+      </a>
     </ion-header-bar>
-    <ion-content class="has-header padding-top">
+    <ion-content class="has-header padding-top" style="margin-top: 19%;">
       <ion-list>
-        <ion-item menu-close ng-click="login()" ng-show="user_data==''">
+        <ion-item class="item-icon-left margin-left" menu-close ng-click="login()" ng-show="user_data==''">
+        <i class="icon ion-log-in"></i>
+         <ion-icon name="heart"></ion-icon> 
           Login
         </ion-item>
-        <ion-item menu-close ng-click="logout()" ng-show="user_data!=''" >
+        <ion-item class="item-icon-left margin-left" menu-close ng-click="logout()" ng-show="user_data!=''" >
+          <i class="icon ion-log-out"></i>
           Logout
         </ion-item>
-        <ion-item menu-close ng-click="recent_orders()">
+        <ion-item class="item-icon-left" menu-close ng-click="recent_orders()">
+          <i class="icon ion-clipboard"></i>         
           Recent Orders
         </ion-item>
-        <ion-item menu-close ng-click="raise_my_concern()">
+        <ion-item class="item-icon-left" menu-close ng-click="raise_my_concern()">
+          <i class="icon ion-android-drafts"></i>
           Raise Concern
-        </ion-item>
-        <ion-item menu-close ng-click="test()">
-          Browse
-        </ion-item>
-        <ion-item menu-close href="#/app/playlists">
-          Playlists
         </ion-item>
       </ion-list>
     </ion-content>

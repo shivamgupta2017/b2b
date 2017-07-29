@@ -263,7 +263,10 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
     {
       $scope.order_details_total_at_model= $scope.order_details_total_at_model+value.product_details[0].quantity*value.product_details[0].unit.price;
     });
+
+    
     $scope.open_order_details_model.show();
+    
   }
   
  
@@ -372,19 +375,19 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
 
 
 });
-app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal, $localStorage, $state)
+app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal, $localStorage, $state, UiServices)
 {
-
   $scope.loginData = {};
   
-  	window.plugins.OneSignal.getIds(function(ids) 
-  	{ //chal raha hai
-		$scope.loginData.player_id=ids.userId;
-	});
+  	/*window.plugins.OneSignal.getIds(function(ids) 
+  	{
+      $scope.loginData.player_id=ids.userId;
+  	});*/
     		
 
   $scope.doLogin = function() 
   {
+   UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
     {
       if(response.data[1].response.status==1)
@@ -393,6 +396,7 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
         $scope.loginData={};
         $localStorage.user_data = response.data[0].data.user_id;
         $scope.user_data = $localStorage.user_data;
+        UiServices.hide_loader();
         $state.go('app.dashboard'); 
       }
     });

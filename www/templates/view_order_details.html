@@ -14,17 +14,51 @@
   <ion-content overflow-scroll-y="true" padding="true" class="has-header padding-top has-footer" style="margin-top: 2%;">
   
       <ion-list ng-if="order_verification==0">
-              <ion-item  ng-repeat="orders in order_details track by $index">
-                    <div style="display: inline-block; width: 100%;"><b>{{orders.name}}</b></div>
-                    <div class="row" style="width: 100%; float: right;">
+              <ion-item  ng-repeat="orders in order_details track by $index" style="padding: 0;">
+                    <div class="row">
+                      <div class="col">
+                           <h3><b>{{orders.name}}</b></h3>
+                      </div>
+
+                    <div class="col col-20">
+                        <strong>
+                          <b>
+                            <h4>
+                              {{'kya aaega'}}
+                            </h4>
+                          </b>
+                        </strong>
+                    </div>
+
+                    
+                    </div>
+
+                    <!-- <div class="row" style="width: 100%; float: right;">
                       <div class="col">{{orders.size | number: 0}}&nbsp{{orders.product_unit}}</div>
                       <div class="col">{{'x'}}&nbsp{{orders.quantity}}</div>
                       <div class="col">{{orders.price | number: 0}}</div>  
-                    </div>
+                    </div> -->
               </ion-item>
 
       </ion-list>
- 
+      
+      <!-- <ion-item ng-repeat="items in selected_items" >
+        <div class="row">
+        
+          
+           <div class="col col-20">
+             <strong><b><h4>{{items.product_details[0].quantity*items.product_details[0].unit.weight}}&nbsp{{items.product_details[0].unit.unit}}</h4></b></strong>
+           </div>
+
+           <div class="col col-20">
+             <strong><b><h3>&#8377;&nbsp{{items.product_details[0].quantity*items.product_details[0].unit.price | number: 0}}</h3></b></strong>
+           </div>
+        
+        </div>
+      </ion-item> -->
+
+
+
       <ion-list ng-if="order_verification==1">
         <ion-item  ng-repeat="orders in order_details track by $index" style="height: 50%;">
             <ion-checkbox ng-model="checked_items[$index]" style="padding: 0; padding-top: 1%;">

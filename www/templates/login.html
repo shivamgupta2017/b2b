@@ -7,6 +7,7 @@
   </ion-header-bar>
   <ion-content class="has-header padding-top">
     <form ng-submit="doLogin()">
+    
       <div class="list">
         <label class="item item-input">
           <span class="input-label">Username</span>
@@ -16,10 +17,11 @@
           <span class="input-label">Password</span>
           <input type="password" ng-model="loginData.password">
         </label>
-        <label class="item">
-          <button class="button button-block button-positive" type="submit">Log in</button>
+        <label class="item padding-top" style="border-style: solid; border-color: red; border-width: 1px;">
+          <button class="button button-block button-assertive" type="submit">Log in</button>
         </label>
       </div>
+
     </form>
   </ion-content>
 </ion-modal-view>
