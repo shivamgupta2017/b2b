@@ -10,8 +10,6 @@ $scope.$on('$ionicView.enter', function()
   $scope.user_data=$localStorage.user_data;
 
 });
-  
-      
       $ionicModal.fromTemplateUrl('templates/raise_my_concern.html', 
       {
           scope: $scope
@@ -263,8 +261,6 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
     {
       $scope.order_details_total_at_model= $scope.order_details_total_at_model+value.product_details[0].quantity*value.product_details[0].unit.price;
     });
-
-    
     $scope.open_order_details_model.show();
     
   }
@@ -338,6 +334,12 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
           {
             $scope.order_details=response.data[0].data;
             UiServices.hide_loader();
+
+          }
+          else if(response.data[1].response.status==0)
+          {
+            alert('failed');
+            UiServices.hide_loader();
           }
       });
       $scope.go_back=function()
@@ -358,16 +360,16 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
       	{
       		if(value)
       		{	
-
-    			req_data.order_details.push($scope.order_details[key].product_id);	  		
+      			req_data.order_details.push($scope.order_details[key].product_id);	  		
       		}
       	});
       	req_data.order_details=JSON.stringify(req_data.order_details);
       	UiServices.show_loader();
       	Services.webServiceCallPost(req_data, 'verify_order').then(function(response)
       	{
-
       		UiServices.hide_loader();
+          alert('shivam :'+JSON.stringify(response));
+          
       	});
 
       }
