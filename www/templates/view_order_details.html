@@ -11,8 +11,7 @@
 			</ion-nav-buttons>
  <!-- view order -->
 
-  <ion-content overflow-scroll-y="true" padding="true" class="has-header padding-top has-footer" style="margin-top: 2%;">
-  
+  <ion-content overflow-scroll-y="true" padding="true" class="has-header padding-top has-footer" style="margin-top: 2%;"> 
       <ion-list ng-if="order_verification==0">
               <ion-item  ng-repeat="orders in order_details track by $index" style="padding: 0;">
                     <div class="row">
@@ -24,7 +23,7 @@
                         <strong>
                           <b>
                             <h4>
-                              {{orders.size | number: 0}}&nbsp;{{orders.product_unit}}&nbsp;x&nbsp;{{orders.quantity}}
+                              {{orders.size | number: 0}}&nbsp;{{orders.product_unit}}<!-- &nbsp;x&nbsp;{{orders.quantity}} -->
                             </h4>
                           </b>
                         </strong>
@@ -72,13 +71,13 @@
 
       <ion-list ng-if="order_verification==1">
         <ion-item  ng-repeat="orders in order_details track by $index" style="display: list-item; height: 50%; padding: 0px;">
-            <ion-checkbox ng-model="checked_items[$index]" style="padding: 0; padding-top: 1%;">
+            <ion-checkbox ng-model="checked_items[$index]" style="padding: 0; padding-top: 1%; text-align: right;">
                 <div style="display: inline-block; text-align: center; width: 100%; padding: 0.5px;"><b><h3><strong>{{orders.name}}</strong></h3></b></div>
                 <div class="row" style="float: right; border-width: 1px; padding: 0.5px;">
                   <div class="col col-35"></div>
                   <div class="col col-25"><h4>{{orders.size | number: 0}}&nbsp{{orders.product_unit}}&nbsp{{'x'}}&nbsp{{orders.quantity}}</h4></div>
                   <div class="col col-25"><h4>{{orders.price | number :0}}&nbsp;{{'x'}}&nbsp;{{orders.quantity}}</h4></div>
-                  <div class="col col-25"><h4>&#x20B9;{{orders.total_price | number: 0}}</h4></div>  
+                  <div class="col col-25"><h4>&#x20B9;{{orders.total_price | number: 0}}</h4></div>
               </div>
             </ion-checkbox>
         </ion-item>
@@ -89,8 +88,7 @@
 
   <ion-footer-bar class="bar bar-dark" ng-if="checked_items.indexOf(true)>=0">
       <div class="button-bar">
-        <button class="button button-clear" ng-click="accept_order()">Accept Order</i></button>
-        
+          <button class="button button-clear" ng-click="accept_order()">Accept Order</i></button>
        </div>
   </ion-footer-bar>
 </ion-view>

@@ -334,7 +334,6 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
           {
             $scope.order_details=response.data[0].data;
             UiServices.hide_loader();
-
           }
           else if(response.data[1].response.status==0)
           {
@@ -368,7 +367,17 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
       	Services.webServiceCallPost(req_data, 'verify_order').then(function(response)
       	{
       		UiServices.hide_loader();
-          alert('shivam :'+JSON.stringify(response));
+
+          var data=JSON.parse(req_data.order_details);
+          
+            
+            
+            /*alert('order_details :'+$scope.order_details);
+            alert('shivam :'+JSON.stringify($scope.order_details));*/
+          
+          
+
+            
           
       	});
 

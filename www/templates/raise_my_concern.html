@@ -6,7 +6,7 @@
   </ion-header-bar >
 
   <ion-content class="has-header padding-top" style="margin-top: 10%">
-  <h3 style="text-align: center;">{{'raise concern'}}</h3>
+  <h3 style="text-align: center;">{{'Raise Concern'}}</h3>
       <form name="signForm" novalidate >
           
           <div  class="signin-input-holder" style="width: 90%; margin: 5%;"> 
@@ -41,13 +41,19 @@
             <div class="assertive">{{fError}}</div>
         
 
-          <div class="footer-button">
+          
             <h5 class="color-grapefruit m-t-b-0" ng-show="signUpError"> {{signUpError}}</h5>
-            <button class="button button-dark button-block button-round animated bounceIn" ng-click="validate()" >Submit</button>
-          </div>
+          
         </div>
     </form>
 
 
   </ion-content>
+  <ion-footer-bar class="bar bar-dark">
+      <div class="button-bar">
+        <button class="button button-clear" ng-click="validate();">Submit</button>
+       </div>
+  </ion-footer-bar>
+
+
 </ion-modal-view>

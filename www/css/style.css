@@ -6,13 +6,18 @@
   height: 85px !important;
 }
 .abc{
-	background-color:white;
-	text-align:center;
-	color:black;
+	background-color: white;
+	text-align: center;
+	color: black;
+	width: 40%;
 	}
+.def{
+	background-color: white;
+	text-align: center;
+	color: black;
+	width: 40%;
+	}	
 .cell{
    width: 33%
 }
-
-
 
