@@ -38,7 +38,6 @@ app.run(function($ionicPlatform) {
 
 app.config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
-
     .state('app', {
     url: '/app',
     abstract: true,
@@ -73,6 +72,16 @@ app.config(function($stateProvider, $urlRouterProvider) {
         }
       }
     })
+    
+    .state('app.express_shipping', {
+      url: '/express_shipping',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/express_shipping.html',
+          controller: 'express_shippingCtrl'
+        }
+      }
+    })
 
   .state('app.view_order_details', {
     url: '/view_order_details/:order_id/:order_verification/',
@@ -83,14 +92,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
       }
     }
   })
-  .state('app.login', {
+  .state('login', {
     url: '/login',
-    views: {
-      'menuContent': {
         templateUrl: 'templates/login.html',
         controller: 'loginCtrl'
-      }
-    }
+    
   })
   .state('app.update_order_details' ,{
 
@@ -104,5 +110,5 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 
   });
-  $urlRouterProvider.otherwise('/app/dashboard');
+  $urlRouterProvider.otherwise('/login');
 });

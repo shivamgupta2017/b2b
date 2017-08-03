@@ -1,0 +1,34 @@
+<ion-view view-title="Express shipping" cache-view="true">
+
+      <ion-nav-title style="margin-left:25px;">
+            <img class="home-logo" src="img/l5.png"  style="margin-left: 35%; height: 80%; width:30vw; vertical-align: middle; margin: 0 auto; background-color:white;">
+        </ion-nav-title>
+
+      <ion-nav-buttons side="left">
+        <button ng-click="go_back()" class="button back-button buttons button-clear header-item">
+          <i class="icon ion-android-arrow-back"></i>
+        </button>
+      </ion-nav-buttons>
+    
+      <div class="list list-inset bar-subheader" style="border-color: black; border-width: 1px; border-style: solid; margin-bottom: 25%; width: 95vw;">
+      <label class="item item-input">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" placeholder="Search" ng-click="search_model()">
+      </label>
+
+    </div>
+
+
+  <ion-content  overflow-scroll-y="true" padding="true" class="has-header padding-top has-footer has-subheader" style="margin-top: 7%; padding-bottom: 5%;">
+
+
+  </ion-content>
+  <ion-footer-bar class="bar bar-dark" ng-if="selected_items.length>0">
+      <div class="button-bar">
+        <button class="button button-clear" ng-click="order_now_emergency_products();">Order Now</i></button>
+        <!-- open_date_picker(); -->
+       </div>
+      
+
+  </ion-footer-bar>
+</ion-view>

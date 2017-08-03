@@ -1,4 +1,4 @@
-<ion-modal-view>
+<ion-modal-view id="hide_me">
   <ion-header-bar>
     <h1 class="title">Login</h1>
     <div class="buttons">
@@ -6,7 +6,7 @@
     </div>
   </ion-header-bar>
   <ion-content class="has-header padding-top">
-    <form ng-submit="doLogin()">
+    
     
       <div class="list">
         <label class="item item-input">
@@ -17,11 +17,19 @@
           <span class="input-label">Password</span>
           <input type="password" ng-model="loginData.password">
         </label>
-        <label class="item padding-top" style="border-style: solid; border-color: red; border-width: 1px;">
-          <button class="button button-block button-assertive" type="submit">Log in</button>
-        </label>
+
+        
       </div>
 
-    </form>
   </ion-content>
+
+  
+      <ion-footer-bar class="bar bar-dark">
+        <div class="button-bar">
+          <button class="button button-clear" ng-click="doLogin()" >Log in</button>
+        <!-- open_date_picker(); -->
+       </div>
+      </ion-footer-bar>
+
+
 </ion-modal-view>

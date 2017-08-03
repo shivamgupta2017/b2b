@@ -5,40 +5,78 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   //$scope.$on('$ionicView.enter', function(e) {
   //});
 
-$scope.$on('$ionicView.enter', function()
-{
-  $scope.user_data=$localStorage.user_data;
 
-});
-      $ionicModal.fromTemplateUrl('templates/raise_my_concern.html', 
-      {
+
+
+  $scope.$on('$ionicView.enter', function()
+  {
+    $scope.user_data=$localStorage.user_data;
+  });
+
+  $ionicModal.fromTemplateUrl('templates/raise_my_concern.html', 
+  {
           scope: $scope
-      }).then(function(modal) 
-      {
-        $scope.raise_concern_model = modal;
-      });
+  }).then(function(modal) 
+  {
+    $scope.raise_concern_model = modal;
+  });
+
+
+      
 
   $rootScope.constant_image_url=Constant.base_url.image_url;
 
   $scope.login = function() 
    {
-      $state.go('app.login');
+      $state.go('login');
    }  
 
    $scope.logout=function()
    {    
-        
         $localStorage.user_data='';
         $scope.user_data='';
+        $state.go('login');
    }
   
   $scope.raise_my_concern=function()
   {
+
+    $scope.concern={};
+    var req_data=
+    {
+      user_id: '7'
+    };
+
+    UiServices.show_loader();
+    Services.webServiceCallPost(req_data, 'get_orders').then(function(response)
+    {
+      if(response.data[1].response.status==1)
+      {
+        $scope.recent_orders_data=response.data[0].data;
+        UiServices.hide_loader();
+        $scope.raise_concern_model.show();
+      }
+    });
+
     
-    $scope.raise_concern_model.show();
 
   }
- 
+
+    
+  $scope.raise_my_concern_now=function()
+  {
+
+    $scope.concern.user_id=7;
+    UiServices.show_loader();
+    Services.webServiceCallPost($scope.concern, 'store_concern').then(function(response)
+    {
+      UiServices.hide_loader();
+    });
+
+
+
+
+  }
   $scope.close_raise_concern_model = function() 
   {
     $scope.raise_concern_model.hide();
@@ -46,15 +84,16 @@ $scope.$on('$ionicView.enter', function()
   $scope.recent_orders=function()
   {
     $state.go('app.recent_orders');
-  }
-
-    
-  $scope.test=function()
+  }    
+  $scope.open_express_shipping=function()
   {
-      
+      $state.go('app.express_shipping');
   }
-
 });
+
+
+//dashboard_controller
+
 app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, UiServices, Additional_services, $filter, $ionicModal, $localStorage, $state, $cordovaDatePicker, $q, $ionicPopup, $rootScope)  
 {
   if($localStorage.selected_items==undefined)
@@ -363,24 +402,23 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
       		}
       	});
       	req_data.order_details=JSON.stringify(req_data.order_details);
-      	UiServices.show_loader();
+        UiServices.show_loader();
       	Services.webServiceCallPost(req_data, 'verify_order').then(function(response)
       	{
       		UiServices.hide_loader();
-
-          var data=JSON.parse(req_data.order_details);
-          
-            
-            
-            /*alert('order_details :'+$scope.order_details);
-            alert('shivam :'+JSON.stringify($scope.order_details));*/
-          
-          
-
-            
-          
+          var disco=JSON.parse(req_data.order_details);
+          for(var i=0; i<$scope.order_details.length; i++)
+          {
+            for(var j=0; j<disco.length; j++)
+            {
+              if($scope.order_details[i].product_id==disco[j])
+              {
+                $scope.order_details.splice(i, 1);
+                $scope.checked_items=[];
+              }
+            }
+          }
       	});
-
       }
       
 
@@ -388,22 +426,47 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
 });
 app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal, $localStorage, $state, UiServices)
 {
-  $scope.loginData = {};
-  
-  	/*window.plugins.OneSignal.getIds(function(ids) 
-  	{
-      $scope.loginData.player_id=ids.userId;
-  	});*/
-    		
+ 
 
+   
+    
+      var x=document.getElementById('hide_me');
+      
+ 
+
+
+   $scope.loginData = {};
+   UiServices.show_loader(); 
+   if($localStorage.user_data=='')
+    {
+
+      UiServices.hide_loader();
+
+    /*window.plugins.OneSignal.getIds(function(ids) 
+    {
+      $scope.loginData.player_id=ids.userId;
+    });*/
+    
+  }
+  else
+  {
+    x.style.visibility='hidden';
+    UiServices.hide_loader();
+    $state.go('app.dashboard');
+
+  }
+
+
+  
+  
   $scope.doLogin = function() 
   {
+   $scope.loginData.player_id='123456789';
    UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
-    {
+   {
       if(response.data[1].response.status==1)
       { 
-
         $scope.loginData={};
         $localStorage.user_data = response.data[0].data.user_id;
         $scope.user_data = $localStorage.user_data;
@@ -412,6 +475,8 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
       }
     });
   }
+
+
 });
 
 app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope){
@@ -529,3 +594,83 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 	 	alert('shivam '+product_id);
 	 }
 });
+app.controller('express_shippingCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope){
+
+  $ionicModal.fromTemplateUrl('templates/search.html', 
+  {
+    scope: $scope,
+    animaiton: 'slide-in-up'
+  }).then(function(modal) 
+  {
+    $scope.modal = modal;
+  });
+
+  $scope.search_model=function()
+  {
+    $scope.modal.show();
+    $timeout(function()
+      {
+        document.getElementById('focuskaro').focus();
+      },1000);
+  }
+  $scope.close_search_modal=function()
+  {
+      $scope.modal.hide();    
+  }
+
+  $scope.product_name_clicked=function(product_id)
+  { 
+        var check_index = -1;
+        angular.forEach($localStorage.selected_items, function(value, key){
+        if(value.product_details[0].product_id===product_id)
+        {
+          check_index=0;
+        }
+      });
+    $scope.modal.hide();
+    var extra_data={
+      product_id: product_id
+    }
+
+
+   if(check_index==-1)
+   {
+    UiServices.show_loader(); 
+    Services.webServiceCallPost(extra_data, 'get_product_details').then(function(response)
+    {
+        if(response.data[1].response.status==1)
+        {          
+            var extra_data=
+            {
+             quantity: 1,
+             final_price: 0
+            }
+
+          angular.extend(response.data[0].data.product_details[0], extra_data);
+          $scope.temp=[];
+          $scope.temp.push(response.data[0].data);
+          angular.forEach($localStorage.selected_items, function(value, key) 
+          {
+            $scope.temp.push(value);
+          });
+          $localStorage.selected_items=$scope.temp;
+          $scope.selected_items = $localStorage.selected_items;
+          UiServices.hide_loader(); 
+        }
+    });
+
+   }
+  }
+
+  $scope.go_back=function()
+  {
+    $ionicHistory.goBack();
+  }
+  $scope.order_now_emergency_products=function()
+  {
+    
+  }
+
+
+});
+
