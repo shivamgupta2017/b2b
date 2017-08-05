@@ -1,11 +1,14 @@
 <ion-modal-view>
+  
+
   <ion-header-bar>
-    <h1 class="title">selected products</h1>
     <div class="buttons">
-      <button class="button button-clear" ng-click="closeLogin()">Close</button>
+      <button class="button back-button buttons button-clear header-item button-dark" ng-click="close_detailed_design()">
+        <i class="icon ion-android-arrow-back"></i>
+      </button>
     </div>
   </ion-header-bar>
-  
+
   <ion-content class="has-header padding-top padding-bottom" style="margin-top: 5%; margin-bottom: 15%;">
     <ion-list>
       <ion-item ng-repeat="items in selected_items" style="padding: 0;">

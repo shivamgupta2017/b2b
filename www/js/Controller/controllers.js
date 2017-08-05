@@ -1,5 +1,5 @@
 "use strict";
-app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Constant, UiServices, $http, Additional_services, $filter, $localStorage, $rootScope, $state, $cordovaDatePicker) {
+app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Constant, UiServices, $http, Additional_services, $filter, $localStorage, $rootScope, $state, $cordovaDatePicker, $ionicHistory) {
 
   //$ionicView.enter event:
   //$scope.$on('$ionicView.enter', function(e) {
@@ -33,9 +33,11 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
 
    $scope.logout=function()
    {    
-        $localStorage.user_data='';
-        $scope.user_data='';
+    $ionicHistory.clearCache().then(function()
+    {
+        $localStorage.user_data={};
         $state.go('login');
+    });
    }
   
   $scope.raise_my_concern=function()
@@ -70,7 +72,14 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
     UiServices.show_loader();
     Services.webServiceCallPost($scope.concern, 'store_concern').then(function(response)
     {
-      UiServices.hide_loader();
+ 
+      if(response.data[1].response.status==1)
+      {
+        UiServices.hide_loader();
+        $scope.raise_concern_model.hide();
+        
+      }
+      
     });
 
 
@@ -226,25 +235,15 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   }
   $scope.save_order=function(date)
   {
-    if($localStorage.user_data=='')
-    {
-      $sate.go('app.login');
-    }
-    else
-    {
-
+    
+  
       var req_obj=
       {
         user_id: $localStorage.user_data,
         delivery_date: '2017-7-25'        
       };
-    
-
-
       req_obj.order_products=[];
       var total=0;
-
-
       angular.forEach($scope.selected_items, function(value, key) 
       {
           var extra_data=
@@ -260,7 +259,17 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 
               var confirmPopup = $ionicPopup.confirm({
                  title: 'Create Order Confirmation',
-                 template: '<center>Are you sure?</center>'
+                 template: '<center>Are you sure?</center>',
+                 buttons :[
+                 {
+                  text: 'cancel'
+                 },
+                 {
+                  text: 'Confirm', type: 'button-assertive',
+                  onTap: function(e) {
+                    return 1;
+                  }
+                 }]
               }).then(function(res) 
               
 
@@ -268,11 +277,14 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
                 
                  if(res) 
                  {
+                    UiServices.show_loader();
                     Services.webServiceCallPost(req_obj, 'create_order').then(function(response)
                     {
-                         $localStorage.selected_items=[];
-                         var div='Your Order has been placed successfully, will place your order by your order date, we hope to have you again';
-                          UiServices.alert_popup(div);  
+                      UiServices.hide_loader();
+                      $localStorage.selected_items=[];
+                      $scope.selected_items=[];
+                      var div='Your Order has been placed successfully, will place your order by your order date, we hope to have you again';
+                      UiServices.alert_popup(div);  
                     });  
                  } 
                  else 
@@ -281,8 +293,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
                  }
               });
     
-      }
-
+     
      
     }
       $ionicModal.fromTemplateUrl('templates/order_details.html', 
@@ -295,16 +306,14 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 
   $scope.open_detailed_design=function()
   { 
-    $scope.order_details_total_at_model=0;
-    angular.forEach($scope.selected_items, function(value, key)
-    {
-      $scope.order_details_total_at_model= $scope.order_details_total_at_model+value.product_details[0].quantity*value.product_details[0].unit.price;
-    });
     $scope.open_order_details_model.show();
-    
   }
   
- 
+ $scope.close_detailed_design=function()
+ {
+    $scope.open_order_details_model.hide();
+
+ }
   $scope.show_total=function(final_price)
   {
      
@@ -427,31 +436,22 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
 app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal, $localStorage, $state, UiServices)
 {
  
-
-   
-    
-      var x=document.getElementById('hide_me');
-      
- 
-
-
+   var x=document.getElementById('hide_me');
    $scope.loginData = {};
-   UiServices.show_loader(); 
-   if($localStorage.user_data=='')
-    {
-
-      UiServices.hide_loader();
-
-    /*window.plugins.OneSignal.getIds(function(ids) 
-    {
-      $scope.loginData.player_id=ids.userId;
-    });*/
     
-  }
+   if(JSON.stringify($localStorage.user_data)=='{}')
+    {
+        x.style.visibility='initial';       
+        /* window.plugins.OneSignal.getIds(function(ids) 
+       {
+          $scope.loginData.player_id=ids.userId;
+       });*/
+    
+   }
   else
   {
+
     x.style.visibility='hidden';
-    UiServices.hide_loader();
     $state.go('app.dashboard');
 
   }
@@ -461,17 +461,26 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
   
   $scope.doLogin = function() 
   {
+    
+
    $scope.loginData.player_id='123456789';
    UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
       if(response.data[1].response.status==1)
       { 
-        $scope.loginData={};
-        $localStorage.user_data = response.data[0].data.user_id;
-        $scope.user_data = $localStorage.user_data;
+          $localStorage.user_data={};
+          $localStorage.user_data = JSON.stringify(response.data[0].data);
+          $scope.loginData={};          
+          $state.go('app.dashboard'); 
+          UiServices.hide_loader();
+      
+      }
+      else
+      {
+
+        UiServices.alert_popup('<center>Invalid Credential</center>');     
         UiServices.hide_loader();
-        $state.go('app.dashboard'); 
       }
     });
   }

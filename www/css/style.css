@@ -11,13 +11,17 @@
 	color: black;
 	width: 40%;
 	}
-.def{
+.def {
 	background-color: white;
 	text-align: center;
 	color: black;
 	width: 40%;
 	}	
-.cell{
+.cell {
    width: 33%
 }
 
+.popup 
+{
+     background-color: white !important;
+}

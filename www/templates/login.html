@@ -6,13 +6,16 @@
     </div>
   </ion-header-bar>
   <ion-content class="has-header padding-top">
-    
+
+      <img src="img/l5.png" height="50" style="margin-top:20px; margin-left:50%; transform: translate(-50%, 0);">    
+    <div style="margin-top:30vh; transform: translate(0,-50%); ">
     
       <div class="list">
         <label class="item item-input">
           <span class="input-label">Username</span>
-          <input type="text" ng-model="loginData.email">
+          <input type="text"  ng-model="loginData.email">
         </label>
+        <br><br>
         <label class="item item-input">
           <span class="input-label">Password</span>
           <input type="password" ng-model="loginData.password">
@@ -20,13 +23,14 @@
 
         
       </div>
+      </div>
 
   </ion-content>
 
   
       <ion-footer-bar class="bar bar-dark">
         <div class="button-bar">
-          <button class="button button-clear" ng-click="doLogin()" >Log in</button>
+          <button class="button button-clear" ng-click="doLogin()" ng-disabled="((loginData.email.length==undefined || loginData.email.length<1) || (loginData.password.length==undefined || loginData.password.length<1))">Log in</button>
         <!-- open_date_picker(); -->
        </div>
       </ion-footer-bar>

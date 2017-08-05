@@ -7,6 +7,7 @@ app.factory('UiServices', function($http, $rootScope, $timeout,$ionicLoading, $q
             	var confirm = $ionicPopup.confirm({
             		title: title,
             		template: template,
+                    
             	});
             	confirm.then(function(res){
             		deffered.resolve();
@@ -19,13 +20,11 @@ app.factory('UiServices', function($http, $rootScope, $timeout,$ionicLoading, $q
                 $ionicPopup.alert({
                 template: template,
                 buttons:[{
-                    text:'ok',
-                    Type: 'button-clear'
-
+                    text:'ok', type: 'button-assertive'
                 }]
                 }).then(function(res)
                 {   
-                    alert('res :'+res);
+                    
                 });
             },
             show_loader: function()
