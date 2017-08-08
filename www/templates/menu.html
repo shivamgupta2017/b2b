@@ -5,6 +5,7 @@
     <ion-nav-bar class="bar-light header-shadow" nav-transition="android" style="height:100px !important; ">
       <ion-nav-back-button class="button-icon icon ion-ios7-arrow-back">
       </ion-nav-back-button>
+
       <ion-nav-buttons side="left">
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
@@ -12,35 +13,43 @@
     </ion-nav-bar>
       <ion-nav-view class="slide-left-right" name="menuContent" animation="slide-left-right"></ion-nav-view>
   </ion-side-menu-content>
+
+  
+
   <ion-side-menu side="left">
 
-    <ion-header-bar class="bar-light padding-bottom">
-      <a class="item item-thumbnail-left item-icon-right item-text-wrap" menu-close>
+    <ion-header-bar class="bar-light padding-bottom" style="height: 20%; background-image: url("img/back_profile.png"); background-repeat: no-repeat;">
+      <a class="item-thumbnail-left item-icon-right" menu-close>
        <img ng-src="img/icon.png" alt="image">
-        <p>{{'welcome'}}</p>
-        <h2 style="color:#444444">{{'shivam'}} {{ 'gupta'}}</h2>
+        <p style="color: white; ">{{'welcome'}}</p>
+        <h3 style="color: white; ">{{user_data.first_name+' '+user_data.last_name}}</h3>
       </a>
     </ion-header-bar>
-    <ion-content class="has-header padding-top" style="margin-top: 19%;">
-      <ion-list>
-        <ion-item class="item-icon-left margin-left" menu-close ng-click="login()" ng-show="user_data==''">
+
+
+
+    <ion-content class="has-header padding-top" style="margin-top: 30%;">
+      <ion-list style="font-style: oblique;">
+        <ion-item no-lines class="item-icon-left margin-left" style="border-style: none;" menu-close ng-click="login()" ng-show="user_data==''">
         <i class="icon ion-log-in"></i>
+        
+
          <ion-icon name="heart"></ion-icon> 
           Login
         </ion-item>
-        <ion-item class="item-icon-left margin-left" menu-close ng-click="logout()" ng-show="user_data!=''" >
+        <ion-item  class="item-icon-left margin-left" menu-close ng-click="logout()" ng-show="user_data!=''" >
           <i class="icon ion-log-out"></i>
           Logout
         </ion-item>
-        <ion-item class="item-icon-left" menu-close ng-click="recent_orders()">
+        <ion-item class="item-icon-left" style="border-style: none;" menu-close ng-click="recent_orders()">
           <i class="icon ion-clipboard"></i>         
           Recent Orders
         </ion-item>
-        <ion-item class="item-icon-left" menu-close ng-click="raise_my_concern()">
+        <ion-item  class="item-icon-left" style="border-style: none;" menu-close ng-click="raise_my_concern()">
           <i class="icon ion-android-drafts"></i>
           Raise Concern
         </ion-item>
-        <ion-item class="item-icon-left" menu-close ng-click="open_express_shipping()">
+        <ion-item class="item-icon-left" style="border-style: none;" menu-close ng-click="open_express_shipping()">
           <i class="icon ion-android-drafts"></i>
           Express Shipping
         </ion-item>

@@ -23,10 +23,10 @@
             </div>
 
               <div class="button-bar">
-                <button ng-show="orders.status==0 || orders.status==1" style="border-right-style: solid; border-right-width: 1px; border-right-color: black;" ng-click="get_order_details(orders.id)" class="button button-small button-assertive">{{'View'}}</button>
-                <button ng-show="orders.status==0" ng-click="update_order(orders.id); $event.stopPropagation();" class="button button-small button-assertive">{{'Update Order'}}</button>
-                <button ng-show="orders.status==1" ng-click="open_verification_model(orders.id); $event.stopPropagation();" class="button button-small button-assertive">{{'Verify Order'}}</button>
-                <button ng-show="orders.status==2" ng-click="fuckers()" class="button button-small button-assertive">{{'View Invoice'}}</button>
+                <button ng-show="orders.status==0 || orders.status==1" style="border-right-style:solid; border-right-width: none; border-right-color: black;" ng-click="get_order_details(orders.id)" class="button button-outline button-positive" style="color:red">{{'View'}}</button>
+                <button ng-show="orders.status==0" ng-click="update_order(orders.id); $event.stopPropagation();" class="button button-outline button-positive" style="color:red">{{'Update Order'}}</button>
+                <button ng-show="orders.status==1" ng-click="open_verification_model(orders.id); $event.stopPropagation();" class="button button-outline button-positive" style="color:red">{{'Verify Order'}}</button>
+                <button ng-show="orders.status==2" ng-click="fuckers()" class="button button-outline button-positive" style="color:red">{{'View Invoice'}}</button>
               </div>
              
 

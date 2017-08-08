@@ -8,10 +8,6 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
 
 
 
-  $scope.$on('$ionicView.enter', function()
-  {
-    $scope.user_data=$localStorage.user_data;
-  });
 
   $ionicModal.fromTemplateUrl('templates/raise_my_concern.html', 
   {
@@ -22,7 +18,17 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   });
 
 
-      
+alert('shivam :'+$localStorage.user_data);
+
+
+
+  $scope.user_data=JSON.parse($localStorage.user_data);
+
+
+
+  
+  
+
 
   $rootScope.constant_image_url=Constant.base_url.image_url;
 
@@ -439,6 +445,10 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
    var x=document.getElementById('hide_me');
    $scope.loginData = {};
     
+
+   alert('localStorage :'+JSON.stringify($localStorage.user_data));
+
+
    if(JSON.stringify($localStorage.user_data)=='{}')
     {
         x.style.visibility='initial';       
@@ -463,7 +473,7 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
   {
     
 
-   $scope.loginData.player_id='123456789';
+  // $scope.loginData.player_id='123456789';
    UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {

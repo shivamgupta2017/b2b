@@ -25,3 +25,13 @@
 {
      background-color: white !important;
 }
+.top_triangle
+{
+
+  width: 0;
+  height: 0;
+  border-top: 100px solid gray;
+  border-right: 100px solid transparent;
+  
+}
+
