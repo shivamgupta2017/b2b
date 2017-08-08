@@ -23,6 +23,54 @@
 
   <ion-content  overflow-scroll-y="true" padding="true" class="has-header padding-top has-footer has-subheader" style="margin-top: 7%; padding-bottom: 5%;">
 
+    <style>
+.abc{
+  background-color:white;
+  text-align:center;
+  color:black;
+}
+</style>
+
+    <div style="width:95vw; margin:0 auto;">
+      <div style="width:100%; height:27vw; border-bottom:1px solid black" ng-repeat="data in selected_items">
+        <div style="width:25%; float:left; display:inline-block; height:100%;  border-radius:20%; background-image:url({{constant_image_url+data.product_details[0].image}}); background-size:contain;">     
+        </div>
+    <div style="width:75%; display:inline-block; height:25vw;">
+      <div style="width:100%; ">
+        <div style="height:25%; width:90%; display:inline-block; text-align:left; padding-left:3px;  float:left; "><strong>{{data.product_details[0].product_name}}</strong>
+        </div>
+      <i style="font-size:12px; width:10%; float:right;" class="icon ion-android-close color-dark" ng-click="removeItem($index)"></i></div>
+        <div style="height:25%; width:100%; text-align:left; float:left;">
+
+          <select  class="abc" ng-init="selected_items[$index].product_details[0].unit = data.unit_details[0]" ng-model="selected_items[$index].product_details[0].unit" ng-options="v.weight+' '+v.unit for v in data.unit_details" ng-change="show_total()">
+      </select>
+      </div>
+      
+      <div style="height:50%; width:100%; padding:5px;  text-align:left; float:left;  font-size:18px;">
+
+        <div ng-click="dQuantity($index, data.product_details[0].quantity)" class="button button-small button-assertive"  style="padding:2px; margin-left:10px; float:left; display:inline-block; height:100%; width:40px; font-size:25px">
+          -
+        </div>
+                      <div class="item item-input text-center" style="float:left;  display:inline-block;height:100%; margin:0 auto; padding:2px; width:70px; margin-left:3px;">
+                          <span class="checkout-product-price ng-binding" >{{data.product_details[0].quantity}}</span>
+                      </div>
+                      <div ng-click="aQuantity($index, data.product_details[0].quantity)" class="button button-small button-assertive"  style="float:left; padding:2px;  display:inline-block; height:100%; width:40px; margin-left:3px; font-size:25px;">
+          +
+        </div>
+
+        <div style="float:right; margin-right:25px; font-size:15px" ng-init="show_total($index)">
+            &#8377;{{data.product_details[0].quantity*data.product_details[0].unit.price}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
 
   </ion-content>
   <ion-footer-bar class="bar bar-dark" ng-if="selected_items.length>0">

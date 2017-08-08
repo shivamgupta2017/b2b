@@ -140,12 +140,13 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   $scope.product_name_clicked=function(product_id)
   { 
         var check_index = -1;
-        angular.forEach($localStorage.selected_items, function(value, key){
-        if(value.product_details[0].product_id===product_id)
+        angular.forEach($localStorage.selected_items, function(value, key)
         {
-          check_index=0;
-        }
-      });
+          if(value.product_details[0].product_id===product_id)
+          {
+            check_index=0;
+          }
+        });
     $scope.modal.hide();
     var extra_data={
       product_id: product_id
@@ -602,8 +603,10 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 	 	alert('shivam '+product_id);
 	 }
 });
+
 app.controller('express_shippingCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope, $localStorage){
 
+  $scope.selected_items=[];
   $ionicModal.fromTemplateUrl('templates/search.html', 
   {
     scope: $scope,
@@ -614,19 +617,15 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
   });
 
   var res=JSON.parse($localStorage.user_data);
-  
-
   var user_details={user_id: res.user_id};
   UiServices.alert_popup('<center>Express shipping may contain some extra shipping charges continue if agree</center>');
   UiServices.show_loader();
+  
   Services.webServiceCallPost(user_details, 'express_shipping_charges').then(function(res)
   {
     $scope.extra_charges=res.data[0].data.express_shipping_charges;
     UiServices.hide_loader();
   });
-
-
-
   $scope.search_model=function()
   {
     $scope.modal.show();
@@ -642,19 +641,26 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
 
   $scope.product_name_clicked=function(product_id)
   { 
-        var check_index = -1;
-        angular.forEach($localStorage.selected_items, function(value, key){
+
+
+       var check_index = -1;
+       angular.forEach($scope.selected_items, function(value, key)
+       {
         if(value.product_details[0].product_id===product_id)
         {
           check_index=0;
         }
       });
+
     $scope.modal.hide();
+    
     var extra_data={
       product_id: product_id
     }
 
 
+
+    
    if(check_index==-1)
    {
     UiServices.show_loader(); 
@@ -668,20 +674,57 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
              final_price: 0
             }
 
+          UiServices.hide_loader();
           angular.extend(response.data[0].data.product_details[0], extra_data);
           $scope.temp=[];
           $scope.temp.push(response.data[0].data);
-          angular.forEach($localStorage.selected_items, function(value, key) 
+          angular.forEach($scope.selected_items, function(value, key) 
           {
             $scope.temp.push(value);
           });
-          $localStorage.selected_items=$scope.temp;
-          $scope.selected_items = $localStorage.selected_items;
-          UiServices.hide_loader(); 
+          
+          $scope.selected_items=$scope.temp;
+          //$scope.selected_items = $localStorage.selected_items;
+           
         }
     });
 
    }
+  }
+
+  $scope.aQuantity=function(index, quantity)
+  {   
+      $scope.selected_items[index].product_details[0].quantity = quantity+1;    
+      $scope.show_total(index);
+  }
+  $scope.dQuantity=function(index, quantity)
+  {
+      if(quantity>1)
+      {
+          $scope.selected_items[index].product_details[0].quantity = quantity-1;
+          $scope.show_total(index);
+      }
+  }
+
+  $scope.removeItem=function(index)
+  { 
+    $scope.selected_items.splice(index, 1);
+    $scope.total=0;
+    angular.forEach($scope.selected_items, function(value, key)
+    {
+      $scope.total=$scope.total+value.product_details[0].quantity*value.product_details[0].unit.price;
+    });
+  }
+
+
+  $scope.show_total=function(final_price)
+  {
+     
+    $scope.total=0;
+    angular.forEach($localStorage.selected_items, function(value, key)
+    {
+      $scope.total=$scope.total+value.product_details[0].quantity*value.product_details[0].unit.price;
+    });
   }
 
   $scope.go_back=function()
