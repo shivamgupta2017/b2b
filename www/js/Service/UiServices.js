@@ -1,5 +1,5 @@
 "use strict";
-app.factory('UiServices', function($http, $rootScope, $timeout,$ionicLoading, $q, Constant, $ionicPopup)	{
+app.factory('UiServices', function($http, $rootScope, $timeout,$ionicLoading, $q, Constant, $ionicPopup, $state)	{
 		return {
              confirmation_popup: function(title, template) 
             {
@@ -24,7 +24,7 @@ app.factory('UiServices', function($http, $rootScope, $timeout,$ionicLoading, $q
                 }]
                 }).then(function(res)
                 {   
-                    
+                        
                 });
             },
             show_loader: function()

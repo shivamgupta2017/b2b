@@ -234,7 +234,8 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
       var req_obj=
       {
         user_id: $localStorage.user_data,
-        delivery_date: '2017-7-25'        
+        delivery_date: '2017-7-25',
+        is_express: 0        
       };
       req_obj.order_products=[];
       var total=0;
@@ -604,7 +605,7 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 	 }
 });
 
-app.controller('express_shippingCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope, $localStorage){
+app.controller('express_shippingCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope, $localStorage, $ionicPopup){
 
   $scope.selected_items=[];
   $ionicModal.fromTemplateUrl('templates/search.html', 
@@ -721,7 +722,7 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
   {
      
     $scope.total=0;
-    angular.forEach($localStorage.selected_items, function(value, key)
+    angular.forEach($scope.selected_items, function(value, key)
     {
       $scope.total=$scope.total+value.product_details[0].quantity*value.product_details[0].unit.price;
     });
@@ -733,7 +734,69 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
   }
   $scope.order_now_emergency_products=function()
   {
-    
+      
+      var user_id = JSON.parse($localStorage.user_data);
+      var req_obj=
+      {
+        user_id: user_id.user_id,
+        is_express: 1,
+        delivery_date : ''
+      };
+
+      req_obj.order_products=[];
+      var total=0;
+      
+
+      angular.forEach($scope.selected_items, function(value, key) 
+      {
+          var extra_data=
+          {
+            product_id: value.product_details[0].product_id,
+            quantity: value.product_details[0].quantity,
+            unit_mapping_id: value.product_details[0].unit.unit_product_mapping_id,
+            product_unit: value.product_details[0].unit.unit
+          }
+
+              req_obj.order_products.push(extra_data);
+      });
+      var confirmPopup = $ionicPopup.confirm(
+              {
+                 title: 'Create Order Confirmation',
+                 template: '<center>Are you sure?</center>',
+                 buttons :[
+                 {
+                  text: 'cancel'
+                 },
+                 {
+                  text: 'Confirm', type: 'button-assertive',
+                  onTap: function(e) {
+                    return 1;
+                  }
+                 }]
+              }).then(function(res) 
+              {
+                
+                 if(res) 
+                 {  
+                    UiServices.show_loader();
+                    Services.webServiceCallPost(req_obj, 'create_order').then(function(response)
+                    {
+                      UiServices.hide_loader();
+                      $localStorage.selected_items=[];
+                      $scope.selected_items=[];
+                      var div='Your Order has been placed successfully, will place your order by your order date, we hope to have you again';
+                      UiServices.alert_popup(div); 
+                       $state.go('app.dashboard');  
+                    });  
+                 } 
+                 
+              });
+
+
+
+
+
+
   }
 
 

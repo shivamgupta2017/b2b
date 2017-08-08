@@ -9,28 +9,23 @@
 			</button>
 		</ion-nav-buttons>
   	
-    <ion-content class="has-header padding-top margin-top" style="padding-top: 5%; width: 100vw;">
+    <ion-content class="has-header padding-top margin-top" style="padding-top: 5%; width: 100vw; background-color: #FFFF;">
     
-  		<ion-list>
-        <ion-item ng-repeat="orders in recent_orders_data track by $index" class="item-text-wrap"  style="height:23vw; padding: 0px;">
-          
-          
+  		<ion-list class="dark">
+        <ion-item ng-repeat="orders in recent_orders_data track by $index" class="item-text-wrap"  style="padding: 0px; ">
             <div style="text-align: right; float: right !important; width: 100%;">{{orders.order_status}}</div>
 
-            <div style="width: 100%; height: 50px;">
-               <div style="float: left;">{{orders.order_date}}</div>
-               <div style="float: right;">{{orders.delivery_date}}</div>
+            <div style="width: 100%;">
+               <div style="float: left;">{{orders.order_date | date: medium}}</div>
+               <div style="float: right;">{{orders.delivery_date | date: medium}}</div>
             </div>
 
-              <div class="button-bar">
-                <button ng-show="orders.status==0 || orders.status==1" style="border-right-style:solid; border-right-width: none; border-right-color: black;" ng-click="get_order_details(orders.id)" class="button button-outline button-positive" style="color:red">{{'View'}}</button>
-                <button ng-show="orders.status==0" ng-click="update_order(orders.id); $event.stopPropagation();" class="button button-outline button-positive" style="color:red">{{'Update Order'}}</button>
-                <button ng-show="orders.status==1" ng-click="open_verification_model(orders.id); $event.stopPropagation();" class="button button-outline button-positive" style="color:red">{{'Verify Order'}}</button>
-                <button ng-show="orders.status==2" ng-click="fuckers()" class="button button-outline button-positive" style="color:red">{{'View Invoice'}}</button>
+              <div class="button-bar bar-dark" style="width: 100%;">
+                <button ng-if="orders.status==0 || orders.status==1" ng-click="get_order_details(orders.id)" class="button button-block button-small button-assertive button-outline">{{'View'}}</button>
+                <button ng-if="orders.status==0" ng-click="update_order(orders.id); $event.stopPropagation();" class="button button-block button-small button-outline button-assertive">{{'Update Order'}}</button>
+                <button ng-if="orders.status==1" ng-click="open_verification_model(orders.id); $event.stopPropagation();" class="button button-small button-block button-outline button-assertive">{{'Verify Order'}}</button>
+                <button ng-if="orders.status==2" ng-click="fuckers()" class="button button-small button-block button-outline button-assertive">{{'View Invoice'}}</button>
               </div>
-             
-
-          
         </ion-item>
   		</ion-list>
   	</ion-content>
