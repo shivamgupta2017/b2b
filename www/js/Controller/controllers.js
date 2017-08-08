@@ -16,20 +16,7 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   {
     $scope.raise_concern_model = modal;
   });
-
-
-alert('shivam :'+$localStorage.user_data);
-
-
-
   $scope.user_data=JSON.parse($localStorage.user_data);
-
-
-
-  
-  
-
-
   $rootScope.constant_image_url=Constant.base_url.image_url;
 
   $scope.login = function() 
@@ -445,8 +432,10 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
    var x=document.getElementById('hide_me');
    $scope.loginData = {};
     
-
-   alert('localStorage :'+JSON.stringify($localStorage.user_data));
+   if($localStorage.user_data==undefined)
+   {
+      $localStorage.user_data={};    
+   }
 
 
    if(JSON.stringify($localStorage.user_data)=='{}')
@@ -473,7 +462,7 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
   {
     
 
-  // $scope.loginData.player_id='123456789';
+   $scope.loginData.player_id='123456789';
    UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
@@ -613,7 +602,7 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 	 	alert('shivam '+product_id);
 	 }
 });
-app.controller('express_shippingCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope){
+app.controller('express_shippingCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope, $localStorage){
 
   $ionicModal.fromTemplateUrl('templates/search.html', 
   {
@@ -623,6 +612,20 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
   {
     $scope.modal = modal;
   });
+
+  var res=JSON.parse($localStorage.user_data);
+  
+
+  var user_details={user_id: res.user_id};
+  UiServices.alert_popup('<center>Express shipping may contain some extra shipping charges continue if agree</center>');
+  UiServices.show_loader();
+  Services.webServiceCallPost(user_details, 'express_shipping_charges').then(function(res)
+  {
+    $scope.extra_charges=res.data[0].data.express_shipping_charges;
+    UiServices.hide_loader();
+  });
+
+
 
   $scope.search_model=function()
   {
