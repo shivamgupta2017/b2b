@@ -52,7 +52,6 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
         $scope.new_password={};
         UiServices.hide_loader();
         UiServices.alert_popup('<center>Password has been updated successfully</center>');  
-
       }
 
     });

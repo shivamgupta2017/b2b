@@ -5,19 +5,20 @@
       <img src="img/l5.png" height="50" style="margin-top:20px; margin-left:50%; transform: translate(-50%, 0);">    
     <div style="margin-top:30vh; transform: translate(0,-50%); ">
     
-      <div class="list">
-        <label class="item item-input">
-          <span class="input-label">Username</span>
-          <input type="text"  ng-model="loginData.email">
-        </label>
-        <br><br>
-        <label class="item item-input">
-          <span class="input-label">Password</span>
-          <input type="password" ng-model="loginData.password">
-        </label>
+      
 
-        
-      </div>
+        <div class="list">
+
+          <label class="item item-input item-floating-label">
+            <span class="input-label">UserName</span>
+            <input type="text" placeholder="UserName" ng-model="loginData.email">
+          </label>
+
+          <label class="item item-input item-floating-label">
+            <span class="input-label">Password</span>
+            <input type="password" placeholder="Password" ng-model="loginData.password">
+          </label>
+        </div>
       </div>
 
   </ion-content>
