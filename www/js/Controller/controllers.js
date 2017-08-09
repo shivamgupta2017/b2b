@@ -16,14 +16,49 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   {
     $scope.raise_concern_model = modal;
   });
+
   $scope.user_data=JSON.parse($localStorage.user_data);
   $rootScope.constant_image_url=Constant.base_url.image_url;
 
-  $scope.login = function() 
-   {
-      $state.go('login');
-   }  
 
+
+  $ionicModal.fromTemplateUrl('templates/change_user_password.html',
+   {
+      scope: $scope
+   }).then(function(modal)
+   {
+    $scope.change_password_model = modal; 
+   });
+
+   $scope.new_password={};
+
+  $scope.login = function() 
+  {
+      $state.go('login');
+  }
+   $scope.change_password_open=function()
+   {
+    $scope.change_password_model.show();
+   }
+   $scope.submit_new_password=function()
+   {
+    $scope.new_password.user_id=$scope.user_data.user_id;
+    UiServices.show_loader();
+    Services.webServiceCallPost($scope.new_password, 'change_user_password').then(function(response)
+    {
+      if(response.data[1].response.status==1)
+      {
+
+        $scope.new_password={};
+        UiServices.hide_loader();
+        UiServices.alert_popup('<center>Password has been updated successfully</center>');  
+
+      }
+
+    });
+
+
+   }
    $scope.logout=function()
    {    
     $ionicHistory.clearCache().then(function()
@@ -37,9 +72,10 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   {
 
     $scope.concern={};
+    var user_data=JSON.parse($localStorage.user_data);
     var req_data=
     {
-      user_id: '7'
+      user_id: user_data.user_id
     };
 
     UiServices.show_loader();
@@ -61,7 +97,8 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   $scope.raise_my_concern_now=function()
   {
 
-    $scope.concern.user_id=7;
+    var user_data=JSON.parse($localStorage.user_data);
+    $scope.concern.user_id=user_data.user_id;
     UiServices.show_loader();
     Services.webServiceCallPost($scope.concern, 'store_concern').then(function(response)
     {
@@ -79,6 +116,10 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
 
 
   }
+  $scope.close_change_user_password=function()
+  {
+    $scope.change_password_model.hide();
+  }
   $scope.close_raise_concern_model = function() 
   {
     $scope.raise_concern_model.hide();
@@ -86,11 +127,11 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   $scope.recent_orders=function()
   {
     $state.go('app.recent_orders');
-  }    
+  };   
   $scope.open_express_shipping=function()
   {
       $state.go('app.express_shipping');
-  }
+  };
 });
 
 
