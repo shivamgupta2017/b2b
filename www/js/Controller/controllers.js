@@ -19,7 +19,6 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
 
   $scope.user_data=JSON.parse($localStorage.user_data);
   $rootScope.constant_image_url=Constant.base_url.image_url;
-
   $ionicModal.fromTemplateUrl('templates/change_user_password.html',
    {
       scope: $scope
@@ -388,6 +387,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 
   $scope.open_detailed_design=function()
   { 
+
     $scope.open_order_details_model.show();
   }
   
@@ -571,7 +571,7 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
       else
       {
 
-        UiServices.alert_popup('<center>Invalid Credential</center>');     
+        UiServices.alert_popup('<center>It seems that you have entered wrong input</center>');     
         UiServices.hide_loader();
       }
     });

@@ -7,25 +7,23 @@
         <i class="icon ion-android-arrow-back"></i>
       </button>
     </div>
+
+    <div class="title">Order Details</div>
   </ion-header-bar>
 
   <ion-content class="has-header padding-top padding-bottom" style="margin-top: 5%; margin-bottom: 15%;">
     <ion-list>
-      <ion-item ng-repeat="items in selected_items" style="padding: 0;">
+      <ion-item ng-repeat="items in selected_items" style="padding: 0; border-style: none;">
         <div class="row">
-        
            <div class="col">
               <h3><b>{{items.product_details[0].product_name}}</b></h3>
            </div>
-           
            <div class="col col-20">
              <strong><b><h4>{{items.product_details[0].quantity*items.product_details[0].unit.weight}}&nbsp{{items.product_details[0].unit.unit}}</h4></b></strong>
            </div>
-
            <div class="col col-20">
              <strong><b><h3>&#8377;&nbsp{{items.product_details[0].quantity*items.product_details[0].unit.price | number: 0}}</h3></b></strong>
            </div>
-        
         </div>
       </ion-item>
     </ion-list>

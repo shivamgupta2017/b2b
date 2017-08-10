@@ -13,7 +13,9 @@
 
   <ion-content overflow-scroll-y="true" padding="true" class="has-header padding-top has-footer" style="margin-top: 2%;"> 
       <ion-list ng-if="order_verification==0">
-              <ion-item  ng-repeat="orders in order_details track by $index" style="padding: 0;">
+              
+
+              <ion-item  ng-repeat="orders in order_details track by $index" style="padding: 0; border-style: none;">
                     <div class="row">
                       <div class="col col-60">
                            <h3><b>{{orders.name}}</b></h3>

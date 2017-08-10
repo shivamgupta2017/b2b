@@ -1,30 +1,36 @@
-<ion-view id="hide_me">
-  
-  <ion-content class="has-header padding-top" style="height: 100vw;">
+<ion-view id="hide_me" style=" background-image:url(img/image.jpg); background-size:cover; ">
+  <div style="display:absolute; height:100vh; width:100vw; background-color:rgba(255,255,255,.7)"></div>
+  <ion-content class="has-header padding-top" style="">
 
       <img src="img/l5.png" height="50" style="margin-top:20px; margin-left:50%; transform: translate(-50%, 0);">    
     <div style="margin-top:30vh; transform: translate(0,-50%); ">
     
-      
 
-        <div class="list">
+<div style="background-color:rgba(0,0,0,0.5); border:1px solid #ddd;  padding:10px; width:95vw; margin:0 auto; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);  ">
+        <div class="list" style="width:85vw; margin:0 auto;">
+              <label class="item item-input item-floating-label" style="background-color:rgba(255,255,255,0.4); border:1px solid #ddd; border-radius:5px;">
+                <span class="input-label">Username</span>
+                <input type="text" placeholder="UserName" ng-model="loginData.email">
+              </label>
+              <br><br>
 
-          <label class="item item-input item-floating-label">
-            <span class="input-label">UserName</span>
-            <input type="text" placeholder="UserName" ng-model="loginData.email">
-          </label>
-
-          <label class="item item-input item-floating-label">
-            <span class="input-label">Password</span>
-            <input type="password" placeholder="Password" ng-model="loginData.password">
-          </label>
+              <label class="item item-input item-floating-label" style="background-color:rgba(255,255,255,0.4); border:1px solid #ddd; border-radius:5px;">
+                <span class="input-label">Password</span>
+                <input type="password" placeholder="Password" ng-model="loginData.password">
+              </label>        
         </div>
-      </div>
+</div>
+
+
+
+
+
+</div>  
 
   </ion-content>
 
   
-      <ion-footer-bar class="bar bar-dark">
+      <ion-footer-bar class="bar bar-dark" style="background-color:#cd3333">
         <div class="button-bar">
           <button class="button button-clear" ng-click="doLogin()" ng-disabled="((loginData.email.length==undefined || loginData.email.length<1) || (loginData.password.length==undefined || loginData.password.length<1))">Log in</button>
         <!-- open_date_picker(); -->
