@@ -22,6 +22,7 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
 
 
 
+
   $ionicModal.fromTemplateUrl('templates/change_user_password.html',
    {
       scope: $scope
@@ -43,15 +44,17 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
    $scope.submit_new_password=function()
    {
     $scope.new_password.user_id=$scope.user_data.user_id;
+   	
+
     UiServices.show_loader();
     Services.webServiceCallPost($scope.new_password, 'change_user_password').then(function(response)
     {
       if(response.data[1].response.status==1)
       {
-
         $scope.new_password={};
         UiServices.hide_loader();
         UiServices.alert_popup('<center>Password has been updated successfully</center>');  
+        $scope.change_password_model.hide();
       }
 
     });
@@ -85,6 +88,11 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
         $scope.recent_orders_data=response.data[0].data;
         UiServices.hide_loader();
         $scope.raise_concern_model.show();
+      }
+      else
+      {
+
+        UiServices.hide_loader();
       }
     });
 
@@ -131,6 +139,15 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   {
       $state.go('app.express_shipping');
   };
+
+  
+  var sending_data={user_id: $scope.user_data.user_id};
+  UiServices.show_loader();
+  Services.webServiceCallPost(sending_data, 'get_pass_changed_status').then(function(response)
+  {
+ 	$rootScope.is_pass_changed_status=response.data[0].data.is_pass_changed;
+  	UiServices.hide_loader();
+  });
 });
 
 
@@ -138,6 +155,36 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
 
 app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, UiServices, Additional_services, $filter, $ionicModal, $localStorage, $state, $cordovaDatePicker, $q, $ionicPopup, $rootScope)  
 {
+
+	if($rootScope.is_pass_changed_status==0)
+	{
+
+		var confirmPopup = $ionicPopup.confirm({
+        title: 'Change password',
+        template: '<center>As you have come here first time so you can change your Password</center>',
+        buttons :[
+        {
+         	text: 'cancel'
+        },
+        {
+        	text: 'Confirm', type: 'button-assertive',
+            onTap: function(e) {
+            return 1;
+                  }
+                 }]
+              }).then(function(res) 
+              {
+              	if(res)
+              	{
+              			$scope.change_password_open();
+              	}
+
+              });	
+	}
+	
+
+              
+
   if($localStorage.selected_items==undefined)
   {
     $localStorage.selected_items=[];
@@ -160,6 +207,9 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   {
     $scope.modal = modal;
   });
+
+
+
 
   $scope.search_model=function()
   {
@@ -364,13 +414,11 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 
 app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localStorage, $ionicModal, $ionicHistory, UiServices){
 
-
     var req_data={
-      user_id: '7'
+      user_id: $scope.user_data.user_id
     };
-  
-      
     
+
 
     UiServices.show_loader();
     Services.webServiceCallPost(req_data, 'get_orders').then(function(response)
@@ -379,6 +427,12 @@ app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localSto
       {
         $scope.recent_orders_data=response.data[0].data;
         UiServices.hide_loader();
+      }
+      else
+      {
+        UiServices.hide_loader();
+        UiServices.alert_popup('<center>No Products Found</center>');  
+
       }
     });
 

@@ -12,6 +12,18 @@ app.run(function($ionicPlatform) {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
 
+    document.addEventListener("offline", onOffline, false);
+    document.addEventListener("online", onOnline, false);
+    function onOffline() 
+    {
+      $state.go('network_connection');
+    }
+    function onOnline() 
+    { 
+      $state.go('app.dashboard',{},{reload:true});
+    }
+
+
 
     var notificationOpenedCallback = function(jsonData) 
     {

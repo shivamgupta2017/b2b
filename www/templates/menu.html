@@ -30,31 +30,31 @@
 
     <ion-content class="has-header padding-top" style="margin-top: 17%; ">
       <ion-list style="font-style: oblique;">
+        
         <ion-item no-lines class="item-icon-left margin-left" style="border-style: none;" menu-close ng-click="login()" ng-show="user_data==''">
         <i class="icon ion-log-in"></i>
-        
-
          <ion-icon name="heart"></ion-icon> 
           Login
         </ion-item>
+        
         <ion-item  class="item-icon-left margin-left" menu-close ng-click="logout()" ng-show="user_data!=''" >
-          <i class="icon ion-log-out"></i>
+          <i class="icon ion-log-out" style="font-size: 150%;"></i>
           Logout
         </ion-item>
         <ion-item class="item-icon-left" style="border-style: none;" menu-close ng-click="recent_orders()">
-          <i class="icon ion-clipboard"></i>         
+          <i class="icon ion-clipboard" style="font-size: 150%;"></i>         
           Recent Orders
         </ion-item>
         <ion-item  class="item-icon-left" style="border-style: none;" menu-close ng-click="raise_my_concern()">
-          <i class="icon ion-android-drafts"></i>
+          <i class="icon ion-android-drafts"  style="font-size: 150%;"></i>
           Raise Concern
         </ion-item>
         <ion-item class="item-icon-left" style="border-style: none;" menu-close ng-click="open_express_shipping()">
           <i class="icon ion-ios-fastforward"></i>
           Express Shipping
         </ion-item>
-        <ion-item class="item-icon-left" style="border-style: none;" menu-close ng-click="change_password_open()">
-          <i class="icon ion-edit"></i>
+        <ion-item class="item-icon-left" style="border-style: none;" ng-show="is_pass_changed_status==0" menu-close ng-click="change_password_open()">
+          <i class="icon ion-edit"  style="font-size: 150%;"></i>
           Change Password
         </ion-item>
 
