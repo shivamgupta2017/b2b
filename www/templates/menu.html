@@ -2,11 +2,11 @@
   <ion-side-menu-content drag-content="false">
 
 
-    <ion-nav-bar class="bar-light header-shadow" nav-transition="android" style="height:100px !important; ">
+    <ion-nav-bar class="bar-assertive header-shadow" nav-transition="android" style="height:100px !important; background-color:black !important;">
       <ion-nav-back-button class="button-icon icon ion-ios7-arrow-back">
       </ion-nav-back-button>
 
-      <ion-nav-buttons side="left">
+      <ion-nav-buttons side="left" style="margin-top:10px;">
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
       </ion-nav-buttons>
@@ -28,6 +28,7 @@
 
 
 
+
     <ion-content class="has-header padding-top" style="margin-top: 17%; ">
       <ion-list style="font-style: oblique;">
         
@@ -41,18 +42,22 @@
           <i class="icon ion-log-out" style="font-size: 150%;"></i>
           Logout
         </ion-item>
+        
         <ion-item class="item-icon-left" style="border-style: none;" menu-close ng-click="recent_orders()">
           <i class="icon ion-clipboard" style="font-size: 150%;"></i>         
           Recent Orders
         </ion-item>
+        
         <ion-item  class="item-icon-left" style="border-style: none;" menu-close ng-click="raise_my_concern()">
           <i class="icon ion-android-drafts"  style="font-size: 150%;"></i>
           Raise Concern
         </ion-item>
+        
         <ion-item class="item-icon-left" style="border-style: none;" menu-close ng-click="open_express_shipping()">
           <i class="icon ion-ios-fastforward"></i>
           Express Shipping
         </ion-item>
+
         <ion-item class="item-icon-left" style="border-style: none;" ng-show="is_pass_changed_status==0" menu-close ng-click="change_password_open()">
           <i class="icon ion-edit"  style="font-size: 150%;"></i>
           Change Password

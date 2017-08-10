@@ -20,9 +20,6 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   $scope.user_data=JSON.parse($localStorage.user_data);
   $rootScope.constant_image_url=Constant.base_url.image_url;
 
-
-
-
   $ionicModal.fromTemplateUrl('templates/change_user_password.html',
    {
       scope: $scope

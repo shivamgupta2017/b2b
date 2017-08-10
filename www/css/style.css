@@ -1,5 +1,10 @@
 /* Empty. Add your own CSS if you like */
 
+.bar.bar-assertive{
+  background-color:#cd3333;
+  border-bottom:none;
+}
+
 
 .spinner svg{  
   width: 19% !important;

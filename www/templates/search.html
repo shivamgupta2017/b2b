@@ -1,17 +1,17 @@
-<ion-modal-view>
-  <ion-header-bar>
+<ion-modal-view style="transform:none !important;">
+  <ion-header-bar style="background-color:#cd3333; border-bottom:none;">
     <div class="buttons">
-      <button class="button back-button buttons button-clear header-item button-dark" ng-click="close_search_modal()">
+      <button class="button back-button buttons button-clear header-item" style="margin-top:5px; color:white" ng-click="close_search_modal()">
         <i class="icon ion-android-arrow-back"></i>
       </button>
     </div>
-    <div class="title" style="text-align: center;">Search</div>
+    <div class="title light" style="text-align: center; margin-top:5px;">Search</div>
 
   </ion-header-bar>
 
-  <div class="bar-subheader" style="margin-top:70px;">
+  <div class="bar-subheader" style="margin-top:60px; height:55px; background-color:#cd3333;">
 
-    <div class="list list-inset" style="">
+    <div class="list list-inset" style="background-color:#cd3333">
       <label class="item item-input">
         <i class="icon ion-search placeholder-icon"></i>
           <input type="text" placeholder="Search" ng-model="search" id='focuskaro'>
@@ -19,10 +19,10 @@
     </div>
 
   </div>
-  <ion-content overflow-scroll="true" padding="true" class="has-header has-subheader" style="margin-top:35px; width: 95vw;">
+  <ion-content overflow-scroll="true" padding="true" class="has-header has-subheader" style="margin-top:25px;">
   
 
-   <ion-list >
+   <ion-list style=" width: 95vw; margin:0 auto;">
       <ion-item ng-repeat="datas in data | ItemsFilter:search" ng-click="product_name_clicked(datas.product_id)">
         {{datas.product_name}}
         <span style="float: right;"><i class="ion-arrow-right-c"></i></span>
