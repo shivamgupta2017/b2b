@@ -582,6 +582,8 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
 
 app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope){
 
+
+  $scope.product_details=[];
 	$ionicModal.fromTemplateUrl('templates/search.html', 
   	{
     	scope: $scope,
@@ -604,7 +606,7 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
      {
           if(response.data[1].response.status==1)
           {
-            $scope.order_details=response.data[0].data;
+            $scope.order_details = response.data[0].data;
             UiServices.hide_loader();
             angular.forEach($scope.order_details, function(value, key)
             {
@@ -615,13 +617,14 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
             	UiServices.show_loader();
           		Services.webServiceCallPost(extra_data, 'get_product_details').then(function(response)
  	   			{	
-					var temp =
-					{
-						quantity: 1
-					};
-					angular.extend(response.data[0].data.product_details[0], temp);
+    					var temp =
+    					{
+    						quantity: 1
+    					};
+    					angular.extend(response.data[0].data.product_details[0], temp);
   	   				$scope.product_details.push(response.data[0]);
- 	   				UiServices.hide_loader();
+ 	     				UiServices.hide_loader();
+             
     			});
           		
             });
@@ -630,12 +633,18 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 
       });
 
+     
 
      $scope.update_now=function()
      {
+
+
+      //product name update
      	alert('check :'+JSON.stringify($scope.product_details[0]));
 
      }
+     
+
      $scope.show_total=function(index)
      {
      	$scope.total=0;
@@ -691,8 +700,47 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 	      $scope.modal.hide();    
 	 }
 	 $scope.product_name_clicked=function(product_id)
-	 {
-	 	alert('shivam '+product_id);
+	 { 
+
+
+      
+
+        var extra_data={product_id: product_id};
+        var index=-1;
+        angular.forEach($scope.product_details, function(value, key)
+        { 
+           if(value.data.product_details[0].product_id==product_id)
+           {
+              index=key;
+           }
+        });
+
+        if(index==-1)
+        {
+
+            UiServices.show_loader(); 
+            Services.webServiceCallPost(extra_data, 'get_product_details').then(function(response)
+            {
+                response.data[0].data.product_details[0].quantity=1;
+                UiServices.hide_loader();
+                  $scope.temp=[];
+                  $scope.temp.push(response.data[0]);
+                  angular.forEach($scope.product_details, function(value, key)
+                  {
+                    $scope.temp.push(value);
+                  });
+                  $scope.product_details=$scope.temp;
+                $scope.modal.hide();
+
+            });
+
+
+
+
+        }
+      
+
+
 	 }
 });
 
@@ -738,10 +786,12 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
        var check_index = -1;
        angular.forEach($scope.selected_items, function(value, key)
        {
+        
         if(value.product_details[0].product_id===product_id)
         {
           check_index=0;
         }
+
       });
 
     $scope.modal.hide();
