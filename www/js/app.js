@@ -7,10 +7,22 @@
 "use strict";
 var app = angular.module('starter', ['ionic','ngStorage']);
 
-app.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
+app.run(function($ionicPlatform, $state) 
+{
+  
+
+    
+
+
+
+  $ionicPlatform.ready(function() 
+  {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
+    
+    
+
+
 
     document.addEventListener("offline", onOffline, false);
     document.addEventListener("online", onOnline, false);

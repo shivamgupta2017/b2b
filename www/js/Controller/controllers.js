@@ -1,11 +1,28 @@
 "use strict";
-app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Constant, UiServices, $http, Additional_services, $filter, $localStorage, $rootScope, $state, $cordovaDatePicker, $ionicHistory) {
+app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Constant, UiServices, $http, Additional_services, $filter, $localStorage, $rootScope, $state, $cordovaDatePicker, $ionicHistory, $ionicPlatform) {
 
   //$ionicView.enter event:
   //$scope.$on('$ionicView.enter', function(e) {
   //});
 
+  $ionicPlatform.registerBackButtonAction(function (event) 
+    { 
+            if($state.current.name=='app.dashboard')
+            {
 
+
+              if($scope.raise_concern_model.isShown())
+              {
+                $scope.raise_concern_model.remove();
+                event.preventDefault();
+              }
+              else
+                {
+                  ionic.Platform.exitApp();
+                  event.preventDefault();
+                }
+            }
+    }, 200);  
 
 
 
@@ -63,6 +80,7 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
     {
         $localStorage.user_data={};
         $state.go('login');
+
     });
    }
   
@@ -154,7 +172,6 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 
 	if($rootScope.is_pass_changed_status==0)
 	{
-
 		var confirmPopup = $ionicPopup.confirm({
         title: 'Change password',
         template: '<center>As you have come here first time so you can change your Password</center>',
@@ -187,6 +204,43 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   }
 
   $scope.selected_items = $localStorage.selected_items;
+
+
+    //lassan
+    var requesting_data=[];    
+    angular.forEach($scope.selected_items, function(value, key)
+    { 
+      var d=
+      {
+        product_id: value.product_details[0].product_id
+      };
+      requesting_data.push(d);
+    });
+   
+
+
+    UiServices.show_loader();
+    Services.webServiceCallPost(requesting_data, 'get_local_data_back').then(function(response)
+    { 
+      angular.forEach(response.data[0].data, function(value, key){
+
+        value.product_details[0].quantity=1;
+        value.product_details[0].final_price=0;
+        //shivam gupta
+
+
+      });
+      $scope.selected_items = response.data[0].data;
+      UiServices.hide_loader();
+      
+      
+
+    });
+    
+
+
+
+
     UiServices.show_loader(); 
     Services.webServiceCallPost('', 'get_products').then(function(response)
     {
@@ -315,11 +369,9 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   }
   $scope.save_order=function(date)
   {
-    
-  
       var req_obj=
       {
-        user_id: $localStorage.user_data,
+        user_id: $scope.user_data.user_id,
         delivery_date: '2017-7-25',
         is_express: 0        
       };
@@ -358,6 +410,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
                 
                  if(res) 
                  {
+                  alert('shivam :'+JSON.stringify(req_obj));
                     UiServices.show_loader();
                     Services.webServiceCallPost(req_obj, 'create_order').then(function(response)
                     {
@@ -564,8 +617,9 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
           $localStorage.user_data={};
           $localStorage.user_data = JSON.stringify(response.data[0].data);
           $scope.loginData={};          
-          $state.go('app.dashboard'); 
           UiServices.hide_loader();
+          $state.go('app.dashboard');
+
       
       }
       else
@@ -625,6 +679,7 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
   	   				$scope.product_details.push(response.data[0]);
  	     				UiServices.hide_loader();
              
+
     			});
           		
             });
@@ -638,10 +693,31 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
      $scope.update_now=function()
      {
 
+      //sending_data
+      sending_data.user_id=$scope.user_data.user_id;
+      sending_data.product_details=[];
+      angular.forEach($scope.product_details, function(value, key)
+      { 
+        var my_extra_data=
+        {
+          quantity: value.data.product_details[0].quantity,
+          product_id: value.data.product_details[0].product_id,
+          unit_mapping_id: value.data.product_details[0].unit.unit_product_id,
+          product_unit_mapping_id: value.data.product_details[0].unit.unit_product_mapping_id
+        }
+        sending_data.product_details.push(my_extra_data);
+      });  
 
-      //product name update
-     	alert('check :'+JSON.stringify($scope.product_details[0]));
+      
+      alert('shivam :'+JSON.stringify(sending_data));
+//      UiServices.show_loader();
+      Services.webServiceCallPost(sending_data, 'update_existed_order').then(function(response)
+      {
+  //       UiServices.hide_loader();   
+  //alsi   
+         alert('shivam :'+JSON.stringify(response));
 
+      });
      }
      
 
@@ -730,14 +806,9 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
                     $scope.temp.push(value);
                   });
                   $scope.product_details=$scope.temp;
-                $scope.modal.hide();
-
             });
-
-
-
-
         }
+        $scope.modal.hide();
       
 
 
@@ -917,6 +988,7 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
               }).then(function(res) 
               {
                 
+
                  if(res) 
                  {  
                     UiServices.show_loader();
