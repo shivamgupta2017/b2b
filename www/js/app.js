@@ -9,21 +9,12 @@ var app = angular.module('starter', ['ionic','ngStorage']);
 
 app.run(function($ionicPlatform, $state, $localStorage) 
 {
-  
-
-    
-
-
-
   $ionicPlatform.ready(function() 
   {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    
-    
-
-
-
+    window.plugins.OneSignal.getIds(function(ids) 
+      { 
+            $localStorage.player_id=ids.userId;
+      });
     document.addEventListener("offline", onOffline, false);
     document.addEventListener("online", onOnline, false);
     function onOffline() 
@@ -34,10 +25,7 @@ app.run(function($ionicPlatform, $state, $localStorage)
     { 
       $state.go('app.dashboard',{},{reload:true});
     }
-
-
-
-    /*var notificationOpenedCallback = function(jsonData) 
+   var notificationOpenedCallback = function(jsonData) 
     {
       var state=jsonData.notification.payload.additionalData.state;
      delete jsonData.notification.payload.additionalData.state;
@@ -46,13 +34,9 @@ app.run(function($ionicPlatform, $state, $localStorage)
 
       window.plugins.OneSignal.startInit("93c7e511-bea9-41fe-93e5-6226c84c3619").handleNotificationOpened(notificationOpenedCallback).endInit();
       //window.plugins.OneSignal.enableInAppAlertNotification(false);
+      
 
 
-      window.plugins.OneSignal.getIds(function(ids) 
-      { 
-          $localStorage.player_id=ids.userId;
-          alert('$localStorage.player id :'+$localStorage.player_id);
-      });*/
 
 
     

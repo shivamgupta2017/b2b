@@ -625,12 +625,6 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
  
    var x=document.getElementById('hide_me');
    $scope.loginData = {};
-    
-   
-
-
-   
-
    if($localStorage.user_data==undefined)
    {
       $localStorage.user_data={};    
@@ -644,17 +638,9 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
     x.style.visibility='hidden';
     $state.go('app.dashboard');
   }
-
-
-
-
-         
-
-    
   $scope.doLogin = function() 
   {
-    
-   $scope.loginData.player_id='123456789';
+   $scope.loginData.player_id=$localStorage.player_id;
    UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
