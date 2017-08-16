@@ -62,11 +62,9 @@
   
 
   </ion-content>
-  <ion-footer-bar class="bar bar-dark">
+  <ion-footer-bar class="bar bar-dark" ng-show="product_details.length>0">
       <div class="button-bar">
-        
-        <button class="button button-clear" ng-show="" ng-click="update_now()">&#8377;{{total}}&nbsp; &nbsp; Update Order</button>
-
+        <button class="button button-clear"  ng-click="update_now()">&#8377;{{total}}&nbsp; &nbsp; Update Order</button>
         <!-- open_date_picker(); -->
        </div>
       

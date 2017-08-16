@@ -356,7 +356,6 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   $scope.open_date_picker=function()
   {
 
-    alert('date picker');
       var options = {
       date: new Date(),
       mode: 'date', // or 'time'
@@ -372,18 +371,11 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 
     $cordovaDatePicker.show(options).then(function(date)
     { 
-
-      alert('sending_data to save order function ');
         $scope.save_order(date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate());         
-          
     });
-
-
   }
   $scope.save_order=function(date)
   {
-
-    alert('date ;'+date);
       var req_obj=
       {
         user_id: $scope.user_data.user_id,
@@ -392,11 +384,6 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
       };
       req_obj.order_products=[];
       var total=0;
-
-      alert('$scope.selected_items :'+JSON.stringify($scope.selected_items));
-
-
-
       angular.forEach($scope.selected_items, function(value, key) 
       {
           var extra_data=
@@ -406,10 +393,8 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
             unit_mapping_id: value.product_details[0].unit.unit_product_mapping_id,
             product_unit: value.product_details[0].unit.unit
           }
-
               req_obj.order_products.push(extra_data);
       });
-
       var confirmPopup = $ionicPopup.confirm({
                  title: 'Create Order Confirmation',
                  template: '<center>Are you sure?</center>',
@@ -439,12 +424,9 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
                  } 
                  else 
                  {
-                    alert('Ls');
+                    console.log('else');
                  }
               });
-    
-     
-     
     }
       $ionicModal.fromTemplateUrl('templates/order_details.html', 
       {
@@ -453,7 +435,6 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
       {
         $scope.open_order_details_model = modal;
       });
-
   $scope.open_detailed_design=function()
   { 
 
@@ -475,9 +456,6 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
     });
   }
 });
-
-
-
 app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localStorage, $ionicModal, $ionicHistory, UiServices){
     var req_data={
       user_id: $scope.user_data.user_id
@@ -622,7 +600,9 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
   }
   $scope.doLogin = function() 
   {
-   $scope.loginData.player_id=$localStorage.player_id;
+
+    $scope.loginData.player_id='123456';
+   //$scope.loginData.player_id=$localStorage.player_id;
    UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
@@ -672,8 +652,6 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 	   UiServices.show_loader();
      Services.webServiceCallPost(sending_data, 'get_order_details').then(function(response)
      {
-
-
           if(response.data[1].response.status==1)
           {
             $scope.order_details = response.data[0].data;
@@ -695,7 +673,6 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
   	   				$scope.product_details.push(response.data[0]);
  	     				UiServices.hide_loader();
 
-              alert('$scope.product_details :'+JSON.stringify($scope.product_details));
     			});
             });
           }
@@ -742,7 +719,6 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
               {
                  if(res) 
                  {
-                    alert('shivam sending_data:'+JSON.stringify(sending_data));
                     UiServices.show_loader();
                     Services.webServiceCallPost(sending_data, 'update_order').then(function(response)
                     { 
@@ -793,15 +769,14 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
       $scope.removeItem=function(index)
       {
       		$scope.product_details.splice(index, 1);
-    		$scope.total=0;
-		    angular.forEach($scope.product_details, function(value, key)
-		    {
-
-		      $scope.total=$scope.total+value.data.product_details[0].quantity*value.data.product_details[0].unit.price;
-		     
-		    });
+    	   	$scope.total=0;
+  		    angular.forEach($scope.product_details, function(value, key)
+  		    {
+  		      $scope.total=$scope.total+value.data.product_details[0].quantity*value.data.product_details[0].unit.price;
+  		    });
+          if($scope.product_details.length==0)
+            UiServices.alert_popup('<center>No. of product must no be 0</center>');
       }
-
      $scope.search_model=function()
   	{
 
