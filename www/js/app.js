@@ -7,7 +7,7 @@
 "use strict";
 var app = angular.module('starter', ['ionic','ngStorage']);
 
-app.run(function($ionicPlatform, $state) 
+app.run(function($ionicPlatform, $state, $localStorage) 
 {
   
 
@@ -37,16 +37,25 @@ app.run(function($ionicPlatform, $state)
 
 
 
-    var notificationOpenedCallback = function(jsonData) 
+    /*var notificationOpenedCallback = function(jsonData) 
     {
-      
       var state=jsonData.notification.payload.additionalData.state;
      delete jsonData.notification.payload.additionalData.state;
      $state.go(state,jsonData.notification.payload.additionalData);
     };
 
       window.plugins.OneSignal.startInit("93c7e511-bea9-41fe-93e5-6226c84c3619").handleNotificationOpened(notificationOpenedCallback).endInit();
-      window.plugins.OneSignal.enableInAppAlertNotification(false);
+      //window.plugins.OneSignal.enableInAppAlertNotification(false);
+
+
+      window.plugins.OneSignal.getIds(function(ids) 
+      { 
+          $localStorage.player_id=ids.userId;
+          alert('$localStorage.player id :'+$localStorage.player_id);
+      });*/
+
+
+    
 
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);

@@ -28,7 +28,9 @@
   
       <ion-footer-bar class="bar bar-dark" style="background-color:#cd3333">
         <div class="button-bar">
-          <button class="button button-clear" ng-click="doLogin()" ng-disabled="((loginData.email.length==undefined || loginData.email.length<1) || (loginData.password.length==undefined || loginData.password.length<1))">Log in</button>
+
+
+          <button class="button button-clear" ng-disabled="((loginData.email==undefined || loginData.email.length==0) || (loginData.password==undefined || loginData.password.length==0))" ng-click="doLogin()">Log in</button>
         <!-- open_date_picker(); -->
        </div>
       </ion-footer-bar>

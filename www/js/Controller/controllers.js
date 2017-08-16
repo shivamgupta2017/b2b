@@ -5,6 +5,9 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   //$scope.$on('$ionicView.enter', function(e) {
   //});
 
+
+
+
   $ionicPlatform.registerBackButtonAction(function (event) 
     {       
 
@@ -32,6 +35,8 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
             }
     }, 200);  
 
+
+ 
 
 
   $ionicModal.fromTemplateUrl('templates/raise_my_concern.html', 
@@ -356,6 +361,8 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   }
   $scope.open_date_picker=function()
   {
+
+    alert('date picker');
       var options = {
       date: new Date(),
       mode: 'date', // or 'time'
@@ -371,6 +378,8 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 
     $cordovaDatePicker.show(options).then(function(date)
     { 
+
+      alert('sending_data to save order function ');
         $scope.save_order(date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate());         
           
     });
@@ -393,7 +402,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
       alert('$scope.selected_items :'+JSON.stringify($scope.selected_items));
 
 
-      
+
       angular.forEach($scope.selected_items, function(value, key) 
       {
           var extra_data=
@@ -617,37 +626,35 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
    var x=document.getElementById('hide_me');
    $scope.loginData = {};
     
+   
+
+
+   
+
    if($localStorage.user_data==undefined)
    {
       $localStorage.user_data={};    
    }
-
-
    if(JSON.stringify($localStorage.user_data)=='{}')
-    {
-        x.style.visibility='initial';       
-        window.plugins.OneSignal.getIds(function(ids) 
-       {
-          $scope.loginData.player_id=ids.userId;
-       });
-    
+   {
+        x.style.visibility='initial';  
    }
   else
   {
-
     x.style.visibility='hidden';
     $state.go('app.dashboard');
-
   }
 
 
-  
-  
+
+
+         
+
+    
   $scope.doLogin = function() 
   {
     
-
-   //$scope.loginData.player_id='123456789';
+   $scope.loginData.player_id='123456789';
    UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
@@ -750,7 +757,7 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
       
       alert('shivam :'+JSON.stringify(sending_data));
 //      UiServices.show_loader();
-      Services.webServiceCallPost(sending_data, 'update_existed_order').then(function(response)
+      Services.webServiceCallPost(sending_data, 'update_order').then(function(response)
       {
   //       UiServices.hide_loader();   
   //alsi   
