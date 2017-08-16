@@ -435,11 +435,10 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
       {
         $scope.open_order_details_model = modal;
       });
-  $scope.open_detailed_design=function()
-  { 
-
+ $scope.open_detailed_design=function()
+ { 
     $scope.open_order_details_model.show();
-  }
+ }
   
  $scope.close_detailed_design=function()
  {
@@ -601,8 +600,8 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
   $scope.doLogin = function() 
   {
 
-    $scope.loginData.player_id='123456';
-   //$scope.loginData.player_id=$localStorage.player_id;
+   // $scope.loginData.player_id='123456';
+   $scope.loginData.player_id=$localStorage.player_id;
    UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
@@ -885,10 +884,6 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
     var extra_data={
       product_id: product_id
     }
-
-
-
-    
    if(check_index==-1)
    {
     UiServices.show_loader(); 
@@ -1019,14 +1014,32 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
                  } 
                  
               });
+  }
+});
+app.controller('no_netowork_ConnectionCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope, $localStorage, $ionicPopup){
 
 
+    $scope.retry=function()
+    {
 
-
+       var networkState = navigator.connection.type;
+      var states = {};
+    
+     states[Connection.UNKNOWN]  = 'Unknown connection';
+     states[Connection.ETHERNET] = 'Ethernet connection';
+     states[Connection.WIFI]     = 'WiFi connection';
+     states[Connection.CELL_2G]  = 'Cell 2G connection';
+     states[Connection.CELL_3G]  = 'Cell 3G connection';
+     states[Connection.CELL_4G]  = 'Cell 4G connection';
+     states[Connection.CELL]     = 'Cell generic connection';
+     states[Connection.NONE]     = 'none';
+      
+          if(states[networkState]!=="none")
+          {
+            $state.go('app.dashboard',{},{reload:true});
+          }
 
 
   }
 
-
 });
-

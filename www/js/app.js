@@ -19,10 +19,12 @@ app.run(function($ionicPlatform, $state, $localStorage)
     document.addEventListener("online", onOnline, false);
     function onOffline() 
     {
+      alert('offline');
       $state.go('network_connection');
     }
     function onOnline() 
     { 
+      alert('online');
       $state.go('app.dashboard',{},{reload:true});
     }
    var notificationOpenedCallback = function(jsonData) 
@@ -33,14 +35,8 @@ app.run(function($ionicPlatform, $state, $localStorage)
     };
 
       window.plugins.OneSignal.startInit("93c7e511-bea9-41fe-93e5-6226c84c3619").handleNotificationOpened(notificationOpenedCallback).endInit();
-      //window.plugins.OneSignal.enableInAppAlertNotification(false);
+      window.plugins.OneSignal.enableInAppAlertNotification(false);
       
-
-
-
-
-    
-
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
@@ -115,6 +111,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
         controller: 'loginCtrl'
     
   })
+  .state('network_connection', {
+    url: '/network_connection',
+    templateUrl: 'templates/network_connection.html',
+    controller: 'no_netowork_ConnectionCtrl'
+  })
   .state('app.update_order_details' ,{
 
      url: '/update_order/:order_id',
@@ -124,8 +125,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
         controller: 'update_orderCtrl'
       }
     }
-
-
   });
   $urlRouterProvider.otherwise('/login');
 });

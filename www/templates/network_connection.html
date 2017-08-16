@@ -1,0 +1,16 @@
+<ion-view view-title="Order Status" class="payment" hide-back-button="true" hide-nav-bar="true">
+	
+	<ion-pane class="step3 has-header">
+	  	<div style="margin-top:50px">
+	    		<i class="icon ion-android-wifi assertive" style="font-size:150px"></i>
+			<div style="font-size:20px;" class="dark">There's no network Connection</div><br>
+			<p style="padding:10px"> Oops, you seem to have gone out of network coverage. Please check your wi-fi settings or mobile data connection. Press the retry button to try connecting now.</p>
+	  	</div>
+        
+		<div>
+			<button ng-click="retry()" class="button button-clear button-positive icon ion-ios-refresh-empty icon-right">Retry Now&nbsp;</button>
+		</div>
+	
+	</ion-pane>
+</ion-view>
+
