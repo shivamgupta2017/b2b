@@ -374,17 +374,26 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
         $scope.save_order(date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate());         
           
     });
+
+
   }
   $scope.save_order=function(date)
   {
+
+    alert('date ;'+date);
       var req_obj=
       {
         user_id: $scope.user_data.user_id,
-        delivery_date: '2017-7-25',
+        delivery_date: date,
         is_express: 0        
       };
       req_obj.order_products=[];
       var total=0;
+
+      alert('$scope.selected_items :'+JSON.stringify($scope.selected_items));
+
+
+      
       angular.forEach($scope.selected_items, function(value, key) 
       {
           var extra_data=
