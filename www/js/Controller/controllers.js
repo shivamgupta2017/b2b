@@ -6,7 +6,10 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   //});
 
   $ionicPlatform.registerBackButtonAction(function (event) 
-    { 
+    {       
+
+
+
             if($state.current.name=='app.dashboard')
             {
 
@@ -21,6 +24,11 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
                   ionic.Platform.exitApp();
                   event.preventDefault();
                 }
+            }
+            else
+            {
+              $ionicHistory.goBack();
+
             }
     }, 200);  
 
@@ -410,14 +418,13 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
                 
                  if(res) 
                  {
-                  alert('shivam :'+JSON.stringify(req_obj));
                     UiServices.show_loader();
                     Services.webServiceCallPost(req_obj, 'create_order').then(function(response)
                     {
                       UiServices.hide_loader();
                       $localStorage.selected_items=[];
                       $scope.selected_items=[];
-                      var div='Your Order has been placed successfully, will place your order by your order date, we hope to have you again';
+                      var div='Your Order has been placed successfully';
                       UiServices.alert_popup(div);  
                     });  
                  } 
@@ -469,23 +476,37 @@ app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localSto
     };
     
 
-
-    UiServices.show_loader();
-    Services.webServiceCallPost(req_data, 'get_orders').then(function(response)
+    $scope.$on('$ionicView.enter',function()
     {
-      if(response.data[1].response.status==1)
+      UiServices.show_loader();
+      Services.webServiceCallPost(req_data, 'get_orders').then(function(response)
       {
-        $scope.recent_orders_data=response.data[0].data;
-        UiServices.hide_loader();
-      }
-      else
-      {
-        UiServices.hide_loader();
-        UiServices.alert_popup('<center>No Products Found</center>');  
 
-      }
+        if(response.data[1].response.status==1)
+        {
+          $scope.recent_orders_data=response.data[0].data;
+          UiServices.hide_loader();
+        }
+        else
+        {
+          UiServices.hide_loader();
+          UiServices.alert_popup('<center>No Recent Orders Found</center>');  
+
+        }
+      });
+
+
+
     });
 
+    
+
+
+    $scope.open_pdf=function(link)
+    {
+      window.open(link, '_system');
+
+    }
     $scope.get_order_details=function(order_id)
     {
       $state.go('app.view_order_details', {order_id: order_id, order_verification: 0});
@@ -513,19 +534,21 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
 
     $scope.checked_items=[];   
     var sending_data={order_id: $stateParams.order_id};
-    $scope.order_verification = $stateParams.order_verification;
+     $scope.order_verification = $stateParams.order_verification;
      UiServices.show_loader();
      Services.webServiceCallPost(sending_data, 'get_order_details').then(function(response)
      {
           if(response.data[1].response.status==1)
           {
-            $scope.order_details=response.data[0].data;
             UiServices.hide_loader();
+            $scope.order_details=response.data[0].data;
+
           }
           else if(response.data[1].response.status==0)
           {
-            alert('failed');
             UiServices.hide_loader();
+            UiServices.alert_popup('<center>Looks like Your Order is already Verified</center>');
+            
           }
       });
       $scope.go_back=function()
@@ -539,9 +562,6 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
       	var req_data={};
       	req_data.order_id= $scope.order_details[0].order_id; 
       	 req_data.order_details= [];
-      
-      	
- 		
       	angular.forEach($scope.checked_items, function(value, key)
       	{
       		if(value)
@@ -550,11 +570,14 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
       		}
       	});
       	req_data.order_details=JSON.stringify(req_data.order_details);
+
         UiServices.show_loader();
       	Services.webServiceCallPost(req_data, 'verify_order').then(function(response)
       	{
       		UiServices.hide_loader();
-          var disco=JSON.parse(req_data.order_details);
+          $ionicHistory.goBack();
+
+          /*var disco=JSON.parse(req_data.order_details);
           for(var i=0; i<$scope.order_details.length; i++)
           {
             for(var j=0; j<disco.length; j++)
@@ -562,10 +585,17 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
               if($scope.order_details[i].product_id==disco[j])
               {
                 $scope.order_details.splice(i, 1);
+                alert('order_details :'+JSON.stringify($scope.order_details));
                 $scope.checked_items=[];
+                if($scope.order_details.length==0)
+                {
+                  alert('shivam length : 0');
+
+                }
               }
             }
-          }
+          }*/
+
       	});
       }
       
@@ -587,10 +617,10 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
    if(JSON.stringify($localStorage.user_data)=='{}')
     {
         x.style.visibility='initial';       
-        /* window.plugins.OneSignal.getIds(function(ids) 
+        window.plugins.OneSignal.getIds(function(ids) 
        {
           $scope.loginData.player_id=ids.userId;
-       });*/
+       });
     
    }
   else
@@ -608,7 +638,7 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
   {
     
 
-   $scope.loginData.player_id='123456789';
+   //$scope.loginData.player_id='123456789';
    UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
@@ -997,7 +1027,7 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
                       UiServices.hide_loader();
                       $localStorage.selected_items=[];
                       $scope.selected_items=[];
-                      var div='Your Order has been placed successfully, will place your order by your order date, we hope to have you again';
+                      var div='Your Order has been Created successfully';
                       UiServices.alert_popup(div); 
                        $state.go('app.dashboard');  
                     });  

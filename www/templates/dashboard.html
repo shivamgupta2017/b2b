@@ -1,9 +1,9 @@
 
 <ion-view cache-view="true">
     <ion-nav-title style="margin-top:10px">
-     <center style="margin-top:10px;"> <!--<img class="home-logo" src="img/l5.png"  style="padding-left: 10px;  margin: 0 auto;  border:1px solid white;" height="50">-->
+     <center style="margin-top:10px;">
     MINBAZAAR B2B
-</center>
+    </center>
     </ion-nav-title>
 
     <div class="list list-inset bar-subheader" style="border-bottom:1px solid #ddd; height:55px; margin-top:15px; margin-left:0px; width: 100vw; background-color:#cd3333; z-index:10000;">
@@ -38,8 +38,8 @@
         <div style="height:25%; width:90%; display:inline-block; text-align:left; padding-left:3px;  float:left; "><strong>{{data.product_details[0].product_name}}</strong>
         </div>
       <i style="font-size:12px; width:10%; float:right;" class="icon ion-android-close color-dark" ng-click="removeItem($index)"></i></div>
-      <div style="height:25%; width:100%; text-align:left; float:left;">
 
+      <div style="height:25%; width:100%; text-align:left; float:left;">
         <select  class="abc" ng-init="selected_items[$index].product_details[0].unit = data.unit_details[0]" ng-model="selected_items[$index].product_details[0].unit" ng-options="v.weight+' '+v.unit for v in data.unit_details" ng-change="show_total()">
       </select>
       </div>

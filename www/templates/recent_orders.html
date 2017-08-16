@@ -27,7 +27,7 @@
                 <button ng-if="orders.status==0 || orders.status==1" ng-click="get_order_details(orders.id)" class="button button-block button-small button-assertive button-outline">{{'View'}}</button>
                 <button ng-if="orders.status==0" ng-click="update_order(orders.id); $event.stopPropagation();" class="button button-block button-small button-outline button-assertive">{{'Update Order'}}</button>
                 <button ng-if="orders.status==1" ng-click="open_verification_model(orders.id); $event.stopPropagation();" class="button button-small button-block button-outline button-assertive">{{'Verify Order'}}</button>
-                <button ng-if="orders.status==2" ng-click="fuckers()" class="button button-small button-block button-outline button-assertive">{{'View Invoice'}}</button>
+                <button ng-if="orders.status==2" ng-click="open_pdf(orders.link)" class="button button-small button-block button-outline button-assertive">{{'View Invoice'}}</button>
               </div>
         </ion-item>
   		</ion-list>
