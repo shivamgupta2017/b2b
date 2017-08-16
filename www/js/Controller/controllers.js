@@ -416,7 +416,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
               req_obj.order_products.push(extra_data);
       });
 
-              var confirmPopup = $ionicPopup.confirm({
+      var confirmPopup = $ionicPopup.confirm({
                  title: 'Create Order Confirmation',
                  template: '<center>Are you sure?</center>',
                  buttons :[
@@ -430,10 +430,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
                   }
                  }]
               }).then(function(res) 
-              
-
               {
-                
                  if(res) 
                  {
                     UiServices.show_loader();
@@ -690,6 +687,8 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 	UiServices.show_loader();
      Services.webServiceCallPost(sending_data, 'get_order_details').then(function(response)
      {
+
+
           if(response.data[1].response.status==1)
           {
             $scope.order_details = response.data[0].data;
@@ -724,8 +723,6 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 
      $scope.update_now=function()
      {
-
-      //sending_data
       sending_data.user_id=$scope.user_data.user_id;
       sending_data.product_details=[];
       angular.forEach($scope.product_details, function(value, key)
@@ -735,21 +732,44 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
           quantity: value.data.product_details[0].quantity,
           product_id: value.data.product_details[0].product_id,
           unit_mapping_id: value.data.product_details[0].unit.unit_product_id,
-          product_unit_mapping_id: value.data.product_details[0].unit.unit_product_mapping_id
+          product_unit_mapping_id: value.data.product_details[0].unit.unit_product_mapping_id,
+          total_price: value.data.product_details[0].quantity*value.data.product_details[0].unit.price,
+          price: value.data.product_details[0].unit.price
         }
         sending_data.product_details.push(my_extra_data);
       });  
+     
 
-      
-      alert('shivam :'+JSON.stringify(sending_data));
-//      UiServices.show_loader();
-      Services.webServiceCallPost(sending_data, 'update_order').then(function(response)
-      {
-  //       UiServices.hide_loader();   
-  //alsi   
-         alert('shivam :'+JSON.stringify(response));
-
-      });
+      var confirmPopup = $ionicPopup.confirm({
+                 title: 'Order Update Confirmation',
+                 template: '<center>Order updation changes depends on Terms and Condition Contnue if agree</center>',
+                 buttons :[
+                 {
+                  text: 'cancel'
+                 },
+                 {
+                  text: 'Confirm', type: 'button-assertive',
+                  onTap: function(e) {
+                    return 1;
+                  }
+                 }]
+              }).then(function(res) 
+              {
+                 if(res) 
+                 {
+                    
+                    UiServices.show_loader();
+                    Services.webServiceCallPost(sending_data, 'update_order').then(function(response)
+                    {
+                       UiServices.hide_loader();   
+                       UiServices.alert_popup('<center>Request Submitted Successfully</center>');
+                    });
+                 } 
+                 else 
+                 {
+                    //mat aa re
+                 }
+              });
      }
      
 
@@ -861,7 +881,7 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
 
   var res=JSON.parse($localStorage.user_data);
   var user_details={user_id: res.user_id};
-  UiServices.alert_popup('<center>Express shipping may contain some extra shipping charges continue if agree</center>');
+  UiServices.alert_popup('<center>Express Shipping contains some extra charges</center>');
   UiServices.show_loader();
   
   Services.webServiceCallPost(user_details, 'express_shipping_charges').then(function(res)
