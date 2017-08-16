@@ -35,7 +35,7 @@
         </div>
     <div style="width:75vw; display:inline-block; height:25vw; padding:5px;">
       <div style="width:100%; ">
-        <div style="height:25%; width:90%; display:inline-block; text-align:left; padding-left:3px;  float:left; "><strong>{{data.product_details[0].product_name}}</strong>
+        <div style="height:25%; width:90%; display:inline-block; text-align:left; padding-left:3px;  float:left; "><strong>{{data.product_details[0].product_name | limitTo: 26}}{{data.product_details[0].product_name.length > 20 ? '...' : ''}}</strong>
         </div>
       <i style="font-size:12px; width:10%; float:right;" class="icon ion-android-close color-dark" ng-click="removeItem($index)"></i></div>
 
@@ -70,7 +70,7 @@
   <ion-footer-bar class="bar bar-dark" ng-if="selected_items.length>0">
       <div class="button-bar">
         <button class="button button-clear" ng-click="open_detailed_design();"><i class = "icon icon ion-ios-eye">&nbsp;View Order</i></button>
-        <button class="button button-clear" ng-click="open_date_picker()">&#8377;{{total}} &nbsp;&nbsp; Order Now<!-- <i class="icon ion-arrow-right-c"> --></i></button>
+        <button class="button button-clear" ng-click="open_date_picker()">&#8377;{{total}} &nbsp; Order Now<!-- <i class="icon ion-arrow-right-c"> --></i></button>
         <!-- open_date_picker(); save_order();  -->
        </div>
   </ion-footer-bar>

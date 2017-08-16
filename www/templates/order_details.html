@@ -1,6 +1,4 @@
 <ion-modal-view>
-  
-
   <ion-header-bar>
     <div class="buttons">
       <button class="button back-button buttons button-clear header-item button-dark" ng-click="close_detailed_design()">
@@ -19,7 +17,10 @@
               <h3><b>{{items.product_details[0].product_name}}</b></h3>
            </div>
            <div class="col col-20">
-             <strong><b><h4>{{items.product_details[0].quantity*items.product_details[0].unit.weight}}&nbsp{{items.product_details[0].unit.unit}}</h4></b></strong>
+             <strong>
+             <b>
+              <h4>{{items.product_details[0].quantity*items.product_details[0].unit.weight}}&nbsp{{items.product_details[0].unit.unit}}</h4>
+             </b></strong>
            </div>
            <div class="col col-20">
              <strong><b><h3>&#8377;&nbsp{{items.product_details[0].quantity*items.product_details[0].unit.price | number: 0}}</h3></b></strong>

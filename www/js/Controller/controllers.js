@@ -106,28 +106,22 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
     {
       user_id: user_data.user_id
     };
-
     UiServices.show_loader();
     Services.webServiceCallPost(req_data, 'get_orders').then(function(response)
     {
       if(response.data[1].response.status==1)
       {
-        $scope.recent_orders_data=response.data[0].data;
         UiServices.hide_loader();
+        $scope.recent_orders_data=response.data[0].data;
         $scope.raise_concern_model.show();
       }
       else
       {
-
         UiServices.hide_loader();
+        UiServices.alert_popup('<center>No orders Found for Concern</center>');
       }
     });
-
-    
-
   }
-
-    
   $scope.raise_my_concern_now=function()
   {
 
@@ -485,18 +479,14 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 
 
 app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localStorage, $ionicModal, $ionicHistory, UiServices){
-
     var req_data={
       user_id: $scope.user_data.user_id
     };
-    
-
     $scope.$on('$ionicView.enter',function()
     {
       UiServices.show_loader();
       Services.webServiceCallPost(req_data, 'get_orders').then(function(response)
       {
-
         if(response.data[1].response.status==1)
         {
           $scope.recent_orders_data=response.data[0].data;
@@ -506,7 +496,6 @@ app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localSto
         {
           UiServices.hide_loader();
           UiServices.alert_popup('<center>No Recent Orders Found</center>');  
-
         }
       });
 
@@ -557,23 +546,19 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
           {
             UiServices.hide_loader();
             $scope.order_details=response.data[0].data;
-
           }
           else if(response.data[1].response.status==0)
           {
             UiServices.hide_loader();
             UiServices.alert_popup('<center>Looks like Your Order is already Verified</center>');
-            
           }
       });
       $scope.go_back=function()
       {
-
         $ionicHistory.goBack();
       }
       $scope.accept_order=function()
       {
-
       	var req_data={};
       	req_data.order_id= $scope.order_details[0].order_id; 
       	 req_data.order_details= [];
@@ -663,7 +648,7 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
 
 });
 
-app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope){
+app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope, $ionicPopup){
 
 
   $scope.product_details=[];
@@ -683,8 +668,8 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 	};
 	
 
-	$scope.product_details=[];
-	UiServices.show_loader();
+  	 $scope.product_details=[];
+	   UiServices.show_loader();
      Services.webServiceCallPost(sending_data, 'get_order_details').then(function(response)
      {
 
@@ -701,22 +686,19 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
             	};
             	UiServices.show_loader();
           		Services.webServiceCallPost(extra_data, 'get_product_details').then(function(response)
- 	   			{	
-    					var temp =
-    					{
-    						quantity: 1
-    					};
+ 	   			    {	
+      					var temp =
+      					{
+      						quantity: 1
+      					};
     					angular.extend(response.data[0].data.product_details[0], temp);
   	   				$scope.product_details.push(response.data[0]);
  	     				UiServices.hide_loader();
-             
 
+              alert('$scope.product_details :'+JSON.stringify($scope.product_details));
     			});
-          		
             });
-            
           }
-
       });
 
      
@@ -725,6 +707,7 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
      {
       sending_data.user_id=$scope.user_data.user_id;
       sending_data.product_details=[];
+     
       angular.forEach($scope.product_details, function(value, key)
       { 
         var my_extra_data=
@@ -734,7 +717,9 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
           unit_mapping_id: value.data.product_details[0].unit.unit_product_id,
           product_unit_mapping_id: value.data.product_details[0].unit.unit_product_mapping_id,
           total_price: value.data.product_details[0].quantity*value.data.product_details[0].unit.price,
-          price: value.data.product_details[0].unit.price
+          price: value.data.product_details[0].unit.price,
+          name: value.data.product_details[0].product_name,
+          size: value.data.product_details[0].unit.weight
         }
         sending_data.product_details.push(my_extra_data);
       });  
@@ -757,12 +742,15 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
               {
                  if(res) 
                  {
-                    
+                    alert('shivam sending_data:'+JSON.stringify(sending_data));
                     UiServices.show_loader();
                     Services.webServiceCallPost(sending_data, 'update_order').then(function(response)
-                    {
-                       UiServices.hide_loader();   
+                    { 
+                      if(response.data[1].response.status===1)
+                      {
+                       UiServices.hide_loader(); 
                        UiServices.alert_popup('<center>Request Submitted Successfully</center>');
+                      }
                     });
                  } 
                  else 
