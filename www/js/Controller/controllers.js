@@ -4,19 +4,10 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   //$ionicView.enter event:
   //$scope.$on('$ionicView.enter', function(e) {
   //});
-
-
-
-
   $ionicPlatform.registerBackButtonAction(function (event) 
     {       
-
-
-
             if($state.current.name=='app.dashboard')
             {
-
-
               if($scope.raise_concern_model.isShown())
               {
                 $scope.raise_concern_model.remove();
@@ -86,6 +77,11 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
     });
 
 
+   }
+
+   $scope.test=function()
+   {
+    $state.go('network_connection');
    }
    $scope.logout=function()
    {    
@@ -599,25 +595,23 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
   }
   $scope.doLogin = function() 
   {
-
-   // $scope.loginData.player_id='123456';
+   //$scope.loginData.player_id='123456';
    $scope.loginData.player_id=$localStorage.player_id;
+   alert('$scope.loginData :'+JSON.stringify($scope.loginData));
    UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
       if(response.data[1].response.status==1)
       { 
+          UiServices.hide_loader();
           $localStorage.user_data={};
           $localStorage.user_data = JSON.stringify(response.data[0].data);
-          $scope.loginData={};          
-          UiServices.hide_loader();
-          $state.go('app.dashboard');
+          $scope.loginData={};     
 
-      
+          $state.go('app.dashboard');
       }
       else
       {
-
         UiServices.alert_popup('<center>It seems that you have entered wrong input</center>');     
         UiServices.hide_loader();
       }
@@ -1016,13 +1010,14 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
               });
   }
 });
-app.controller('no_netowork_ConnectionCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope, $localStorage, $ionicPopup){
+app.controller('no_network_ConnectionCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope, $localStorage, $ionicPopup){
 
 
     $scope.retry=function()
     {
+      alert('retry :');
 
-       var networkState = navigator.connection.type;
+      var networkState = navigator.connection.type;
       var states = {};
     
      states[Connection.UNKNOWN]  = 'Unknown connection';

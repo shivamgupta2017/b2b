@@ -12,21 +12,29 @@ app.run(function($ionicPlatform, $state, $localStorage)
   $ionicPlatform.ready(function() 
   {
     window.plugins.OneSignal.getIds(function(ids) 
-      { 
-            $localStorage.player_id=ids.userId;
-      });
-    document.addEventListener("offline", onOffline, false);
-    document.addEventListener("online", onOnline, false);
-    function onOffline() 
+    { 
+         $localStorage.player_id=ids.userId;
+    });
+   
+
+   document.addEventListener("offline", offline, false);
+   document.addEventListener("online", online, false);
+    
+
+    function offline() 
     {
-      alert('offline');
+      alert('offline :');
       $state.go('network_connection');
     }
-    function onOnline() 
+    
+    function online() 
     { 
       alert('online');
-      $state.go('app.dashboard',{},{reload:true});
+      $state.go('app.dashboard');
     }
+
+
+
    var notificationOpenedCallback = function(jsonData) 
     {
       var state=jsonData.notification.payload.additionalData.state;
@@ -114,7 +122,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
   .state('network_connection', {
     url: '/network_connection',
     templateUrl: 'templates/network_connection.html',
-    controller: 'no_netowork_ConnectionCtrl'
+    controller: 'no_network_ConnectionCtrl'
   })
   .state('app.update_order_details' ,{
 
