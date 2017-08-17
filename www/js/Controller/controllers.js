@@ -577,7 +577,7 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
 });
 app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal, $localStorage, $state, UiServices)
 {
- 
+ 	
    var x=document.getElementById('hide_me');
    $scope.loginData = {};
    if($localStorage.user_data==undefined)
@@ -593,10 +593,15 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
     x.style.visibility='hidden';
     $state.go('app.dashboard');
   }
+
+	
+
+ 
+
   $scope.doLogin = function() 
   {
-   //$scope.loginData.player_id='123456';
-   $scope.loginData.player_id=$localStorage.player_id;
+   $scope.loginData.player_id='123456';
+ //  $scope.loginData.player_id=$localStorage.player_id;
    alert('$scope.loginData :'+JSON.stringify($scope.loginData));
    UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
@@ -1015,23 +1020,35 @@ app.controller('no_network_ConnectionCtrl', function($scope, $stateParams, Servi
 
     $scope.retry=function()
     {
-      alert('retry :');
 
-      var networkState = navigator.connection.type;
+      var networkState = navigator.connection.type;;
       var states = {};
-    
-     states[Connection.UNKNOWN]  = 'Unknown connection';
-     states[Connection.ETHERNET] = 'Ethernet connection';
-     states[Connection.WIFI]     = 'WiFi connection';
-     states[Connection.CELL_2G]  = 'Cell 2G connection';
-     states[Connection.CELL_3G]  = 'Cell 3G connection';
-     states[Connection.CELL_4G]  = 'Cell 4G connection';
-     states[Connection.CELL]     = 'Cell generic connection';
-     states[Connection.NONE]     = 'none';
-      
-          if(states[networkState]!=="none")
+    	
+      alert('network state: '+networkState);
+      alert('network state :'+JSON.stringify(networkState));
+
+
+
+
+
+    states[Connection.UNKNOWN]  = 'Unknown connection';
+    states[Connection.ETHERNET] = 'Ethernet connection';
+    states[Connection.WIFI]     = 'WiFi connection';
+    states[Connection.CELL_2G]  = 'Cell 2G connection';
+    states[Connection.CELL_3G]  = 'Cell 3G connection';
+    states[Connection.CELL_4G]  = 'Cell 4G connection';
+    states[Connection.CELL]     = 'Cell generic connection';
+    states[Connection.NONE]     = 'No network connection';
+   		
+
+
+   			alert('networkState :'+networkState);
+   			alert('states[networkState] :'+states[networkState]);
+          if(states[networkState]!="none")
           {
-            $state.go('app.dashboard',{},{reload:true});
+
+          	alert('state.go');
+            $state.go('app.dashboard');
           }
 
 
