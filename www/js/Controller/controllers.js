@@ -553,7 +553,7 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
       	Services.webServiceCallPost(req_data, 'verify_order').then(function(response)
       	{
       		UiServices.hide_loader();
-          $ionicHistory.goBack();
+       	    $ionicHistory.goBack();
 
           /*var disco=JSON.parse(req_data.order_details);
           for(var i=0; i<$scope.order_details.length; i++)
@@ -585,12 +585,10 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
  	
    var x=document.getElementById('hide_me');
    $scope.loginData = {};
-   if($localStorage.user_data==undefined)
+
+   if(($localStorage.user_data==undefined)|| (JSON.stringify($localStorage.user_data))==='{}')
    {
-      $localStorage.user_data={};    
-   }
-   if(JSON.stringify($localStorage.user_data)=='{}')
-   {
+        $localStorage.user_data={};
         x.style.visibility='initial';  
    }
   else
@@ -600,7 +598,7 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
   }
 $scope.doLogin = function() 
 {	
-	$scope.loginData.player_id=$localStorage.player_id;
+	//$scope.loginData.player_id=$localStorage.player_id;
 	$localStorage.player_id=null;
  	$scope.loginData.player_id = '123456';
 
