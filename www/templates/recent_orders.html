@@ -13,10 +13,9 @@
 		</ion-nav-buttons>
   	
     <ion-content class="has-header padding-top margin-top" style="padding-top: 5%; width: 98vw; background-color: #FFFF;">
-    
   		<ion-list class="dark">
-        <ion-item ng-repeat="orders in recent_orders_data track by $index" class="item-text-wrap"  style="padding: 0px; ">
-            <div style="text-align: right; float: right !important; width: 100%;">{{orders.order_status}}</div>
+        <ion-item ng-repeat="orders in recent_orders_data track by $index" class="item-text-wrap"  style="padding: 2%; ">
+            <div class="assertive" style="text-align: left; float: left !important; width: 100%;">{{orders.order_status}}</div>
 
             <div style="width: 100%;">
                <div style="float: left;">{{orders.order_date | date: medium}}</div>

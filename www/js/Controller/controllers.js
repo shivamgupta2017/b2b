@@ -19,6 +19,11 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
                   event.preventDefault();
                 }
             }
+            else if($state.current.name=='login')
+            {
+            	 ionic.Platform.exitApp();
+                  event.preventDefault();
+            }
             else
             {
               $ionicHistory.goBack();
@@ -78,10 +83,7 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
 
    }
 
-   $scope.test=function()
-   {
-    $state.go('network_connection');
-   }
+   
    $scope.logout=function()
    {    
     $ionicHistory.clearCache().then(function()
@@ -134,8 +136,16 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
       if(response.data[1].response.status==1)
       {
         UiServices.hide_loader();
-        UiServices.alert_popup('Concern Registered successfully');
-        $scope.raise_concern_model.hide();
+        $ionicPopup.alert({
+                template: '<center>Concern Registered successfully</center>',
+                buttons:[{
+                    text:'ok', type: 'button-assertive'
+                }]
+                }).then(function(res)
+                {   
+			        $scope.raise_concern_model.hide();
+                        
+                });
       }
     });
 
@@ -620,14 +630,12 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
 });
 app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal, $localStorage, $state, UiServices, $rootScope)
 {
- 	
    var x=document.getElementById('hide_me');
    $scope.loginData = {};
-
    if(($localStorage.user_data==undefined)|| (JSON.stringify($localStorage.user_data))==='{}')
    {
-        $localStorage.user_data={};
-        x.style.visibility='initial';  
+    $localStorage.user_data={};
+    x.style.visibility='initial';  
    }
   else
   {
@@ -636,9 +644,9 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
   }
 $scope.doLogin = function()
 {	
-	//$scope.loginData.player_id=$localStorage.player_id;
+	$scope.loginData.player_id=$localStorage.player_id;
 	$localStorage.player_id=null;
- 	$scope.loginData.player_id = '123456';
+ 	//$scope.loginData.player_id = '123456';
 	UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
@@ -682,31 +690,34 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 	 UiServices.show_loader();
      Services.webServiceCallPost(sending_data, 'get_order_details').then(function(response)
      {
-          if(response.data[1].response.status==1)
-          {
+        if(response.data[1].response.status==1)
+        {
             $scope.order_details = response.data[0].data;
             UiServices.hide_loader();
             angular.forEach($scope.order_details, function(value, key)
             {
+
             	var extra_data=
             	{
             		product_id: value.product_id
             	};
+
+
 				UiServices.show_loader();
           		Services.webServiceCallPost(extra_data, 'get_product_details').then(function(response)
- 	   			    {	
+ 	   			{	
       					var temp =
       					{
-      						quantity: 1
+      						quantity: value.quantity,
+      						total_price: value.total_price,
       					};
     					angular.extend(response.data[0].data.product_details[0], temp);
   	   					$scope.product_details.push(response.data[0]);
  	     				UiServices.hide_loader();
-
     			});
             });
-          }
-      });
+        }
+    });
 
      
 
@@ -779,19 +790,18 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 
      $scope.go_back=function()
       {
-
         $ionicHistory.goBack();
       }
       $scope.aQuantity=function(index, quantity)
-      {
-      	$scope.product_details[index].data.product_details[0].quantity = quantity+1;
+      {	
+	    $scope.product_details[index].data.product_details[0].quantity = parseInt(quantity)+1;
       	$scope.show_total(index);
       }
       $scope.dQuantity=function(index, quantity)
       {
       	if(quantity>1)
       	{
-	      	$scope.product_details[index].data.product_details[0].quantity = quantity-1;
+	      	$scope.product_details[index].data.product_details[0].quantity = parseInt(quantity)-1;
       		$scope.show_total();
       	}
       	else
@@ -1141,15 +1151,17 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
 });
 app.controller('no_network_ConnectionCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope, $localStorage, $ionicPopup){
 
-	UiServices.hide_loader();
+
+	$scope.$on('$ionicView.enter', function(e) 
+	{
+		UiServices.hide_loader();
+  	});
 
     $scope.retry=function()
     {
 
       var networkState = navigator.connection.type;;
       var states = {};
-      alert('network state: '+networkState);
-      alert('network state :'+JSON.stringify(networkState));
     states[Connection.UNKNOWN]  = 'Unknown connection';
     states[Connection.ETHERNET] = 'Ethernet connection';
     states[Connection.WIFI]     = 'WiFi connection';
@@ -1159,10 +1171,10 @@ app.controller('no_network_ConnectionCtrl', function($scope, $stateParams, Servi
     states[Connection.CELL]     = 'Cell generic connection';
     states[Connection.NONE]     = 'No network connection';
    		
-          if(states[networkState]!="none")
-          {
-            $ionicHistory.goBack(-1);
-          }
+    if(states[networkState]!="none")
+    {
+            $state.go('app.dashboard');
+    }
 
 
   }
