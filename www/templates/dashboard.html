@@ -52,11 +52,11 @@
                       <div class="item item-input text-center" style="float:left;  display:inline-block;height:29px; margin:0 auto; padding:2px; width:70px; margin-left:3px;">
                           <span class="checkout-product-price ng-binding" style="height:20px" >{{data.product_details[0].quantity}}</span>
                       </div>
-                      <div ng-click="aQuantity($index, data.product_details[0].quantity)" class="button button-small button-assertive"  style="float:left; display:inline-block; height:25px; width:25px; margin-left:3px; font-size:20px; background-color:#cd3333">
+                      <div ng-click="aQuantity($index, data.product_details[0].quantity)" class="button button-small button-assertive"  style="float:left; display:inline-block; height:25px; width:25px; margin-left:3px; font-size:20px; background-color:#cd3333;">
           +
         </div>
 
-        <div style="float:right; margin-right:25px; font-size:15px" ng-init="show_total($index)">
+        <div style="float:right; margin-right:25px; font-size:15px;" ng-init="show_total($index)">
             &#8377;{{data.product_details[0].quantity*data.product_details[0].unit.price}}
         </div>
       </div>

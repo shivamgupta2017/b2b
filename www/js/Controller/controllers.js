@@ -172,12 +172,6 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
 
 app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, UiServices, Additional_services, $filter, $ionicModal, $localStorage, $state, $cordovaDatePicker, $q, $ionicPopup, $rootScope)  
 {
-
-
-
-
-
-
 	if($rootScope.is_pass_changed_status==0)
 	{
 		var confirmPopup = $ionicPopup.confirm({
@@ -211,8 +205,10 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
     $localStorage.selected_items=[];
   }
 
-  /*$scope.selected_items = $localStorage.selected_items;
-   var requesting_data=[];    
+  $scope.selected_items = $localStorage.selected_items;
+   
+//check now
+  /* var requesting_data=[];    
     angular.forEach($scope.selected_items, function(value, key)
     { 
       var d=
@@ -220,11 +216,8 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
         product_id: value.product_details[0].product_id
       };
       requesting_data.push(d);
-    });*/
-   
-
-
-    /*UiServices.show_loader();
+    });
+    UiServices.show_loader();
     Services.webServiceCallPost(requesting_data, 'get_local_data_back').then(function(response)
     { 
       angular.forEach(response.data[0].data, function(value, key){
@@ -292,10 +285,9 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
             check_index=0;
           }
         });
-    $scope.modal.hide();
-    var extra_data={
-      product_id: product_id
-    }
+	    var extra_data={
+	      product_id: product_id
+	    }
 
 
    if(check_index==-1)
@@ -322,9 +314,25 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
           $scope.selected_items = $localStorage.selected_items;
           UiServices.hide_loader(); 
         }
+
     });
+		$scope.modal.hide();
+   }
+   else
+   {
+   		$ionicPopup.alert({
+                template: '<center>Already added in the card</center>',
+                buttons:[{
+                    text:'ok', type: 'button-assertive'
+                }]
+                }).then(function(res)
+                {   
+   					$scope.modal.hide();
+                        
+                });
 
    }
+
   }
   $scope.dQuantity=function(index, quantity)
   {
@@ -335,7 +343,21 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
     }
     else
     {
-    	var confirmPopup = $ionicPopup.confirm(
+        $scope.removeItem(index);
+    }
+
+
+  }
+  $scope.aQuantity=function(index, quantity)
+  {
+    $localStorage.selected_items[index].product_details[0].quantity = quantity+1;
+    $scope.show_total(index);
+  }
+  $scope.removeItem=function(index)
+  { 
+
+
+  	var confirmPopup = $ionicPopup.confirm(
     	{
                  title: 'Remove product',
                  template: '<center>Are you sure ?</center>',
@@ -353,7 +375,13 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
         {
                  if(res) 
                  {
-        			$scope.removeItem(index);
+
+                 	$localStorage.selected_items.splice(index, 1);
+				    $scope.total=0;
+				    angular.forEach($localStorage.selected_items, function(value, key)
+				    {
+				      $scope.total=$scope.total+value.product_details[0].quantity*value.product_details[0].unit.price;
+				    });
                  } 
                  else 
                  {
@@ -361,24 +389,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
                  }
         });
 
-
-    }
-
-
-  }
-  $scope.aQuantity=function(index, quantity)
-  {
-    $localStorage.selected_items[index].product_details[0].quantity = quantity+1;
-    $scope.show_total(index);
-  }
-  $scope.removeItem=function(index)
-  { 
-    $localStorage.selected_items.splice(index, 1);
-    $scope.total=0;
-    angular.forEach($localStorage.selected_items, function(value, key)
-    {
-      $scope.total=$scope.total+value.product_details[0].quantity*value.product_details[0].unit.price;
-    });
+    
 
   }
   $scope.open_date_picker=function()
@@ -785,25 +796,41 @@ UiServices.show_loader();
       	}
       	else
       	{
+	        $scope.removeItem(index);
+      	}
+      }
+
+      $scope.removeItem=function(index)
+      {
+      		
+
+    
       		var confirmPopup = $ionicPopup.confirm(
-    		{
-                 title: 'Remove product',
-                 template: '<center>Are you sure ?</center>',
-                 buttons :[
-                 {
-                  text: 'cancel'
-                 },
-                 {
-                  text: 'Confirm', type: 'button-assertive',
-                  onTap: function(e) {
-                    return 1;
-                  }
-                 }]
-        	}).then(function(res) 
+	    	{
+	                 title: 'Remove product',
+	                 template: '<center>Are you sure ?</center>',
+	                 buttons :[
+	                 {
+	                  text: 'cancel'
+	                 },
+	                 {
+	                  text: 'Confirm', type: 'button-assertive',
+	                  onTap: function(e) {
+	                    return 1;
+	                  }
+	                 }]
+	        }).then(function(res) 
 	        {
 	                 if(res) 
 	                 {
-	        			$scope.removeItem(index);
+	        			$scope.product_details.splice(index, 1);
+			    	   	$scope.total=0;
+			  		    angular.forEach($scope.product_details, function(value, key)
+			  		    {
+			  		      $scope.total=$scope.total+value.data.product_details[0].quantity*value.data.product_details[0].unit.price;
+			  		    });
+			          	if($scope.product_details.length==0)
+			            UiServices.alert_popup('<center>No. of product must no be 0</center>');
 	                 } 
 	                 else 
 	                 {
@@ -813,19 +840,7 @@ UiServices.show_loader();
 
 
 
-      	}
-      }
-
-      $scope.removeItem=function(index)
-      {
-      		$scope.product_details.splice(index, 1);
-    	   	$scope.total=0;
-  		    angular.forEach($scope.product_details, function(value, key)
-  		    {
-  		      $scope.total=$scope.total+value.data.product_details[0].quantity*value.data.product_details[0].unit.price;
-  		    });
-          if($scope.product_details.length==0)
-            UiServices.alert_popup('<center>No. of product must no be 0</center>');
+      		
       }
      $scope.search_model=function()
   	{
@@ -842,10 +857,6 @@ UiServices.show_loader();
 	 }
 	 $scope.product_name_clicked=function(product_id)
 	 { 
-
-
-      
-
         var extra_data={product_id: product_id};
         var index=-1;
         angular.forEach($scope.product_details, function(value, key)
@@ -872,8 +883,24 @@ UiServices.show_loader();
                   });
                   $scope.product_details=$scope.temp;
             });
+        	$scope.modal.hide();
+
         }
-        $scope.modal.hide();
+        else
+   		{
+   		$ionicPopup.alert({
+                template: '<center>Already added in the card</center>',
+                buttons:[{
+                    text:'ok', type: 'button-assertive'
+                }]
+                }).then(function(res)
+                {   
+   					$scope.modal.hide();
+                        
+                });
+
+   		}
+
       
 
 
@@ -930,7 +957,7 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
 
       });
 
-    $scope.modal.hide();
+    
     
     var extra_data={
       product_id: product_id
@@ -958,10 +985,25 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
           });
           
           $scope.selected_items=$scope.temp;
+
           //$scope.selected_items = $localStorage.selected_items;
            
         }
     });
+			$scope.modal.hide();
+   }
+   else
+   {
+   		$ionicPopup.alert({
+                template: '<center>Already added in the card</center>',
+                buttons:[{
+                    text:'ok', type: 'button-assertive'
+                }]
+                }).then(function(res)
+                {   
+   					$scope.modal.hide();
+                        
+                });
 
    }
   }
@@ -980,7 +1022,14 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
       }
       else
       {
-      	var confirmPopup = $ionicPopup.confirm(
+        	$scope.removeItem(index);
+      }
+  }
+
+  $scope.removeItem=function(index)
+  { 
+
+  	var confirmPopup = $ionicPopup.confirm(
     	{
                  title: 'Remove product',
                  template: '<center>Are you sure ?</center>',
@@ -998,26 +1047,19 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
         {
                  if(res) 
                  {
-        			$scope.removeItem(index);
+        			$scope.selected_items.splice(index, 1);
+    				$scope.total=0;
+				    angular.forEach($scope.selected_items, function(value, key)
+				    {
+				      $scope.total=$scope.total+value.product_details[0].quantity*value.product_details[0].unit.price;
+				    });
                  } 
                  else 
                  {
                     console.log('else');
                  }
         });
-
-
-      }
-  }
-
-  $scope.removeItem=function(index)
-  { 
-    $scope.selected_items.splice(index, 1);
-    $scope.total=0;
-    angular.forEach($scope.selected_items, function(value, key)
-    {
-      $scope.total=$scope.total+value.product_details[0].quantity*value.product_details[0].unit.price;
-    });
+    
   }
 
 
