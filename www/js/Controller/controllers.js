@@ -585,7 +585,7 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
  	
    var x=document.getElementById('hide_me');
    $scope.loginData = {};
-   if($localStorage.user_data==undefined)19
+   if($localStorage.user_data==undefined)
    {
       $localStorage.user_data={};    
    }
