@@ -33,7 +33,7 @@
                         <strong>
                           <b>
                             <h4>
-                              {{orders.size | number: 0}}&nbsp;{{orders.product_unit}}<!-- &nbsp;x&nbsp;{{orders.quantity}} -->
+                              {{orders.size | number: 0}}&nbsp;{{orders.product_unit}}{{'&nbsp;x&nbsp;'+orders.quantity}}
                             </h4>
                           </b>
                         </strong>
@@ -43,7 +43,7 @@
                         <strong>
                           <b>
                             <h4>
-                              {{orders.total_price | number :0}}
+                              &#8377;{{orders.total_price | number :0}}
                             </h4>
                           </b>
                         </strong>

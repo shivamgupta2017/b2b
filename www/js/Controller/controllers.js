@@ -557,7 +557,7 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
      $scope.order_verification = $stateParams.order_verification;
      UiServices.show_loader();
      Services.webServiceCallPost(sending_data, 'get_order_details').then(function(response)
-     {
+     {	
           if(response.data[1].response.status==1)
           {
             UiServices.hide_loader();
@@ -679,7 +679,7 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 	
 
   	 $scope.product_details=[];
-	   UiServices.show_loader();
+	 UiServices.show_loader();
      Services.webServiceCallPost(sending_data, 'get_order_details').then(function(response)
      {
           if(response.data[1].response.status==1)
@@ -692,7 +692,7 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
             	{
             		product_id: value.product_id
             	};
-UiServices.show_loader();
+				UiServices.show_loader();
           		Services.webServiceCallPost(extra_data, 'get_product_details').then(function(response)
  	   			    {	
       					var temp =
@@ -700,7 +700,7 @@ UiServices.show_loader();
       						quantity: 1
       					};
     					angular.extend(response.data[0].data.product_details[0], temp);
-  	   				$scope.product_details.push(response.data[0]);
+  	   					$scope.product_details.push(response.data[0]);
  	     				UiServices.hide_loader();
 
     			});
