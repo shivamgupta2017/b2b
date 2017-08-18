@@ -10,41 +10,20 @@
   </ion-header-bar >
 
   <ion-content class="has-header padding-top" style="margin-top: 0%">
-  
-      
-
-    <!-- <div class="list">
-        <label class="item item-input item-select">
-          <div class="input-label">
-            Select Concern type
-          </div>
-          <select ng-model="concern.type">
-            <option>shivam</option>
-            <option selected>delivered product</option>
-            <option>Undelivered product</option>
-            <option>other</option>
-          </select>
-        </label>
-   </div> -->
-
-
-   <div class="list">
-              <ion-radio  ng-repeat="orders in recent_orders_data" ng-model="concern.selected_order_id" ng-value="orders.id" ng-checked="recent_orders_data[0].id" style="height:22vw !important; padding: 0px;">
-                <div style="padding: 0px;">
-                  <div style="text-align: left; float: left !important; width: 100%; color: red; padding: 0px; top: 0px; margin-top: 0px;">
-                  {{orders.order_status}}
-                  </div>
-                  <div style="width: 100%; height: 40px; padding: 0px;">
-                     <div style="float: left;">{{orders.order_date | date: medium}}</div>
-                     <div style="float: right;">{{orders.delivery_date | date: medium}}</div>
-                  </div>
-                </div>
-              </ion-radio>
-          
-
-
+     <div class="list">
         
-  </div>
+        <ion-radio ng-repeat="orders in recent_orders_data" ng-model="concern.selected_order_id" ng-value="orders.id"  style="height:22vw !important; padding: 0px;">
+            <div style="padding: 0px;">
+                <div style="text-align: left; float: left !important; width: 100%; color: red; padding: 0px; top: 0px; margin-top: 0px;">
+                    {{orders.order_status}}
+                </div>
+                <div style="width: 100%; height: 40px; padding: 0px;">
+                       <div style="float: left;">{{orders.order_date | date: medium}}</div>
+                       <div style="float: right;">{{orders.delivery_date | date: medium}}</div>
+                </div>
+            </div>
+       </ion-radio>
+    </div>
 
           <div  class="signin-input-holder" style="width: 90%; margin: 5%;"> 
             <ion-list style="padding-top: 10%;">

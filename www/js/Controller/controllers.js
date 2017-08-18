@@ -22,7 +22,6 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
             else
             {
               $ionicHistory.goBack();
-
             }
     }, 200);  
 
@@ -97,11 +96,17 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   {
 
     $scope.concern={};
+
+
+
+
     var user_data=JSON.parse($localStorage.user_data);
+    
     var req_data=
     {
       user_id: user_data.user_id
     };
+
     UiServices.show_loader();
     Services.webServiceCallPost(req_data, 'get_orders').then(function(response)
     {
@@ -109,6 +114,8 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
       {
         UiServices.hide_loader();
         $scope.recent_orders_data=response.data[0].data;
+        //by default shivam 
+        $scope.concern.selected_order_id=$scope.recent_orders_data[$scope.recent_orders_data.length-1].id;
         $scope.raise_concern_model.show();
       }
       else
@@ -120,11 +127,12 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   }
   $scope.raise_my_concern_now=function()
   {
+    $scope.concern.user_id=$scope.user_data.user_id;
 
-    var user_data=JSON.parse($localStorage.user_data);
-    $scope.concern.user_id=user_data.user_id;
-    UiServices.show_loader();
-    Services.webServiceCallPost($scope.concern, 'store_concern').then(function(response)
+    alert('$scope.concern: '+JSON.stringify($scope.concern));
+
+//    UiServices.show_loader();
+    /*Services.webServiceCallPost($scope.concern, 'store_concern').then(function(response)
     {
  
       if(response.data[1].response.status==1)
@@ -134,7 +142,7 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
         
       }
       
-    });
+    });*/
 
 
 
@@ -1014,7 +1022,7 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
 });
 app.controller('no_network_ConnectionCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope, $localStorage, $ionicPopup){
 
-
+	UiServices.hide_loader();
 
     $scope.retry=function()
     {
@@ -1032,15 +1040,9 @@ app.controller('no_network_ConnectionCtrl', function($scope, $stateParams, Servi
     states[Connection.CELL]     = 'Cell generic connection';
     states[Connection.NONE]     = 'No network connection';
    		
-
-
-   			alert('networkState :'+networkState);
-   			alert('states[networkState] :'+states[networkState]);
           if(states[networkState]!="none")
           {
-
-          	alert('state.go');
-            $state.go('app.dashboard');
+            $ionicHistory.goBack(-1);
           }
 
 
