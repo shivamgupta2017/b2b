@@ -41,7 +41,7 @@
   </ion-content>
   <ion-footer-bar class="bar bar-dark">
       <div class="button-bar">
-        <button class="button button-clear" ng-click="raise_my_concern_now();">Submit</button>
+        <button class="button button-clear" ng-disabled="concern.message==undefined || concern.message.length==0" ng-click="raise_my_concern_now();">Submit</button>
        </div>
   </ion-footer-bar>
 

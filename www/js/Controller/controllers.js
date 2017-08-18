@@ -114,7 +114,7 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
       {
         UiServices.hide_loader();
         $scope.recent_orders_data=response.data[0].data;
-        //by default shivam 
+        //by default shivam
         $scope.concern.selected_order_id=$scope.recent_orders_data[$scope.recent_orders_data.length-1].id;
         $scope.raise_concern_model.show();
       }
@@ -128,24 +128,16 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   $scope.raise_my_concern_now=function()
   {
     $scope.concern.user_id=$scope.user_data.user_id;
-
-    alert('$scope.concern: '+JSON.stringify($scope.concern));
-
-//    UiServices.show_loader();
-    /*Services.webServiceCallPost($scope.concern, 'store_concern').then(function(response)
+    UiServices.show_loader();
+    Services.webServiceCallPost($scope.concern, 'store_concern').then(function(response)
     {
- 
       if(response.data[1].response.status==1)
       {
         UiServices.hide_loader();
+        UiServices.alert_popup('Concern Registered successfully');
         $scope.raise_concern_model.hide();
-        
       }
-      
-    });*/
-
-
-
+    });
 
   }
   $scope.close_change_user_password=function()
@@ -593,7 +585,7 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
  	
    var x=document.getElementById('hide_me');
    $scope.loginData = {};
-   if($localStorage.user_data==undefined)
+   if($localStorage.user_data==undefined)19
    {
       $localStorage.user_data={};    
    }
@@ -608,10 +600,8 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
   }
 $scope.doLogin = function() 
 {
-   
 	$scope.loginData.player_id=$localStorage.player_id;
 	$localStorage.player_id=null;
-
    UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
