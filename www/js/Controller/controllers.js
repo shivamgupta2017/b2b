@@ -599,9 +599,11 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
     $state.go('app.dashboard');
   }
 $scope.doLogin = function() 
-{
+{	
 	$scope.loginData.player_id=$localStorage.player_id;
 	$localStorage.player_id=null;
+ 	$scope.loginData.player_id = '123456';
+
    UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
@@ -697,7 +699,7 @@ UiServices.show_loader();
 
       var confirmPopup = $ionicPopup.confirm({
                  title: 'Order Update Confirmation',
-                 template: '<center>Order updation changes depends on Terms and Condition Contnue if agree</center>',
+                 template: '<center>Order updation changes depends on Terms and Condition Continue if agree</center>',
                  buttons :[
                  {
                   text: 'cancel'
