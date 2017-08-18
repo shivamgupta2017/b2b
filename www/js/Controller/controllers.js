@@ -211,11 +211,8 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
     $localStorage.selected_items=[];
   }
 
-  $scope.selected_items = $localStorage.selected_items;
-
-
-    //lassan
-    var requesting_data=[];    
+  /*$scope.selected_items = $localStorage.selected_items;
+   var requesting_data=[];    
     angular.forEach($scope.selected_items, function(value, key)
     { 
       var d=
@@ -223,11 +220,11 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
         product_id: value.product_details[0].product_id
       };
       requesting_data.push(d);
-    });
+    });*/
    
 
 
-    UiServices.show_loader();
+    /*UiServices.show_loader();
     Services.webServiceCallPost(requesting_data, 'get_local_data_back').then(function(response)
     { 
       angular.forEach(response.data[0].data, function(value, key){
@@ -243,7 +240,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
       
       
 
-    });
+    });*/
     
 
 
@@ -336,6 +333,38 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
       $localStorage.selected_items[index].product_details[0].quantity = quantity-1;
       $scope.show_total(index);
     }
+    else
+    {
+    	var confirmPopup = $ionicPopup.confirm(
+    	{
+                 title: 'Remove product',
+                 template: '<center>Are you sure ?</center>',
+                 buttons :[
+                 {
+                  text: 'cancel'
+                 },
+                 {
+                  text: 'Confirm', type: 'button-assertive',
+                  onTap: function(e) {
+                    return 1;
+                  }
+                 }]
+        }).then(function(res) 
+        {
+                 if(res) 
+                 {
+        			$scope.removeItem(index);
+                 } 
+                 else 
+                 {
+                    console.log('else');
+                 }
+        });
+
+
+    }
+
+
   }
   $scope.aQuantity=function(index, quantity)
   {
@@ -351,8 +380,6 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
       $scope.total=$scope.total+value.product_details[0].quantity*value.product_details[0].unit.price;
     });
 
-   
-    
   }
   $scope.open_date_picker=function()
   {
@@ -596,13 +623,12 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
     x.style.visibility='hidden';
     $state.go('app.dashboard');
   }
-$scope.doLogin = function() 
+$scope.doLogin = function()
 {	
 	//$scope.loginData.player_id=$localStorage.player_id;
 	$localStorage.player_id=null;
  	$scope.loginData.player_id = '123456';
-
-   UiServices.show_loader();
+	UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
       if(response.data[1].response.status==1)
@@ -756,6 +782,37 @@ UiServices.show_loader();
       	{
 	      	$scope.product_details[index].data.product_details[0].quantity = quantity-1;
       		$scope.show_total();
+      	}
+      	else
+      	{
+      		var confirmPopup = $ionicPopup.confirm(
+    		{
+                 title: 'Remove product',
+                 template: '<center>Are you sure ?</center>',
+                 buttons :[
+                 {
+                  text: 'cancel'
+                 },
+                 {
+                  text: 'Confirm', type: 'button-assertive',
+                  onTap: function(e) {
+                    return 1;
+                  }
+                 }]
+        	}).then(function(res) 
+	        {
+	                 if(res) 
+	                 {
+	        			$scope.removeItem(index);
+	                 } 
+	                 else 
+	                 {
+	                    console.log('else');
+	                 }
+	        });
+
+
+
       	}
       }
 
@@ -920,6 +977,36 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
       {
           $scope.selected_items[index].product_details[0].quantity = quantity-1;
           $scope.show_total(index);
+      }
+      else
+      {
+      	var confirmPopup = $ionicPopup.confirm(
+    	{
+                 title: 'Remove product',
+                 template: '<center>Are you sure ?</center>',
+                 buttons :[
+                 {
+                  text: 'cancel'
+                 },
+                 {
+                  text: 'Confirm', type: 'button-assertive',
+                  onTap: function(e) {
+                    return 1;
+                  }
+                 }]
+        }).then(function(res) 
+        {
+                 if(res) 
+                 {
+        			$scope.removeItem(index);
+                 } 
+                 else 
+                 {
+                    console.log('else');
+                 }
+        });
+
+
       }
   }
 
