@@ -173,6 +173,11 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
 app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, UiServices, Additional_services, $filter, $ionicModal, $localStorage, $state, $cordovaDatePicker, $q, $ionicPopup, $rootScope)  
 {
 
+
+
+
+
+
 	if($rootScope.is_pass_changed_status==0)
 	{
 		var confirmPopup = $ionicPopup.confirm({
@@ -575,7 +580,7 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
 
 
 });
-app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal, $localStorage, $state, UiServices)
+app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal, $localStorage, $state, UiServices, $rootScope)
 {
  	
    var x=document.getElementById('hide_me');
@@ -593,27 +598,22 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
     x.style.visibility='hidden';
     $state.go('app.dashboard');
   }
+$scope.doLogin = function() 
+{
+   
+	$scope.loginData.player_id=$localStorage.player_id;
+	$localStorage.player_id=null;
 
-	
-
- 
-
-  $scope.doLogin = function() 
-  {
-   $scope.loginData.player_id='123456';
- //  $scope.loginData.player_id=$localStorage.player_id;
-   alert('$scope.loginData :'+JSON.stringify($scope.loginData));
    UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
       if(response.data[1].response.status==1)
-      { 
+      { 	
           UiServices.hide_loader();
+          $state.go('app.dashboard');
           $localStorage.user_data={};
           $localStorage.user_data = JSON.stringify(response.data[0].data);
           $scope.loginData={};     
-
-          $state.go('app.dashboard');
       }
       else
       {
@@ -623,13 +623,12 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
     });
   }
 
-
 });
 
 app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope, $ionicPopup){
 
 
-  $scope.product_details=[];
+	$scope.product_details=[];
 	$ionicModal.fromTemplateUrl('templates/search.html', 
   	{
     	scope: $scope,
@@ -638,8 +637,6 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
   	{
    	 $scope.modal = modal;
   	});
-
-		
 	var sending_data=
 	{
 		order_id: $stateParams.order_id
@@ -660,7 +657,7 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
             	{
             		product_id: value.product_id
             	};
-            	UiServices.show_loader();
+UiServices.show_loader();
           		Services.webServiceCallPost(extra_data, 'get_product_details').then(function(response)
  	   			    {	
       					var temp =
@@ -1018,19 +1015,14 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
 app.controller('no_network_ConnectionCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope, $localStorage, $ionicPopup){
 
 
+
     $scope.retry=function()
     {
 
       var networkState = navigator.connection.type;;
       var states = {};
-    	
       alert('network state: '+networkState);
       alert('network state :'+JSON.stringify(networkState));
-
-
-
-
-
     states[Connection.UNKNOWN]  = 'Unknown connection';
     states[Connection.ETHERNET] = 'Ethernet connection';
     states[Connection.WIFI]     = 'WiFi connection';

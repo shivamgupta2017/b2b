@@ -7,44 +7,37 @@
 "use strict";
 var app = angular.module('starter', ['ionic','ngStorage']);
 
-app.run(function($ionicPlatform, $state, $localStorage) 
+app.run(function($ionicPlatform, $state, $localStorage, $ionicHistory) 
 {
   $ionicPlatform.ready(function() 
   {
+    document.addEventListener("offline", offline, false);
+    document.addEventListener("online", online, false);
     window.plugins.OneSignal.getIds(function(ids) 
     { 
-         $localStorage.player_id=ids.userId;
+        $localStorage.player_id=ids.userId;
     });
-   
-
-   document.addEventListener("offline", offline, false);
-   document.addEventListener("online", online, false);
     
-
-    function offline() 
-    {
-      alert('offline :');
-      $state.go('network_connection');
-    }
-    
-    function online() 
-    { 
-      alert('online');
-      $state.go('app.dashboard');
-    }
-
-
-
-   var notificationOpenedCallback = function(jsonData) 
+    var notificationOpenedCallback = function(jsonData) 
     {
       var state=jsonData.notification.payload.additionalData.state;
      delete jsonData.notification.payload.additionalData.state;
      $state.go(state,jsonData.notification.payload.additionalData);
     };
-
       window.plugins.OneSignal.startInit("93c7e511-bea9-41fe-93e5-6226c84c3619").handleNotificationOpened(notificationOpenedCallback).endInit();
       window.plugins.OneSignal.enableInAppAlertNotification(false);
-      
+    function offline() 
+    {
+      $state.go('network_connection');
+    }
+    function online() 
+    {
+      $ionicHistory.goBack(-1);
+    }
+
+
+
+   
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
@@ -124,8 +117,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
     templateUrl: 'templates/network_connection.html',
     controller: 'no_network_ConnectionCtrl'
   })
-  .state('app.update_order_details' ,{
 
+  .state('app.update_order_details' ,{
      url: '/update_order/:order_id',
     views: {
       'menuContent': {
