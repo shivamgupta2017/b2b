@@ -1,41 +1,35 @@
 <ion-view style=" background-image:url(img/image.jpg); background-size:cover; ">
   <div style="display:absolute; height:100vh; width:100vw; background-color:rgba(255,255,255,.7)"></div>
-  <ion-content class="has-header padding-top">
-
-      <img src="img/l5.png" height="50" style="margin-top:20px; margin-left:50%; transform: translate(-50%, 0);">    
-    <div style="margin-top:30vh; transform: translate(0,-50%); ">
-    
-
-    <div style="background-color:rgba(0,0,0,0.5); border:1px solid #444;  padding:10px; width:95vw; margin:0 auto; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);  ">
-            <div class="list" style="width:85vw; margin:0 auto;">
-        
-              <form ng-submit="doLogin()">
-                  <label class="item item-input" style="background-color:rgba(0,0,0,0.4); border:1px solid #444; border-radius:5px; color: white;">
-                    <span class="input-label" style="color: white;">Username</span>
-                   
-                    <input type="text"  ng-model="loginData.email" style="color: white;">
-                  </label>
-                  <br><br>
-                  <label class="item item-input" style="background-color:rgba(0,0,0,0.4); border:1px solid #444; border-radius:5px; color: white;">
-                    <span class="input-label" style="color: white;">Password</span>
-                    <input type="password" ng-model="loginData.password" style="color: white;">
-                  </label>        
-              </form>
-              
-           </div>
-    </div>
-
-
-</div>  
+  <form ng-submit="doLogin()" event.preventdefault(); event.stopPropagation();>
+    <ion-content class="has-header padding-top">
+        <img src="img/l5.png" height="50" style="margin-top:20px; margin-left:50%; transform: translate(-50%, 0);">    
+      <div style="margin-top:30vh; transform: translate(0,-50%); ">
+        <div style="background-color:rgba(0,0,0,0.5); border:1px solid #444;  padding:10px; width:95vw; margin:0 auto; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);  ">
+                <div class="list" style="width:85vw; margin:0 auto;">
+            
+                     
+                      <label class="item item-input" style="background-color:rgba(0,0,0,0.4); border:1px solid #444; border-radius:5px; color: white;">
+                        <span class="input-label" style="color: white;">Username</span>
+                       
+                        <input type="text"  ng-model="loginData.email" style="color: white;">
+                      </label>
+                      <br><br>
+                      <label class="item item-input" style="background-color:rgba(0,0,0,0.4); border:1px solid #444; border-radius:5px; color: white;">
+                        <span class="input-label" style="color: white;">Password</span>
+                        <input type="password" ng-model="loginData.password" style="color: white;">
+                      </label>        
+               </div>
+        </div>
+    </div>  
 
   </ion-content>
+
+
       <ion-footer-bar class="bar bar-dark" style="background-color:#cd3333">
         <div class="button-bar">
-          <button type="submit" class="button button-clear" ng-disabled="((loginData.email==undefined || loginData.email.length==0) || (loginData.password==undefined || loginData.password.length==0))" ng-click="doLogin()">Log in</button>
+          <button type="submit" class="button button-clear" ng-disabled="((loginData.email==undefined || loginData.email.length==0) || (loginData.password==undefined || loginData.password.length==0))">Log in</button>
         <!-- open_date_picker(); -->
-
        </div>
       </ion-footer-bar>
-
-
+    </form>
 </ion-view>
