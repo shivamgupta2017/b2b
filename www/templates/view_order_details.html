@@ -9,6 +9,9 @@
            <center ng-if="order_verification==1" style="margin-top:10px;"> <!--<img class="home-logo" src="img/l5.png"  style="padding-left: 10px;  margin: 0 auto;  border:1px solid white;" height="50">-->
     Accept Orders
           </center>
+          <center ng-if="order_verification==2" style="margin-top: 10px;">
+    Order History
+          </center>
             
 		    </ion-nav-title>
 
@@ -91,6 +94,44 @@
               </div>
             </ion-checkbox>
         </ion-item>
+      </ion-list>
+
+      <ion-list ng-if="order_verification==2">
+
+      <ion-item  ng-repeat="order_history in order_history_data track by $index" style="padding: 0; border-style: none;">
+                    <div class="row">
+                      <div class="col col-60">
+                           <h3><b>{{order_history.name}}</b></h3>
+                      </div>
+
+                      <div class="col col-25">
+                          <strong>
+                            <b>
+                              <h4>
+                                {{order_history.size | number: 0}}&nbsp;{{order_history.product_unit}}{{'&nbsp;x&nbsp;'+order_history.quantity}}
+                              </h4>
+                            </b>
+                          </strong>
+                      </div>
+
+                    <div class="col col-25">
+                        <strong>
+                          <b>
+                            <h4>
+                              &#8377;{{order_history.total_price | number :0}}
+                            </h4>
+                          </b>
+                        </strong>
+                    </div>
+
+                  </div>
+              </ion-item>
+
+
+
+
+
+
       </ion-list>
 
 

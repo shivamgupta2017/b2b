@@ -549,7 +549,8 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 
 });
 app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localStorage, $ionicModal, $ionicHistory, UiServices){
-    var req_data={
+    var req_data=
+    {
       user_id: $scope.user_data.user_id
     };
     $scope.$on('$ionicView.enter',function()
@@ -621,6 +622,10 @@ app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localSto
         }
       });
    }
+   $scope.get_order_history=function(order_id)
+   {
+       $state.go('app.view_order_details', {order_id: order_id, order_verification: 2});
+   }
 
 
 });
@@ -630,21 +635,42 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
 
     $scope.checked_items=[];   
     var sending_data={order_id: $stateParams.order_id};
-     $scope.order_verification = $stateParams.order_verification;
-     UiServices.show_loader();
-     Services.webServiceCallPost(sending_data, 'get_order_details').then(function(response)
-     {	
+    $scope.order_verification = $stateParams.order_verification;
+    if($scope.order_verification==2)
+    {
+        UiServices.show_loader();
+        Services.webServiceCallPost(sending_data, 'get_updated_orders').then(function(response)
+        {
           if(response.data[1].response.status==1)
           {
-            UiServices.hide_loader();
-            $scope.order_details=response.data[0].data;
+              UiServices.hide_loader();
+              $scope.order_history_data=response.data[0].data;
           }
-          else if(response.data[1].response.status==0)
-          {
-            UiServices.hide_loader();
-            UiServices.alert_popup('<center>Looks like Your Order is already Verified</center>');
-          }
-      });
+        });
+    }
+    else
+    {
+          UiServices.show_loader();
+          Services.webServiceCallPost(sending_data, 'get_order_details').then(function(response)
+          {  
+              if(response.data[1].response.status==1)
+              {
+                UiServices.hide_loader();
+                $scope.order_details=response.data[0].data;
+              }
+              else if(response.data[1].response.status==0)
+              {
+                UiServices.hide_loader();
+                UiServices.alert_popup('<center>Looks like Your Order is already Verified</center>');
+              }
+          });
+
+
+    } 
+
+
+
+     
       $scope.go_back=function()
       {
         $ionicHistory.goBack();
@@ -715,9 +741,9 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
 $scope.doLogin = function()
 {	
 
-	//$scope.loginData.player_id=$localStorage.player_id;
-	$localStorage.player_id=null;
- 	$scope.loginData.player_id = '123456';
+	 //$scope.loginData.player_id=$localStorage.player_id;
+	 $localStorage.player_id=null;
+   $scope.loginData.player_id = '123456';
 
    alert('$scope.loginData :'+JSON.stringify($scope.loginData));
 	 UiServices.show_loader();
@@ -1243,14 +1269,11 @@ app.controller('no_network_ConnectionCtrl', function($scope, $stateParams, Servi
     states[Connection.CELL_4G]  = 'Cell 4G connection';
     states[Connection.CELL]     = 'Cell generic connection';
     states[Connection.NONE]     = 'No network connection';
-   		
-
-    alert('states[networkState] :'+states[networkState]);
     
-    /*if(states[networkState]!="none")
-    {
-            $state.go('app.dashboard');
-    }*/
+    if(states[networkState]!=states[Connection.NONE])
+    {   
+        $state.go('app.dashboard');
+    }
 
 
   }
