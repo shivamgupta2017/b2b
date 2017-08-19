@@ -42,15 +42,6 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
     $scope.raise_concern_model = modal;
   });
 
-  $ionicModal.fromTemplateUrl('templates/shipping_addresses.html',
-  {
-    scope: $scope
-  }).then(function(modal)
-  {
-    $scope.shipping_addresses_model=modal;
-  });
-
-
   $scope.user_data=JSON.parse($localStorage.user_data);
   $rootScope.constant_image_url=Constant.base_url.image_url;
   $ionicModal.fromTemplateUrl('templates/change_user_password.html',
@@ -64,26 +55,6 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
    $scope.new_password={};
 
 
-   
-
-   $scope.open_shipping_address_page=function()
-   {
-    var temp_data=
-    {
-      user_id: $scope.user_data.user_id
-    }
-
-      UiServices.show_loader();
-      Services.webServiceCallPost(temp_data, 'get_shipping_addresses').then(function(response)
-      { 
-        UiServices.hide_loader();
-        $scope.shipping_addresses_model.show();
-        alert('response :'+JSON.stringify(response));
-
-      });
-
-    
-   }
   $scope.login = function() 
   {
       $state.go('login');
@@ -128,10 +99,6 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   {
 
     $scope.concern={};
-
-
-
-
     var user_data=JSON.parse($localStorage.user_data);
     
     var req_data=
@@ -209,6 +176,9 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
 
 
 //dashboard_controller
+
+
+
 
 app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, UiServices, Additional_services, $filter, $ionicModal, $localStorage, $state, $cordovaDatePicker, $q, $ionicPopup, $rootScope)  
 {
@@ -296,6 +266,15 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
     $scope.modal = modal;
   });
 
+
+  $ionicModal.fromTemplateUrl('templates/shipping_addresses.html',
+  {
+    scope: $scope
+  }).then(function(modal)
+  {
+    $scope.shipping_addresses_model=modal;
+  });
+  
 
 
 
@@ -432,8 +411,12 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
     
 
   }
-  $scope.open_date_picker=function()
+  $scope.open_date_picker=function(selecte_address_id)
   {
+    alert('date');
+     alert('selected_address_id :'+selected_address_id);
+    $scope.shipping_addresses_model.hide();
+
       var options = {
       date: new Date(),
       mode: 'date', // or 'time'
@@ -532,6 +515,34 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
       $scope.total=$scope.total+value.product_details[0].quantity*value.product_details[0].unit.price;
     });
   }
+
+  $scope.open_shipping_address_page=function()
+  {
+
+    $scope.selected_address={};
+    var temp_data=
+    {
+      user_id: $scope.user_data.user_id
+    }
+
+      UiServices.show_loader();
+      Services.webServiceCallPost(temp_data, 'get_shipping_addresses').then(function(response)
+      { 
+        if(response.data[1].response.status===1)
+        {
+           UiServices.hide_loader();
+           $scope.shipping_address_data=response.data[0].data;
+           $scope.shipping_addresses_model.show();
+        }
+        else
+        {
+          UiServices.alert_popup('shipping address not available');
+        }
+      });
+   }
+
+      
+
 });
 app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localStorage, $ionicModal, $ionicHistory, UiServices){
     var req_data={
@@ -583,10 +594,32 @@ app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localSto
 	   	$state.go('app.update_order_details', {order_id: order_id});
     }
 
+    $scope.open_shipping_address_page=function()
+   {
+      $scope.selected_address={};
+      var temp_data=
+      {
+        user_id: $scope.user_data.user_id
+      }
+
+      UiServices.show_loader();
+      Services.webServiceCallPost(temp_data, 'get_shipping_addresses').then(function(response)
+      { 
+        if(response.data[1].response.status===1)
+        {
+           UiServices.hide_loader();
+           $scope.shipping_address_data=response.data[0].data;
+           $scope.shipping_addresses_model.show();
+        }
+        else
+        {
+          UiServices.alert_popup('shipping address not available');
+        }
+      });
+   }
+
 
 });
-
-
 
 app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services, $ionicHistory, UiServices) 
 {

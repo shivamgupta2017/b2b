@@ -5,43 +5,29 @@
             <i class="icon ion-android-arrow-back"></i>
           </button>
     </div>
-
-      <div class="title light" style="text-align: center; margin-top:5px;">Raise Concern</div>    
+      <div class="title light" style="text-align: center; margin-top:5px;">Select Shipping Address</div>    
   </ion-header-bar >
-
   <ion-content class="has-header padding-top" style="margin-top: 0%">
      <div class="list">
-        
-        <ion-radio ng-repeat="orders in recent_orders_data" ng-model="concern.selected_order_id" ng-value="orders.id"  style="height:22vw !important; padding: 0px;">
-            <div style="padding: 0px;">
-                <div style="text-align: left; float: left !important; width: 100%; color: red; padding: 0px; top: 0px; margin-top: 0px;">
-                    {{orders.order_status}}
-                </div>
-                <div style="width: 100%; height: 40px; padding: 0px;">
-                       <div style="float: left;">{{orders.order_date | date: medium}}</div>
-                       <div style="float: right;">{{orders.delivery_date | date: medium}}</div>
-                </div>
-            </div>
+        <ion-radio ng-repeat="addresses in shipping_address_data" ng-model="selected_address.selected_id" ng-value="addresses.shipping_address_id">
+                    <div>
+                      {{addresses.shipping_address_1}}  
+                    </div>
+                    <div>
+                      {{addresses.shipping_address_2}}, {{addresses.shipping_zip}}
+                    </div>
+                    <div>
+                    {{addresses.shipping_phone}}
+                    </div>
+
+              
        </ion-radio>
     </div>
-
-          <div  class="signin-input-holder" style="width: 90%; margin: 5%;"> 
-            <ion-list style="padding-top: 10%;">
-              <ion-item class="item-input " style="border:1px solid #ddd;  margin-top:10px; padding:5px; border-radius:5px;">
-                <textarea name="message" placeholder="Let us know how can we serve you better ?"  rows="5" ng-model="concern.message" required autocomplete="off">
-                </textarea>
-              </ion-item>
-            </ion-list>
-
-            <div class="assertive">{{fError}}</div>
-            <h5 class="color-grapefruit m-t-b-0" ng-show="signUpError"> {{signUpError}}</h5>
-          </div>
-  
-
   </ion-content>
+
   <ion-footer-bar class="bar bar-dark">
       <div class="button-bar">
-        <button class="button button-clear" ng-disabled="concern.message==undefined || concern.message.length==0" ng-click="raise_my_concern_now();">Submit</button>
+        <button class="button button-clear" ng-click="open_date_picker('dhivan')">Submit</button>
        </div>
   </ion-footer-bar>
 
