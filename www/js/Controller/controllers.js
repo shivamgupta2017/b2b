@@ -290,10 +290,12 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   }
   $scope.close_search_modal=function()
   {
-      
       $scope.modal.hide();    
   }
-
+  $scope.close_shipping_address_model=function()
+  {
+    $scope.shipping_addresses_model.hide();
+  }
   $scope.product_name_clicked=function(product_id)
   { 
         var check_index = -1;
@@ -480,7 +482,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
                       UiServices.hide_loader();
                       $localStorage.selected_items=[];
                       $scope.selected_items=[];
-                      var div='Your Order has been placed successfully';
+                      var div='<center>Your Order has been created successfully</center>';
                       UiServices.alert_popup(div);  
                     });  
                  } 
@@ -1242,10 +1244,13 @@ app.controller('no_network_ConnectionCtrl', function($scope, $stateParams, Servi
     states[Connection.CELL]     = 'Cell generic connection';
     states[Connection.NONE]     = 'No network connection';
    		
-    if(states[networkState]!="none")
+
+    alert('states[networkState] :'+states[networkState]);
+    
+    /*if(states[networkState]!="none")
     {
             $state.go('app.dashboard');
-    }
+    }*/
 
 
   }
