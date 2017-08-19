@@ -8,9 +8,7 @@
 
       <div class="title light" style="text-align: center; margin-top:5px;">Raise Concern</div>    
   </ion-header-bar >
-
-  <ion-content class="has-header padding-top" style="margin-top: 0%" scroll="false">
-
+  <ion-content class="has-header padding-top" style="margin-top: 0%">
         <div style="overflow-y: scroll; height: 63vh;">
            <div class="list">
               <ion-radio ng-repeat="orders in recent_orders_data" ng-model="concern.selected_order_id" ng-value="orders.id"  style="height:22vw !important; padding: 0px;">
@@ -29,7 +27,7 @@
 
 
 
-    <form ng-submit="raise_my_concern_now();"> 
+    
       <div class="signin-input-holder" style="width: 90%; margin: 3%;"> 
             <ion-list style="padding-top: 5%;">
               <ion-item class="item-input " style="border:1px solid #ddd;  margin-top:10px; padding:5px; border-radius:5px;">
@@ -41,15 +39,10 @@
             <div class="assertive">{{fError}}</div>
             <h5 class="color-grapefruit m-t-b-0" ng-show="signUpError"> {{signUpError}}</h5>
       </div>
-
-    </form>
-
-        
-
   </ion-content>
   <ion-footer-bar class="bar bar-dark">
       <div class="button-bar">
-        <button type="submit" class="button button-clear" ng-disabled="concern.message==undefined || concern.message.length==0">Submit</button>
+        <button type="submit" ng-click="raise_my_concern_now();" class="button button-clear" ng-disabled="concern.message==undefined || concern.message.length==0">Submit</button>
        </div>
   </ion-footer-bar>
 

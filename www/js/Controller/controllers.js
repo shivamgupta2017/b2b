@@ -1230,7 +1230,7 @@ app.controller('no_network_ConnectionCtrl', function($scope, $stateParams, Servi
 		UiServices.hide_loader();
   	});
 
-    $scope.retry=function()
+      $scope.retry=function()
     {
 
       var networkState = navigator.connection.type;;
