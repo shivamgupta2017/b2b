@@ -274,7 +274,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   {
     $scope.shipping_addresses_model=modal;
   });
-  
+
 
 
 
@@ -411,12 +411,11 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
     
 
   }
-  $scope.open_date_picker=function(selecte_address_id)
+  $scope.open_date_picker=function(add_id)
   {
-    alert('date');
-     alert('selected_address_id :'+selected_address_id);
-    $scope.shipping_addresses_model.hide();
 
+      $scope.shipping_addresses_model.hide();
+  
       var options = {
       date: new Date(),
       mode: 'date', // or 'time'
@@ -432,17 +431,19 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 
     $cordovaDatePicker.show(options).then(function(date)
     { 
-        $scope.save_order(date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate());         
+        $scope.save_order(date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate(), add_id);         
     });
   }
-  $scope.save_order=function(date)
+  $scope.save_order=function(date, selected_address_id)
   {
       var req_obj=
       {
         user_id: $scope.user_data.user_id,
         delivery_date: date,
-        is_express: 0        
+        is_express: 0,
+        selected_address_id: selected_address_id        
       };
+
       req_obj.order_products=[];
       var total=0;
       angular.forEach($scope.selected_items, function(value, key) 
@@ -532,6 +533,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
         {
            UiServices.hide_loader();
            $scope.shipping_address_data=response.data[0].data;
+           $scope.selected_address.id=$scope.shipping_address_data[0].shipping_add_id;
            $scope.shipping_addresses_model.show();
         }
         else

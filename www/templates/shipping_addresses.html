@@ -9,7 +9,7 @@
   </ion-header-bar >
   <ion-content class="has-header padding-top" style="margin-top: 0%">
      <div class="list">
-        <ion-radio ng-repeat="addresses in shipping_address_data" ng-model="selected_address.selected_id" ng-value="addresses.shipping_address_id">
+        <ion-radio ng-repeat="addresses in shipping_address_data" ng-model="selected_address.id" ng-value="addresses.shipping_add_id">
                     <div>
                       {{addresses.shipping_address_1}}  
                     </div>
@@ -19,15 +19,15 @@
                     <div>
                     {{addresses.shipping_phone}}
                     </div>
-
-              
+                    
        </ion-radio>
     </div>
+
   </ion-content>
 
   <ion-footer-bar class="bar bar-dark">
       <div class="button-bar">
-        <button class="button button-clear" ng-click="open_date_picker('dhivan')">Submit</button>
+        <button class="button button-clear" ng-click="open_date_picker(selected_address.id)">Submit</button>
        </div>
   </ion-footer-bar>
 
