@@ -51,14 +51,20 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
    {
     $scope.change_password_model = modal; 
    });
-
    $scope.new_password={};
 
+   $ionicModal.fromTemplateUrl('templates/add_new_address.html', 
+   {
+    scope: $scope
+   }).then(function(modal) 
+   {
+    $scope.add_new_address = modal;
+   });
 
-  $scope.login = function() 
-  {
-      $state.go('login');
-  }
+
+
+   
+   
    $scope.change_password_open=function()
    {
     $scope.change_password_model.show();
@@ -66,8 +72,6 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
    $scope.submit_new_password=function()
    {
     $scope.new_password.user_id=$scope.user_data.user_id;
-   	
-
     UiServices.show_loader();
     Services.webServiceCallPost($scope.new_password, 'change_user_password').then(function(response)
     {
@@ -94,7 +98,15 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
 
     });
    }
-  
+  $scope.open_address_model=function()
+   {
+      
+      $scope.add_new_address.show();
+   }
+   $scope.close_address_model=function()
+   {
+      $scope.add_new_address.hide();
+   }
   $scope.raise_my_concern=function()
   {
 
