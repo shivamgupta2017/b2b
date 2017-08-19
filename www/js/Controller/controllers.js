@@ -630,24 +630,33 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
 });
 app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal, $localStorage, $state, UiServices, $rootScope)
 {
-   var x=document.getElementById('hide_me');
-   $scope.loginData = {};
-   if(($localStorage.user_data==undefined)|| (JSON.stringify($localStorage.user_data))==='{}')
-   {
-    $localStorage.user_data={};
-    x.style.visibility='initial';  
-   }
-  else
+
+   
+  $scope.$on('$ionicView.beforeEnter', function(e) 
   {
-    x.style.visibility='hidden';
-    $state.go('app.dashboard');
-  }
+    $scope.loginData = {};
+    if(($localStorage.user_data==undefined)|| (JSON.stringify($localStorage.user_data))==='{}')
+     {
+      $localStorage.user_data={};
+     }
+    else
+    {
+      $state.go('app.dashboard');
+    }
+
+  });
+
+   
+
+
 $scope.doLogin = function()
 {	
-	$scope.loginData.player_id=$localStorage.player_id;
+	//$scope.loginData.player_id=$localStorage.player_id;
 	$localStorage.player_id=null;
- 	//$scope.loginData.player_id = '123456';
-	UiServices.show_loader();
+ 	$scope.loginData.player_id = '123456';
+
+    alert('$scope.loginData :'+JSON.stringify($scope.loginData));
+	 UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
       if(response.data[1].response.status==1)
