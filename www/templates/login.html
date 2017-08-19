@@ -12,6 +12,7 @@
               <form ng-submit="doLogin()">
                   <label class="item item-input" style="background-color:rgba(0,0,0,0.4); border:1px solid #444; border-radius:5px; color: white;">
                     <span class="input-label" style="color: white;">Username</span>
+                   
                     <input type="text"  ng-model="loginData.email" style="color: white;">
                   </label>
                   <br><br>
@@ -19,9 +20,9 @@
                     <span class="input-label" style="color: white;">Password</span>
                     <input type="password" ng-model="loginData.password" style="color: white;">
                   </label>        
-                 
-
-            </div>
+              </form>
+              
+           </div>
     </div>
 
 
@@ -30,9 +31,9 @@
   </ion-content>
       <ion-footer-bar class="bar bar-dark" style="background-color:#cd3333">
         <div class="button-bar">
-          <button class="button button-clear" ng-disabled="((loginData.email==undefined || loginData.email.length==0) || (loginData.password==undefined || loginData.password.length==0))" ng-click="doLogin()">Log in</button>
+          <button type="submit" class="button button-clear" ng-disabled="((loginData.email==undefined || loginData.email.length==0) || (loginData.password==undefined || loginData.password.length==0))" ng-click="doLogin()">Log in</button>
         <!-- open_date_picker(); -->
-        </form>
+
        </div>
       </ion-footer-bar>
 

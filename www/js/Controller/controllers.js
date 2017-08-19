@@ -1,5 +1,5 @@
 "use strict";
-app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Constant, UiServices, $http, Additional_services, $filter, $localStorage, $rootScope, $state, $cordovaDatePicker, $ionicHistory, $ionicPlatform) {
+app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Constant, UiServices, $http, Additional_services, $filter, $localStorage, $rootScope, $state, $cordovaDatePicker, $ionicHistory, $ionicPlatform, $ionicPopup) {
 
   //$ionicView.enter event:
   //$scope.$on('$ionicView.enter', function(e) {
@@ -36,11 +36,20 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
 
   $ionicModal.fromTemplateUrl('templates/raise_my_concern.html', 
   {
-          scope: $scope
+    scope: $scope
   }).then(function(modal) 
   {
     $scope.raise_concern_model = modal;
   });
+
+  $ionicModal.fromTemplateUrl('templates/shipping_addresses.html',
+  {
+    scope: $scope
+  }).then(function(modal)
+  {
+    $scope.shipping_addresses_model=modal;
+  });
+
 
   $scope.user_data=JSON.parse($localStorage.user_data);
   $rootScope.constant_image_url=Constant.base_url.image_url;
@@ -54,6 +63,27 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
 
    $scope.new_password={};
 
+
+   
+
+   $scope.open_shipping_address_page=function()
+   {
+    var temp_data=
+    {
+      user_id: $scope.user_data.user_id
+    }
+
+      UiServices.show_loader();
+      Services.webServiceCallPost(temp_data, 'get_shipping_addresses').then(function(response)
+      { 
+        UiServices.hide_loader();
+        $scope.shipping_addresses_model.show();
+        alert('response :'+JSON.stringify(response));
+
+      });
+
+    
+   }
   $scope.login = function() 
   {
       $state.go('login');
@@ -404,7 +434,6 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   }
   $scope.open_date_picker=function()
   {
-
       var options = {
       date: new Date(),
       mode: 'date', // or 'time'
@@ -646,16 +675,14 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
 
   });
 
-   
-
-
 $scope.doLogin = function()
 {	
+
 	//$scope.loginData.player_id=$localStorage.player_id;
 	$localStorage.player_id=null;
  	$scope.loginData.player_id = '123456';
 
-    alert('$scope.loginData :'+JSON.stringify($scope.loginData));
+   alert('$scope.loginData :'+JSON.stringify($scope.loginData));
 	 UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
