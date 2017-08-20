@@ -100,12 +100,29 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
    }
   $scope.open_address_model=function()
    {
-      
+      $scope.new_address_data={};
       $scope.add_new_address.show();
    }
    $scope.close_address_model=function()
    {
       $scope.add_new_address.hide();
+   }
+   $scope.submit_new_address=function()
+   {
+    
+    UiServices.show_loader();
+    Services.webServiceCallPost($scope.new_address_data, 'submit_new_address').then(function(response)
+    {
+
+      UiServices.hide_loader();
+      UiServices.alert_popup('<center>Address Saved successfully</center>');
+
+    });
+
+
+    $scope.new_address_data={};
+
+
    }
   $scope.raise_my_concern=function()
   {
