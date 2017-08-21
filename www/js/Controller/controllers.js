@@ -119,20 +119,31 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
    }
    $scope.submit_new_address=function()
    {
-    
+    $scope.new_address_data.user_id=$scope.user_data.user_id;
     UiServices.show_loader();
-    Services.webServiceCallPost($scope.new_address_data, 'submit_new_address').then(function(response)
+    Services.webServiceCallPost($scope.new_address_data, 'store_shipping_address').then(function(response)
     {
 
-      UiServices.hide_loader();
-      UiServices.alert_popup('<center>Address Saved successfully</center>');
+      //alsi
+      if(response.data[1].response.status==1)
+      {
+            UiServices.hide_loader();
+            $ionicPopup.alert(
+            {
+                      template: '<center>Address Saved successfully</center>',
+                      buttons:[{
+                          text:'ok', type: 'button-assertive'
+                      }]
+            }).then(function(res)
+            {   
 
+              //lassan
+               $scope.add_new_address.hide();
+              
+            });
+      }
     });
-
-
     $scope.new_address_data={};
-
-
    }
   $scope.raise_my_concern=function()
   {
@@ -264,6 +275,9 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 
   alert('$localStorage.selected_items before:'+JSON.stringify($localStorage.selected_items));
 
+
+
+//calling for updating price ; shivam 
   if($localStorage.selected_items.length>0)
   {
 
@@ -289,15 +303,13 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
           });
           $localStorage.selected_items = response.data[0].data;
           $scope.selected_items=$localStorage.selected_items;
-          
+
         });
       }
   }
   
   alert('$localStorage.selected_items after :'+JSON.stringify($localStorage.selected_items));    
-      
-    
-
+   //doing for price updation    
 
 
 

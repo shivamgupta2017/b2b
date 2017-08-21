@@ -8,29 +8,28 @@
       <div class="title light" style="text-align: center; margin-top:5px;">Add New Address</div>    
   </ion-header-bar >
   <ion-content class="has-header padding-top" style="margin-top: 0%">
-     
          <div class="list">
           <label class="item item-input item-floating-label">
             <span class="input-label">Address line 1</span>
-            <input type="text" placeholder="Address line 1" ng-model="new_address_data.address_line_1">
+            <input type="text" placeholder="Address line 1" ng-model="new_address_data.shipping_address_1">
           </label>
           <label class="item item-input item-floating-label">
             <span class="input-label">Address line 2</span>
-            <input type="text" placeholder="Address line 2" ng-model="new_address_data.address_line_2">
+            <input type="text" placeholder="Address line 2" ng-model="new_address_data.shipping_address_2">
+          </label>
+          <label class="item item-input item-floating-label">
+            <span class="input-label">zip</span>
+            <input type="text" placeholder="zip" ng-model="new_address_data.shipping_zip">
           </label>
           <label class="item item-input item-floating-label">
             <span class="input-label">Contact No</span>
-            <input type="text" placeholder="Contact No" ng-model="new_address_data.contact_no">
+            <input type="text" placeholder="Contact No" ng-model="new_address_data.shipping_phone">
           </label>
         </div>
-
-      
-
   </ion-content>
-
   <ion-footer-bar class="bar bar-dark">
       <div class="button-bar">
-        <button class="button button-clear" ng-disabled="(new_address_data.contact_no.length!=10 || new_address_data.contact_no==undefined)|| (new_address_data.address_line_2.length==0 || new_address_data.address_line_2.length==undefined) || (new_address_data.address_line_1.length==0 || new_address_data.address_line_1==undefined)" ng-click="submit_new_address()">Submit</button>
+        <button class="button button-clear" ng-disabled="(new_address_data.shipping_phone.length!=10 || new_address_data.shipping_phone==undefined)|| (new_address_data.shipping_address_2.length==0 || new_address_data.shipping_address_2.length==undefined) || (new_address_data.shipping_address_1.length==0 || new_address_data.shipping_address_1==undefined) || (new_address_data.shipping_zip==undefined || new_address_data.shipping_zip.length!=6)" ng-click="submit_new_address()">Submit</button>
        </div>
   </ion-footer-bar>
 
