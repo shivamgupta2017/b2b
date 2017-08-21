@@ -522,6 +522,8 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   $scope.open_date_picker=function(add_id)
   {
 
+
+      
       $scope.shipping_addresses_model.hide();
   
       var options = {
@@ -899,7 +901,7 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 	
 
   	 $scope.product_details=[];
-	 UiServices.show_loader();
+  	 UiServices.show_loader();
      Services.webServiceCallPost(sending_data, 'get_order_details').then(function(response)
      {
         if(response.data[1].response.status==1)
@@ -908,14 +910,13 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
             UiServices.hide_loader();
             angular.forEach($scope.order_details, function(value, key)
             {
-
             	var extra_data=
             	{
             		product_id: value.product_id
             	};
 
 
-				UiServices.show_loader();
+			       	UiServices.show_loader();
           		Services.webServiceCallPost(extra_data, 'get_product_details').then(function(response)
  	   			{	
       					var temp =
@@ -935,9 +936,9 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 
      $scope.update_now=function()
      {
+
       sending_data.user_id=$scope.user_data.user_id;
       sending_data.product_details=[];
-     
       angular.forEach($scope.product_details, function(value, key)
       { 
         var my_extra_data=
@@ -978,7 +979,18 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
                       if(response.data[1].response.status===1)
                       {
                        UiServices.hide_loader(); 
-                       UiServices.alert_popup('<center>Request Submitted Successfully</center>');
+                       $scope.order_details={};
+                       $ionicPopup.alert({
+                       template: '<center>Request Submitted Successfully</center>',
+                       buttons:[{
+                          text:'ok', type: 'button-assertive'
+                      }]
+                      }).then(function(res)
+                      {   
+                          $state.go('app.dashboard');                        
+                      });
+
+
                       }
                     });
                  } 

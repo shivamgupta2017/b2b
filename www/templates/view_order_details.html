@@ -85,7 +85,7 @@
       <ion-list ng-if="order_verification==1">
         <ion-item  ng-repeat="orders in order_details track by $index" style="display: list-item; height: 50%; padding: 0px;">
             <ion-checkbox ng-model="checked_items[$index]" style="padding: 0; padding-top: 1%; text-align: right;">
-                <div style="display: inline-block; text-align: center; width: 100%; padding: 0.5px;"><b><h3><strong>{{orders.name}}</strong></h3></b></div>
+                <div style="display: inline-block; text-align: center; width: 100%; padding: 0.5px;"><b><h3><strong>{{orders.name | limitTo: 25 }}{{orders.name.length>25 ? '...' : ''}}</strong></h3></b></div>
                 <div class="row" style="float: right; border-width: 1px; padding: 0.5px;">
                   <div class="col col-25"></div>
                   <div class="col col-25"><h4>{{orders.size | number: 0}}&nbsp{{orders.product_unit}}&nbsp{{'x'}}&nbsp{{orders.quantity}}</h4></div>

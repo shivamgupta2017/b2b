@@ -29,12 +29,9 @@
           Login
         </ion-item>
         
-        <ion-item  class="item-icon-left margin-left" menu-close ng-click="logout()" ng-show="user_data!=''" >
-          <i class="icon ion-log-out" style="font-size: 150%;"></i>
-          Logout
-        </ion-item>
         
-        <ion-item class="item-icon-left" style="border-style: none;" menu-close ng-click="recent_orders()">
+        
+        <ion-item class="item-icon-left" menu-close ng-click="recent_orders()">
           <i class="icon ion-clipboard" style="font-size: 150%;"></i>         
           Recent Orders
         </ion-item>
@@ -59,7 +56,10 @@
           Add Address
         </ion-item>
 
-
+        <ion-item  class="item-icon-left margin-left" style="border-style: none;" menu-close ng-click="logout()" ng-show="user_data!=''" >
+          <i class="icon ion-log-out" style="font-size: 150%;"></i>
+          Logout
+        </ion-item>
 
       </ion-list>
     </ion-content>
