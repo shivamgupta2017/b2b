@@ -61,44 +61,83 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
     $scope.add_new_address = modal;
    });
 
-
-
-   
-   
    $scope.change_password_open=function()
    {
-    $scope.change_password_model.show();
+      $scope.change_password_model.show();
+      document.getElementById("confirm_pass").style.borderColor='none';
+
    }
    $scope.submit_new_password=function()
    {
-    $scope.pass_error={};
-      if($scope.new_password.pass1.length>=6)
-      {
-
-        $scope.new_password.user_id=$scope.user_data.user_id;
-        UiServices.show_loader();
-        Services.webServiceCallPost($scope.new_password, 'change_user_password').then(function(response)
+    if($scope.new_password.pass1==$scope.new_password.pass2)
+    {
+        var regex_pattern='^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$';
+        var patt=new RegExp(regex_pattern);
+        var res=patt.test($scope.new_password.pass1);
+        if(res)
         {
-          if(response.data[1].response.status==1)
+          $scope.new_password.user_id=$scope.user_data.user_id;
+          UiServices.show_loader();
+          Services.webServiceCallPost($scope.new_password, 'change_user_password').then(function(response)
           {
-            $scope.new_password={};
-            UiServices.hide_loader();
-            UiServices.alert_popup('<center>Password has been updated successfully</center>');  
-            $scope.change_password_model.hide();
-          }
-        });
-      }
-      else
-      {
-        $scope.pass_error='password must contain six character';
-        
-      }
-        
+            if(response.data[1].response.status==1)
+            {
+              $scope.new_password={};
+              UiServices.hide_loader();
+              $ionicPopup.alert({
+                  template: '<center>Password has been updated successfully</center>',
+                  buttons:[{
+                      text:'ok', type: 'button-assertive'
+                  }]
+                  }).then(function(res)
+                  {   
+                     $scope.change_password_model.hide();
+                  });
+            }
+            else
+            {
+              UiServices.hide_loader();
+              UiServices.alert_popup('<center>Current password does not match</center>');
 
+            }
+          });
+        }
+        else
+        {
+         UiServices.alert_popup('<center>password must contain character, special symbol and digit</center>');
+        }
 
+    }
+    else
+    {
+         UiServices.alert_popup('<center>password does not match</center>');
+    }
    }
 
    
+   $scope.focus_kiya=function()
+   {
+          if($scope.new_password.pass1!=undefined && $scope.new_password.pass2!=undefined)
+          {
+            if($scope.new_password.pass1.length>0 && $scope.new_password.pass2.length>0)
+            {
+              if($scope.new_password.pass1!=$scope.new_password.pass2)
+              {
+                 document.getElementById("confirm_pass").style.borderBottom='thick solid #f44242';
+              }
+              else
+              { 
+                 document.getElementById("confirm_pass").style.borderBottom='thick solid #00e600';
+                 
+              }
+            }
+            else
+            {
+                 document.getElementById("confirm_pass").style.borderBottom='';
+            }
+          }
+   }
+
    $scope.logout=function()
    {    
     $ionicHistory.clearCache().then(function()
@@ -120,14 +159,16 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
    $scope.submit_new_address=function()
    {
     $scope.new_address_data.user_id=$scope.user_data.user_id;
+
+
+
     UiServices.show_loader();
     Services.webServiceCallPost($scope.new_address_data, 'store_shipping_address').then(function(response)
     {
-
-      //alsi
+      UiServices.hide_loader();
       if(response.data[1].response.status==1)
       {
-            UiServices.hide_loader();
+            
             $ionicPopup.alert(
             {
                       template: '<center>Address Saved successfully</center>',
@@ -136,13 +177,17 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
                       }]
             }).then(function(res)
             {   
-
-              //lassan
                $scope.add_new_address.hide();
-              
             });
       }
+      else
+      {
+        UiServices.alert_popup('<center>Our Service is Not available at this location</center>');
+      }
     });
+
+
+
     $scope.new_address_data={};
    }
   $scope.raise_my_concern=function()
@@ -164,18 +209,17 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
       {
         UiServices.hide_loader();
         $scope.recent_orders_data=response.data[0].data;
-        //by default shivam
         $scope.concern.selected_order_id=$scope.recent_orders_data[$scope.recent_orders_data.length-1].id;
         $scope.raise_concern_model.show();
         //scroll_bottom
-        var div = document.getElementById("scroll_bottom");
-        div.scrollTop = div.scrollHeight - div.clientHeight;
+        //var div = document.getElementById("scroll_bottom");
+        //div.scrollTop = div.scrollHeight - div.clientHeight;
 
       }
       else
       {
         UiServices.hide_loader();
-        UiServices.alert_popup('<center>No orders Found for Concern</center>');
+        UiServices.alert_popup('<center>No Orders Found for Concern</center>');
       }
     });
   }
@@ -196,7 +240,6 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
                 }).then(function(res)
                 {   
 			        $scope.raise_concern_model.hide();
-                        
                 });
       }
     });
@@ -269,18 +312,13 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   {
     $localStorage.selected_items=[];
   }
-
   $scope.selected_items = $localStorage.selected_items;
-  
-
-  alert('$localStorage.selected_items before:'+JSON.stringify($localStorage.selected_items));
-
-
-
+//  alert('$localStorage.selected_items before:'+JSON.stringify($localStorage.selected_items));
 //calling for updating price ; shivam 
+
+
   if($localStorage.selected_items.length>0)
   {
-
       var requesting_data=[];    
       angular.forEach($scope.selected_items, function(value, key)
       { 
@@ -308,7 +346,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
       }
   }
   
-  alert('$localStorage.selected_items after :'+JSON.stringify($localStorage.selected_items));    
+  //alert('$localStorage.selected_items after :'+JSON.stringify($localStorage.selected_items));    
    //doing for price updation    
 
 
@@ -612,7 +650,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
       
 
 });
-app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localStorage, $ionicModal, $ionicHistory, UiServices){
+app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localStorage, $ionicModal, $ionicHistory, UiServices, $ionicPopup){
     var req_data=
     {
       user_id: $scope.user_data.user_id
@@ -630,7 +668,16 @@ app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localSto
         else
         {
           UiServices.hide_loader();
-          UiServices.alert_popup('<center>No Recent Orders Found</center>');  
+          $ionicPopup.alert({
+                template: '<center>No Recent Order Found</center>',
+                buttons:[{
+                    text:'ok', type: 'button-assertive'
+                }]
+                }).then(function(res)
+                {   
+                   $ionicHistory.goBack();     
+                });          
+
         }
       });
 
@@ -805,11 +852,9 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
 $scope.doLogin = function()
 {	
 
-	 //$scope.loginData.player_id=$localStorage.player_id;
+	 $scope.loginData.player_id=$localStorage.player_id;
 	 $localStorage.player_id=null;
-   $scope.loginData.player_id = '123456';
-
-   alert('$scope.loginData :'+JSON.stringify($scope.loginData));
+   //$scope.loginData.player_id = '123456';
 	 UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
