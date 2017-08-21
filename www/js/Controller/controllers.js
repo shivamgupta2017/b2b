@@ -71,19 +71,29 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
    }
    $scope.submit_new_password=function()
    {
-    $scope.new_password.user_id=$scope.user_data.user_id;
-    UiServices.show_loader();
-    Services.webServiceCallPost($scope.new_password, 'change_user_password').then(function(response)
-    {
-      if(response.data[1].response.status==1)
+    $scope.pass_error={};
+      if($scope.new_password.pass1.length>=6)
       {
-        $scope.new_password={};
-        UiServices.hide_loader();
-        UiServices.alert_popup('<center>Password has been updated successfully</center>');  
-        $scope.change_password_model.hide();
-      }
 
-    });
+        $scope.new_password.user_id=$scope.user_data.user_id;
+        UiServices.show_loader();
+        Services.webServiceCallPost($scope.new_password, 'change_user_password').then(function(response)
+        {
+          if(response.data[1].response.status==1)
+          {
+            $scope.new_password={};
+            UiServices.hide_loader();
+            UiServices.alert_popup('<center>Password has been updated successfully</center>');  
+            $scope.change_password_model.hide();
+          }
+        });
+      }
+      else
+      {
+        $scope.pass_error='password must contain six character';
+        
+      }
+        
 
 
    }
@@ -128,6 +138,7 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   {
 
     $scope.concern={};
+
     var user_data=JSON.parse($localStorage.user_data);
     
     var req_data=
@@ -145,6 +156,10 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
         //by default shivam
         $scope.concern.selected_order_id=$scope.recent_orders_data[$scope.recent_orders_data.length-1].id;
         $scope.raise_concern_model.show();
+        //scroll_bottom
+        var div = document.getElementById("scroll_bottom");
+        div.scrollTop = div.scrollHeight - div.clientHeight;
+
       }
       else
       {
@@ -245,34 +260,42 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   }
 
   $scope.selected_items = $localStorage.selected_items;
-   
-//check now
-  /* var requesting_data=[];    
-    angular.forEach($scope.selected_items, function(value, key)
-    { 
-      var d=
-      {
-        product_id: value.product_details[0].product_id
-      };
-      requesting_data.push(d);
-    });
-    UiServices.show_loader();
-    Services.webServiceCallPost(requesting_data, 'get_local_data_back').then(function(response)
-    { 
-      angular.forEach(response.data[0].data, function(value, key){
+  
 
-        value.product_details[0].quantity=1;
-        value.product_details[0].final_price=0;
-        //shivam gupta
+  alert('$localStorage.selected_items before:'+JSON.stringify($localStorage.selected_items));
 
+  if($localStorage.selected_items.length>0)
+  {
 
+      var requesting_data=[];    
+      angular.forEach($scope.selected_items, function(value, key)
+      { 
+        var d=
+        {
+          product_id: value.product_details[0].product_id
+        };
+        requesting_data.push(d);
       });
-      $scope.selected_items = response.data[0].data;
-      UiServices.hide_loader();
+      if(requesting_data.length>0)
+      {
+        UiServices.show_loader();
+        Services.webServiceCallPost(requesting_data, 'get_local_data_back').then(function(response)
+        { 
+          UiServices.hide_loader();
+          angular.forEach(response.data[0].data, function(value, key)
+          {
+             value.product_details[0].quantity = $localStorage.selected_items[key].product_details[0].quantity;
+             value.product_details[0].final_price = $localStorage.selected_items[key].product_details[0].final_price;
+          });
+          $localStorage.selected_items = response.data[0].data;
+          $scope.selected_items=$localStorage.selected_items;
+          
+        });
+      }
+  }
+  
+  alert('$localStorage.selected_items after :'+JSON.stringify($localStorage.selected_items));    
       
-      
-
-    });*/
     
 
 
