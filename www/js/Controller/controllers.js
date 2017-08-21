@@ -90,13 +90,15 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
                       text:'ok', type: 'button-assertive'
                   }]
                   }).then(function(res)
-                  {   
+                  { 
+                      $scope.new_password={};  
                      $scope.change_password_model.hide();
                   });
             }
             else
             {
               UiServices.hide_loader();
+              $scope.new_password={};  
               UiServices.alert_popup('<center>Current password does not match</center>');
 
             }
@@ -104,12 +106,14 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
         }
         else
         {
+
          UiServices.alert_popup('<center>password must contain character, special symbol and digit</center>');
         }
 
     }
     else
-    {
+    {     
+      $scope.new_password={};
          UiServices.alert_popup('<center>password does not match</center>');
     }
    }
