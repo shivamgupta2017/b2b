@@ -523,7 +523,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   {
 
 
-      
+
       $scope.shipping_addresses_model.hide();
   
       var options = {
@@ -914,20 +914,19 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
             	{
             		product_id: value.product_id
             	};
-
-
 			       	UiServices.show_loader();
           		Services.webServiceCallPost(extra_data, 'get_product_details').then(function(response)
- 	   			{	
-      					var temp =
-      					{
-      						quantity: value.quantity,
-      						total_price: value.total_price,
-      					};
-    					angular.extend(response.data[0].data.product_details[0], temp);
-  	   					$scope.product_details.push(response.data[0]);
- 	     				UiServices.hide_loader();
-    			});
+ 	   			    {	
+        					var temp =
+        					{
+        						quantity: value.quantity,
+        						total_price: value.total_price,
+        					};
+      				  	angular.extend(response.data[0].data.product_details[0], temp);
+    	   					$scope.product_details.push(response.data[0]);
+   	     				  UiServices.hide_loader();
+    			    });
+
             });
         }
     });
@@ -953,8 +952,13 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
           size: value.data.product_details[0].unit.weight
         }
         sending_data.product_details.push(my_extra_data);
-      });  
-     
+      });
+
+
+
+      
+
+
 
       var confirmPopup = $ionicPopup.confirm({
                  title: 'Order Update Confirmation',
