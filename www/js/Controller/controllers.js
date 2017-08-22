@@ -212,9 +212,6 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
         $scope.recent_orders_data=response.data[0].data;
         $scope.concern.selected_order_id=$scope.recent_orders_data[0].id;
         $scope.raise_concern_model.show();
-        //scroll_bottom
-        //var div = document.getElementById("scroll_bottom");
-        //div.scrollTop = div.scrollHeight - div.clientHeight;
       }
       else
       {
@@ -284,7 +281,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 	{
 		var confirmPopup = $ionicPopup.confirm({
         title: 'Change password',
-        template: '<center>As you have come here first time so you can change your Password</center>',
+        template: '<center>Change Your password Now</center>',
         buttons :[
         {
          	text: 'cancel'
@@ -853,7 +850,6 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
 
 $scope.doLogin = function()
 {	
-
    $scope.loginData.player_id=$localStorage.player_id;
 	 $localStorage.player_id=null;
    //$scope.loginData.player_id = '123456';
@@ -956,10 +952,8 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
                       }]
                       }).then(function(res)
                       {   
-                          $state.go('app.dashboard');                        
+                          $ionicHistory.goBack();                       
                       });
-
-
                       }
                     });
                  } 
@@ -1060,8 +1054,6 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 	 }
 	 $scope.product_name_clicked=function(product_id)
 	 { 
-        
-
         var extra_data={product_id: product_id};
         var index=-1;
         angular.forEach($scope.product_details, function(value, key)
@@ -1071,7 +1063,6 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
               index=key;
            }
         });
-
         if(index==-1)
         {
             UiServices.show_loader(); 
@@ -1081,7 +1072,6 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
                   response.data[0].data.product_details[0].quantity=1;
                   $scope.temp=[];
                   $scope.temp.push(response.data[0].data);
-                  //shivam
                   angular.forEach($scope.product_details, function(value, key)
                   {
                     $scope.temp.push(value);
