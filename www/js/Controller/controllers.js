@@ -571,7 +571,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
                       $scope.selected_items=[];
                       var div='<center>Your Order has been created successfully</center>';
                       UiServices.alert_popup(div);
-                        
+
                     });  
                  } 
                  else 
@@ -838,8 +838,11 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
 $scope.doLogin = function()
 {	
    $scope.loginData.player_id=$localStorage.player_id;
-	 $localStorage.player_id=null;
+	// $localStorage.player_id=null;
    //$scope.loginData.player_id = '123456';
+
+
+   //alert('$scope.loginData ;'+JSON.stringify($scope.loginData));
 	 UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
@@ -1258,21 +1261,18 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
   {
     $ionicHistory.goBack();
   }
-  $scope.order_now_emergency_products=function()
+  $scope.order_now_emergency_products=function(shipping_address_id)
   {
-      
-      var user_id = JSON.parse($localStorage.user_data);
       var req_obj=
       {
-        user_id: user_id.user_id,
+        user_id: JSON.parse($localStorage.user_data).user_id,
         is_express: 1,
-        delivery_date : ''
+        delivery_date : '',
+        selected_address_id: shipping_address_id 
       };
 
       req_obj.order_products=[];
       var total=0;
-      
-
       angular.forEach($scope.selected_items, function(value, key) 
       {
           var extra_data=
@@ -1285,6 +1285,8 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
 
               req_obj.order_products.push(extra_data);
       });
+
+
       var confirmPopup = $ionicPopup.confirm(
               {
                  title: 'Create Order Confirmation',
@@ -1309,18 +1311,52 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
                     Services.webServiceCallPost(req_obj, 'create_order').then(function(response)
                     {
                       UiServices.hide_loader();
+                      $scope.shipping_addresses_model.hide(); 
                       $localStorage.selected_items=[];
                       $scope.selected_items=[];
                       var div='Your Order has been Created successfully';
-                      UiServices.alert_popup(div); 
-
-
+                      UiServices.alert_popup(div);
                       $state.go('app.dashboard');  
                     });  
                  } 
                  
               });
   }
+  $ionicModal.fromTemplateUrl('templates/shipping_address_for_express.html',
+  {
+    scope: $scope
+  }).then(function(modal)
+  {
+    $scope.shipping_addresses_model=modal;
+  });
+
+  $scope.open_shipping_address_page=function()
+  {
+    $scope.selected_address={};
+    var temp_data=
+    {
+      user_id: $scope.user_data.user_id
+    }
+      UiServices.show_loader();
+      Services.webServiceCallPost(temp_data, 'get_shipping_addresses').then(function(response)
+      { 
+        if(response.data[1].response.status===1)
+        {
+           UiServices.hide_loader();
+           $scope.shipping_address_data=response.data[0].data;
+           $scope.selected_address.id=$scope.shipping_address_data[0].shipping_add_id;
+           $scope.shipping_addresses_model.show();
+        }
+        else
+        {
+          UiServices.alert_popup('shipping address not available');
+        }
+      });
+   }
+
+
+
+
 });
 app.controller('no_network_ConnectionCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope, $localStorage, $ionicPopup){
 	$scope.$on('$ionicView.enter', function(e) 

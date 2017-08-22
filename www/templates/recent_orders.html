@@ -16,13 +16,15 @@
               {{orders.order_status}}
             </div>
             <div style="width: 100%;">
-               <div style="float: left;">{{orders.order_date | date: medium}}</div>
+               <div style="float: left;">{{orders.delivery_date | date: medium}}</div>
                <!-- <div style="float: right;">{{orders.delivery_date | date: medium}}</div> -->
             </div>
               <div class="button-bar bar-dark">
                 <button ng-if="orders.status==0" ng-click="open_pdf(orders.link); $event.stopPropagation();" style="width: 100%; border: 1px solid #ddd; background-color: #cd3333;" class="button button-small button-block">{{'View Challan'}}</button>
-                <button ng-if="orders.is_updated==1" ng-click="get_order_history(orders.id); $event.stopPropagation();" style="width: 100%; border: 1px solid #ddd; background-color: #cd3333;" class="button button-small button-block">{{'Order History'}}</button>
-                <button ng-if="orders.status==0 || orders.status==1" style="width: 100%; border: 1px solid #ddd; background-color: #cd3333;" ng-click="get_order_details(orders.id)" class="button button-small button-block">{{'View'}}</button>
+                
+                <!-- <button ng-if="orders.is_updated==1" ng-click="get_order_history(orders.id); $event.stopPropagation();" style="width: 100%; border: 1px solid #ddd; background-color: #cd3333;" class="button button-small button-block">{{'Order History'}}</button> -->
+
+                <!-- <button ng-if="orders.status==0 || orders.status==1" style="width: 100%; border: 1px solid #ddd; background-color: #cd3333;" ng-click="get_order_details(orders.id)" class="button button-small button-block">{{'View'}}</button> -->
                 <button ng-if="orders.status==0" style="background-color: #cd3333; width: 100%; border: 1px solid #ddd;" ng-click="update_order(orders.id); $event.stopPropagation();" class="button button-small button-block">{{'Update Order'}}</button>
                 <button ng-if="orders.status==1" style="background-color: #cd3333; width: 100%; border: 1px solid #ddd;" ng-click="open_verification_model(orders.id); $event.stopPropagation();" class="button button-small button-block">{{'Verify Order'}}</button>
                 <button ng-if="orders.status==2" ng-click="open_pdf(orders.link)" style="background-color: #cd3333; width: 100%; border: 1px solid #ddd;" class="button button-small button-block">{{'View Invoice'}}</button>
