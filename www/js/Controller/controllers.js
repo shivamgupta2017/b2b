@@ -198,14 +198,11 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   {
 
     $scope.concern={};
-
     var user_data=JSON.parse($localStorage.user_data);
-    
     var req_data=
     {
       user_id: user_data.user_id
     };
-
     UiServices.show_loader();
     Services.webServiceCallPost(req_data, 'get_orders').then(function(response)
     {
@@ -213,12 +210,11 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
       {
         UiServices.hide_loader();
         $scope.recent_orders_data=response.data[0].data;
-        $scope.concern.selected_order_id=$scope.recent_orders_data[$scope.recent_orders_data.length-1].id;
+        $scope.concern.selected_order_id=$scope.recent_orders_data[0].id;
         $scope.raise_concern_model.show();
         //scroll_bottom
         //var div = document.getElementById("scroll_bottom");
         //div.scrollTop = div.scrollHeight - div.clientHeight;
-
       }
       else
       {
@@ -448,7 +444,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
    else
    {
    		$ionicPopup.alert({
-                template: '<center>Already added in the card</center>',
+                template: '<center>Already added in the cart</center>',
                 buttons:[{
                     text:'ok', type: 'button-assertive'
                 }]
@@ -858,9 +854,9 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
 $scope.doLogin = function()
 {	
 
-//	 $scope.loginData.player_id=$localStorage.player_id;
+   $scope.loginData.player_id=$localStorage.player_id;
 	 $localStorage.player_id=null;
-   $scope.loginData.player_id = '123456';
+   //$scope.loginData.player_id = '123456';
 	 UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
