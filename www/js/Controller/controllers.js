@@ -518,8 +518,6 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
         cancelButtonColor: '#000000'
       };
 
-    $scope.save_order('22-8-2017', add_id);         
-
     $cordovaDatePicker.show(options).then(function(date)
     { 
         $scope.save_order(date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate(), add_id);         
