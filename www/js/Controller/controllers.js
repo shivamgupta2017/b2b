@@ -422,6 +422,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
     UiServices.show_loader(); 
     Services.webServiceCallPost(extra_data, 'get_product_details').then(function(response)
     {
+        UiServices.hide_loader(); 
         if(response.data[1].response.status==1)
         {          
             var extra_data=
@@ -439,7 +440,6 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
           });
           $localStorage.selected_items=$scope.temp;
           $scope.selected_items = $localStorage.selected_items;
-          UiServices.hide_loader(); 
         }
 
     });
@@ -858,9 +858,9 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
 $scope.doLogin = function()
 {	
 
-	 $scope.loginData.player_id=$localStorage.player_id;
+//	 $scope.loginData.player_id=$localStorage.player_id;
 	 $localStorage.player_id=null;
-   //$scope.loginData.player_id = '123456';
+   $scope.loginData.player_id = '123456';
 	 UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
@@ -885,8 +885,8 @@ $scope.doLogin = function()
 app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope, $ionicPopup){
 
 
-	$scope.product_details=[];
-	$ionicModal.fromTemplateUrl('templates/search.html', 
+  	$scope.product_details=[];
+	  $ionicModal.fromTemplateUrl('templates/search.html', 
   	{
     	scope: $scope,
     	animaiton: 'slide-in-up'
@@ -894,45 +894,20 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
   	{
    	 $scope.modal = modal;
   	});
-	var sending_data=
-	{
-		order_id: $stateParams.order_id
-	};
-	
-
+  	var sending_data=
+  	{
+  		order_id: $stateParams.order_id
+  	};
   	 $scope.product_details=[];
   	 UiServices.show_loader();
-     Services.webServiceCallPost(sending_data, 'get_order_details').then(function(response)
-     {
+     Services.webServiceCallPost(sending_data, 'get_order_whole_details').then(function(response)
+     {  
         if(response.data[1].response.status==1)
         {
-            $scope.order_details = response.data[0].data;
-            UiServices.hide_loader();
-            angular.forEach($scope.order_details, function(value, key)
-            {
-            	var extra_data=
-            	{
-            		product_id: value.product_id
-            	};
-			       	UiServices.show_loader();
-          		Services.webServiceCallPost(extra_data, 'get_product_details').then(function(response)
- 	   			    {	
-        					var temp =
-        					{
-        						quantity: value.quantity,
-        						total_price: value.total_price,
-        					};
-      				  	angular.extend(response.data[0].data.product_details[0], temp);
-    	   					$scope.product_details.push(response.data[0]);
-   	     				  UiServices.hide_loader();
-    			    });
-
-            });
+          UiServices.hide_loader();
+          $scope.product_details=response.data[0].data;
         }
     });
-
-     
-
      $scope.update_now=function()
      {
 
@@ -942,24 +917,18 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
       { 
         var my_extra_data=
         {
-          quantity: value.data.product_details[0].quantity,
-          product_id: value.data.product_details[0].product_id,
-          unit_mapping_id: value.data.product_details[0].unit.unit_product_id,
-          product_unit_mapping_id: value.data.product_details[0].unit.unit_product_mapping_id,
-          total_price: value.data.product_details[0].quantity*value.data.product_details[0].unit.price,
-          price: value.data.product_details[0].unit.price,
-          name: value.data.product_details[0].product_name,
-          size: value.data.product_details[0].unit.weight
+          quantity: value.product_details[0].quantity,
+          product_id: value.product_details[0].product_id,
+          unit_mapping_id: value.product_details[0].unit.unit_product_id,
+          product_unit_mapping_id: value.product_details[0].unit.unit_product_mapping_id,
+          total_price: value.product_details[0].quantity*value.product_details[0].unit.price,
+          price: value.product_details[0].unit.price,
+          name: value.product_details[0].product_name,
+          size: value.product_details[0].unit.weight
         }
+
         sending_data.product_details.push(my_extra_data);
       });
-
-
-
-      
-
-
-
       var confirmPopup = $ionicPopup.confirm({
                  title: 'Order Update Confirmation',
                  template: '<center>Order updation changes depends on Terms and Condition Continue if agree</center>',
@@ -1011,7 +980,7 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
      	$scope.total=0;
    		angular.forEach($scope.product_details, function(value, key)
     	{
-      		$scope.total=$scope.total+value.data.product_details[0].quantity*value.data.product_details[0].unit.price;
+      		$scope.total=$scope.total+value.product_details[0].quantity*value.product_details[0].unit.price;
     	});
 
      }
@@ -1022,14 +991,14 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
       }
       $scope.aQuantity=function(index, quantity)
       {	
-	    $scope.product_details[index].data.product_details[0].quantity = parseInt(quantity)+1;
+	      $scope.product_details[index].product_details[0].quantity = parseInt(quantity)+1;
       	$scope.show_total(index);
       }
       $scope.dQuantity=function(index, quantity)
       {
       	if(quantity>1)
       	{
-	      	$scope.product_details[index].data.product_details[0].quantity = parseInt(quantity)-1;
+	      	$scope.product_details[index].product_details[0].quantity = parseInt(quantity)-1;
       		$scope.show_total();
       	}
       	else
@@ -1095,11 +1064,13 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 	 }
 	 $scope.product_name_clicked=function(product_id)
 	 { 
+        
+
         var extra_data={product_id: product_id};
         var index=-1;
         angular.forEach($scope.product_details, function(value, key)
         { 
-           if(value.data.product_details[0].product_id==product_id)
+           if(value.product_details[0].product_id==product_id)
            {
               index=key;
            }
@@ -1107,14 +1078,14 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 
         if(index==-1)
         {
-
             UiServices.show_loader(); 
             Services.webServiceCallPost(extra_data, 'get_product_details').then(function(response)
             {
-                response.data[0].data.product_details[0].quantity=1;
-                UiServices.hide_loader();
+                  UiServices.hide_loader();
+                  response.data[0].data.product_details[0].quantity=1;
                   $scope.temp=[];
-                  $scope.temp.push(response.data[0]);
+                  $scope.temp.push(response.data[0].data);
+                  //shivam
                   angular.forEach($scope.product_details, function(value, key)
                   {
                     $scope.temp.push(value);
@@ -1122,7 +1093,6 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
                   $scope.product_details=$scope.temp;
             });
         	$scope.modal.hide();
-
         }
         else
    		{

@@ -35,39 +35,36 @@
 
     <div style="width:100vw; margin:0 auto;">
       <div style="width:100%; height:27vw; border-bottom:1px solid #ddd;" ng-repeat="data in product_details">
-        <div style="width:23vw; float:left; margin-top:5px; display:inline-block; height:23vw;  border:1px solid #ddd; border-radius:20%; background-image:url({{constant_image_url+data.data.product_details[0].image}}); background-size:cover; background-repeat:no-repeat; background-position:center">     
+        <div style="width:23vw; float:left; margin-top:5px; display:inline-block; height:23vw;  border:1px solid #ddd; border-radius:20%; background-image:url({{constant_image_url+data.product_details[0].image}}); background-size:cover; background-repeat:no-repeat; background-position:center">     
         </div>
 
 
         
     <div style="width:75vw; display:inline-block; height:25vw; padding:5px;">
       <div style="width:100%; ">
-        <div style="height:25%; width:90%; display:inline-block; text-align:left; padding-left:3px;  float:left;  "><strong>{{data.data.product_details[0].product_name}}{{data.data.product_details[0].product_name.length > 20 ? '...' : ''}}</strong>
+        <div style="height:25%; width:90%; display:inline-block; text-align:left; padding-left:3px;  float:left;  "><strong>{{data.product_details[0].product_name}}{{data.product_details[0].product_name.length > 20 ? '...' : ''}}</strong>
         </div>
 
-
-      <i style="ffont-size:12px; width:10%; float:right;" class="icon ion-android-close color-dark"  ng-click="removeItem($index)"></i></div>
-
+      <i style="font-size:12px; width:10%; float:right;" class="icon ion-android-close color-dark"  ng-click="removeItem($index)"></i></div>
       <div style="height:25%; width:100%; text-align:left; float:left;">
-      
-        <select  class="abc" ng-init="product_details[$index].data.product_details[0].unit = data.data.unit_details[0]" ng-model="product_details[$index].data.product_details[0].unit" ng-options="v.weight+' '+v.unit for v in data.data.unit_details" ng-change="show_total()">
+        <select  class="abc" ng-init="product_details[$index].product_details[0].unit = data.unit_details[0]" ng-model="product_details[$index].product_details[0].unit" ng-options="v.weight+' '+v.unit for v in data.unit_details" ng-change="show_total()">
       </select>
       </div>
 
       <div style="height:50%; width:100%; padding:5px; padding-left:0px; margin-top:5px;  text-align:left; float:left;  font-size:18px;">
-        <div ng-click="dQuantity($index, data.data.product_details[0].quantity)" class="button button-small button-assertive"  style="float:left; display:inline-block; height:25px; width:25px; font-size:20px; background-color:#cd3333;">
+        <div ng-click="dQuantity($index, data.product_details[0].quantity)" class="button button-small button-assertive"  style="float:left; display:inline-block; height:25px; width:25px; font-size:20px; background-color:#cd3333;">
           -
         </div>
                       <div class="item item-input text-center" style="float:left;  display:inline-block;height:29px; margin:0 auto; padding:2px; width:70px; margin-left:3px;">
-                          <span class="checkout-product-price ng-binding" >{{data.data.product_details[0].quantity}}</span>
+                          <span class="checkout-product-price ng-binding" >{{data.product_details[0].quantity}}</span>
                       </div>
 
-                      <div ng-click="aQuantity($index, data.data.product_details[0].quantity)" class="button button-small button-assertive"  style="float:left; display:inline-block; height:25px; width:25px; margin-left:3px; font-size:20px; background-color:#cd3333;">
+                      <div ng-click="aQuantity($index, data.product_details[0].quantity)" class="button button-small button-assertive"  style="float:left; display:inline-block; height:25px; width:25px; margin-left:3px; font-size:20px; background-color:#cd3333;">
           +
         </div>
 
         <div style="float:right; margin-right:25px; font-size:15px" ng-init="show_total($index)">
-            &#8377;{{data.data.product_details[0].quantity*data.data.product_details[0].unit.price}}
+            &#8377;{{data.product_details[0].quantity*data.product_details[0].unit.price}}
         </div>
       </div>
     </div>
