@@ -1,17 +1,14 @@
 <ion-view cache-view="false">
 	<ion-nav-title style="margin-top:10px;">
-	    	  
     <center style="margin-top:10px;"> <!--<img class="home-logo" src="img/l5.png"  style="padding-left: 10px;  margin: 0 auto;  border:1px solid white;" height="50">-->
     Recent Orders
     </center>
 	    </ion-nav-title>
-
 		<ion-nav-buttons side="left">
 			<button ng-click="go_back()" class="button back-button buttons button-clear header-item">
 				<i class="icon ion-android-arrow-back"></i>
 			</button>
 		</ion-nav-buttons>
-  	
     <ion-content class="has-header padding-top margin-top" style="padding-top: 5%; width: 98vw; background-color: #FFFF;">
   		<ion-list class="dark">
         <ion-item ng-repeat="orders in recent_orders_data track by $index" class="item-text-wrap"  style="padding: 2%; ">
@@ -23,6 +20,7 @@
                <!-- <div style="float: right;">{{orders.delivery_date | date: medium}}</div> -->
             </div>
               <div class="button-bar bar-dark">
+                <button ng-if="orders.status==0" ng-click="open_pdf(orders.link); $event.stopPropagation();" style="width: 100%; border: 1px solid #ddd; background-color: #cd3333;" class="button button-small button-block">{{'View Challan'}}</button>
                 <button ng-if="orders.is_updated==1" ng-click="get_order_history(orders.id); $event.stopPropagation();" style="width: 100%; border: 1px solid #ddd; background-color: #cd3333;" class="button button-small button-block">{{'Order History'}}</button>
                 <button ng-if="orders.status==0 || orders.status==1" style="width: 100%; border: 1px solid #ddd; background-color: #cd3333;" ng-click="get_order_details(orders.id)" class="button button-small button-block">{{'View'}}</button>
                 <button ng-if="orders.status==0" style="background-color: #cd3333; width: 100%; border: 1px solid #ddd;" ng-click="update_order(orders.id); $event.stopPropagation();" class="button button-small button-block">{{'Update Order'}}</button>

@@ -264,12 +264,7 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   });
 });
 
-
 //dashboard_controller
-
-
-
-
 app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, UiServices, Additional_services, $filter, $ionicModal, $localStorage, $state, $cordovaDatePicker, $q, $ionicPopup, $rootScope)  
 {
 	if($rootScope.is_pass_changed_status==0)
@@ -509,23 +504,21 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   }
   $scope.open_date_picker=function(add_id)
   {
-
-
-
       $scope.shipping_addresses_model.hide();
-  
-      var options = {
-      date: new Date(),
-      mode: 'date', // or 'time'
-      minDate: new Date() - 10000,
-      allowOldDates: true,
-      allowFutureDates: false,
-      doneButtonLabel: 'DONE',
-      doneButtonColor: '#F2F3F4',
-      cancelButtonLabel: 'CANCEL',
-      cancelButtonColor: '#000000'
-    };
+      var options = 
+      {
+        date: new Date(),
+        mode: 'date', // or 'time'
+        minDate: new Date() - 10000,
+        allowOldDates: true,
+        allowFutureDates: false,
+        doneButtonLabel: 'DONE',
+        doneButtonColor: '#F2F3F4',
+        cancelButtonLabel: 'CANCEL',
+        cancelButtonColor: '#000000'
+      };
 
+    $scope.save_order('22-8-2017', add_id);         
 
     $cordovaDatePicker.show(options).then(function(date)
     { 
@@ -579,7 +572,27 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
                       $localStorage.selected_items=[];
                       $scope.selected_items=[];
                       var div='<center>Your Order has been created successfully</center>';
-                      UiServices.alert_popup(div);  
+                      $ionicPopup.alert(
+                      {
+                        template: div,
+                        buttons:[{
+                            text:'ok', type: 'button-assertive'
+                        }]
+                        }).then(function(res)
+                        {   
+                            //response ;;;
+
+                            alert('alert pressend ok');
+
+
+                        });
+
+
+
+
+
+
+
                     });  
                  } 
                  else 
@@ -1321,7 +1334,9 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
                       $scope.selected_items=[];
                       var div='Your Order has been Created successfully';
                       UiServices.alert_popup(div); 
-                       $state.go('app.dashboard');  
+
+
+                      $state.go('app.dashboard');  
                     });  
                  } 
                  
@@ -1329,12 +1344,10 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
   }
 });
 app.controller('no_network_ConnectionCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope, $localStorage, $ionicPopup){
-
-
 	$scope.$on('$ionicView.enter', function(e) 
 	{
 		UiServices.hide_loader();
-  	});
+  });
 
       $scope.retry=function()
     {
