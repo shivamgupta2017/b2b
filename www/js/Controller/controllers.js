@@ -572,27 +572,8 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
                       $localStorage.selected_items=[];
                       $scope.selected_items=[];
                       var div='<center>Your Order has been created successfully</center>';
-                      $ionicPopup.alert(
-                      {
-                        template: div,
-                        buttons:[{
-                            text:'ok', type: 'button-assertive'
-                        }]
-                        }).then(function(res)
-                        {   
-                            //response ;;;
-
-                            alert('alert pressend ok');
-
-
-                        });
-
-
-
-
-
-
-
+                      UiServices.alert_popup(div);
+                        
                     });  
                  } 
                  else 
