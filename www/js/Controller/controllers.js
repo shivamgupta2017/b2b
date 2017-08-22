@@ -21,7 +21,7 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
             }
             else if($state.current.name=='login')
             {
-            	 ionic.Platform.exitApp();
+               	 ionic.Platform.exitApp();
                   event.preventDefault();
             }
             else
@@ -29,11 +29,6 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
               $ionicHistory.goBack();
             }
     }, 200);  
-
-
- 
-
-
   $ionicModal.fromTemplateUrl('templates/raise_my_concern.html', 
   {
     scope: $scope

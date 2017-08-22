@@ -26,6 +26,12 @@ app.run(function($ionicPlatform, $state, $localStorage, $ionicHistory)
     };
       window.plugins.OneSignal.startInit("93c7e511-bea9-41fe-93e5-6226c84c3619").handleNotificationOpened(notificationOpenedCallback).endInit();
       window.plugins.OneSignal.enableInAppAlertNotification(false);
+
+
+      window.plugins.OneSignal.startInit("93c7e511-bea9-41fe-93e5-6226c84c3619").inFocusDisplaying(window.plugins.OneSignal.OSInFocusDisplayOption.Notification)
+      .endInit();
+
+
     function offline() 
     {
       $state.go('network_connection');
