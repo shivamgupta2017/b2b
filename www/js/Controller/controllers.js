@@ -60,7 +60,6 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
    {
       $scope.change_password_model.show();
       document.getElementById("confirm_pass").style.borderColor='none';
-
    }
    $scope.submit_new_password=function()
    {
@@ -265,8 +264,11 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
 });
 
 //dashboard_controller
-app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, UiServices, Additional_services, $filter, $ionicModal, $localStorage, $state, $cordovaDatePicker, $q, $ionicPopup, $rootScope)  
+app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, UiServices, Additional_services, $filter, $ionicModal, $localStorage, $state, $cordovaDatePicker, $q, $ionicPopup, $rootScope, $ionicHistory)  
 {
+
+
+
 	if($rootScope.is_pass_changed_status==0)
 	{
 		var confirmPopup = $ionicPopup.confirm({
@@ -291,59 +293,75 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 
               });	
 	}
-	
 
-              
-
-  if($localStorage.selected_items==undefined)
+  $scope.$on('$ionicView.enter', function(event)
   {
-    $localStorage.selected_items=[];
-  }
-  $scope.selected_items = $localStorage.selected_items;
-//  alert('$localStorage.selected_items before:'+JSON.stringify($localStorage.selected_items));
-//calling for updating price ; shivam 
-
-
-  if($localStorage.selected_items.length>0)
-  {
-      var requesting_data=[];    
-      angular.forEach($scope.selected_items, function(value, key)
-      { 
-        var d=
-        {
-          product_id: value.product_details[0].product_id
-        };
-        requesting_data.push(d);
-      });
-      if(requesting_data.length>0)
-      {
-        UiServices.show_loader();
-        Services.webServiceCallPost(requesting_data, 'get_local_data_back').then(function(response)
-        { 
-          UiServices.hide_loader();
-          angular.forEach(response.data[0].data, function(value, key)
-          {
-             value.product_details[0].quantity = $localStorage.selected_items[key].product_details[0].quantity;
-             value.product_details[0].final_price = $localStorage.selected_items[key].product_details[0].final_price;
-          });
-          $localStorage.selected_items = response.data[0].data;
-          $scope.selected_items=$localStorage.selected_items;
-
-        });
-      }
-  }
-  
-  //alert('$localStorage.selected_items after :'+JSON.stringify($localStorage.selected_items));    
-   //doing for price updation    
-
-
-
+    
     UiServices.show_loader(); 
     Services.webServiceCallPost('', 'get_products').then(function(response)
     {
       $rootScope.data = response.data[0].data;
        UiServices.hide_loader(); 
     });
+
+    if($localStorage.selected_items.length>0)
+    {
+        var requesting_data=[];    
+        angular.forEach($scope.selected_items, function(value, key)
+        { 
+          var d=
+          {
+            product_id: value.product_details[0].product_id
+          };
+          requesting_data.push(d);
+        });
+        if(requesting_data.length>0)
+        {
+          UiServices.show_loader();
+          Services.webServiceCallPost(requesting_data, 'get_local_data_back').then(function(response)
+          { 
+            UiServices.hide_loader();
+            angular.forEach(response.data[0].data, function(value, key)
+            {
+               value.product_details[0].quantity = $localStorage.selected_items[key].product_details[0].quantity;
+               value.product_details[0].final_price = $localStorage.selected_items[key].product_details[0].final_price;
+            });
+            $localStorage.selected_items = response.data[0].data;
+            $scope.selected_items=$localStorage.selected_items;
+
+          });
+        }
+    }
+
+
+
+
+
+
+
+
+
+  });
+  
+                
+
+
+
+  if($localStorage.selected_items==undefined)
+  {
+    $localStorage.selected_items=[];
+  }
+  $scope.selected_items = $localStorage.selected_items;
+
+
+  
+  
+  //alert('$localStorage.selected_items after :'+JSON.stringify($localStorage.selected_items));    
+   //doing for price updation    
+
+
+
+   
 
 
   $ionicModal.fromTemplateUrl('templates/search.html', 
@@ -535,18 +553,18 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 
       req_obj.order_products=[];
       var total=0;
-      angular.forEach($scope.selected_items, function(value, key) 
-      {
-          var extra_data=
-          {
-            product_id: value.product_details[0].product_id,
-            quantity: value.product_details[0].quantity,
-            unit_mapping_id: value.product_details[0].unit.unit_product_mapping_id,
-            product_unit: value.product_details[0].unit.unit
-          }
-              req_obj.order_products.push(extra_data);
-      });
-      var confirmPopup = $ionicPopup.confirm({
+        angular.forEach($scope.selected_items, function(value, key) 
+        {
+            var extra_data=
+            {
+              product_id: value.product_details[0].product_id,
+              quantity: value.product_details[0].quantity,
+              unit_mapping_id: value.product_details[0].unit.unit_product_mapping_id,
+              product_unit: value.product_details[0].unit.unit
+            }
+                req_obj.order_products.push(extra_data);
+        });
+        var confirmPopup = $ionicPopup.confirm({
                  title: 'Create Order Confirmation',
                  template: '<center>Are you sure?</center>',
                  buttons :[
@@ -571,7 +589,8 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
                       $scope.selected_items=[];
                       var div='<center>Your Order has been created successfully</center>';
                       UiServices.alert_popup(div);
-
+                      if($scope.open_order_details_model.isShown())
+                          $scope.open_order_details_model.hide();
                     });  
                  } 
                  else 
@@ -580,6 +599,9 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
                  }
               });
     }
+
+
+
       $ionicModal.fromTemplateUrl('templates/order_details.html', 
       {
           scope: $scope
@@ -820,7 +842,6 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
 app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal, $localStorage, $state, UiServices, $rootScope)
 {
 
-   
   $scope.$on('$ionicView.beforeEnter', function(e) 
   {
     $scope.loginData = {};
@@ -1010,15 +1031,25 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 	        {
 	                 if(res) 
 	                 {
-	        			$scope.product_details.splice(index, 1);
-			    	   	$scope.total=0;
-			  		    angular.forEach($scope.product_details, function(value, key)
-			  		    {
-			  		      $scope.total=$scope.total+value.data.product_details[0].quantity*value.data.product_details[0].unit.price;
-			  		    });
-			          	if($scope.product_details.length==0)
-			            UiServices.alert_popup('<center>No. of product must no be 0</center>');
-	                 } 
+    	        			$scope.product_details.splice(index, 1);
+    			    	   	$scope.total=0;
+    			  		    angular.forEach($scope.product_details, function(value, key)
+    			  		    {
+    			  		      $scope.total=$scope.total+value.data.product_details[0].quantity*value.data.product_details[0].unit.price;
+    			  		    });
+    			          	if($scope.product_details.length==0)
+    			            {
+                        $ionicPopup.alert({
+                        template: '<center>cart can\'t be of empty</center>',
+                        buttons:[{
+                            text:'ok', type: 'button-assertive'
+                        }]
+                        }).then(function(res)
+                        {   
+                            $ionicHistory.goBack(-1);
+                        });
+                      }
+    	              } 
 	                 else 
 	                 {
 	                    console.log('else');
@@ -1375,27 +1406,23 @@ app.controller('no_network_ConnectionCtrl', function($scope, $stateParams, Servi
 	{
 		UiServices.hide_loader();
   });
-
       $scope.retry=function()
-    {
-
+      {
       var networkState = navigator.connection.type;;
       var states = {};
-    states[Connection.UNKNOWN]  = 'Unknown connection';
-    states[Connection.ETHERNET] = 'Ethernet connection';
-    states[Connection.WIFI]     = 'WiFi connection';
-    states[Connection.CELL_2G]  = 'Cell 2G connection';
-    states[Connection.CELL_3G]  = 'Cell 3G connection';
-    states[Connection.CELL_4G]  = 'Cell 4G connection';
-    states[Connection.CELL]     = 'Cell generic connection';
-    states[Connection.NONE]     = 'No network connection';
-    
-    if(states[networkState]!=states[Connection.NONE])
-    {   
-        $state.go('app.dashboard');
+      states[Connection.UNKNOWN]  = 'Unknown connection';
+      states[Connection.ETHERNET] = 'Ethernet connection';
+      states[Connection.WIFI]     = 'WiFi connection';
+      states[Connection.CELL_2G]  = 'Cell 2G connection';
+      states[Connection.CELL_3G]  = 'Cell 3G connection';
+      states[Connection.CELL_4G]  = 'Cell 4G connection';
+      states[Connection.CELL]     = 'Cell generic connection';
+      states[Connection.NONE]     = 'No network connection';
+      
+      if(states[networkState]!=states[Connection.NONE])
+      {   
+          $state.go('app.dashboard');
+      }
     }
-
-
-  }
 
 });
