@@ -102,7 +102,7 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
         else
         {
 
-         UiServices.alert_popup('<center>password must contain character, special symbol and digit</center>');
+         UiServices.alert_popup('<center>New password must contain character, special symbol and digit</center>');
         }
 
     }
@@ -1278,6 +1278,7 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
 
       req_obj.order_products=[];
       var total=0;
+
       angular.forEach($scope.selected_items, function(value, key) 
       {
           var extra_data=
@@ -1327,9 +1328,7 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
                       }]
                       }).then(function(res)
                       {   
-
-
-//                        $ionicHistory.goBack();        
+                         $ionicHistory.goBack();        
                       });
 
 

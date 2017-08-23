@@ -14,7 +14,7 @@
                       {{addresses.shipping_address_1}}  
                     </div>
                     <div>
-                      {{addresses.shipping_address_2}}, {{addresses.shipping_zip}}
+                      {{addresses.shipping_address_2 | limit: 25}}, {{addresses.shipping_zip}}
                     </div>
                     <div>
                     {{addresses.shipping_phone}}
