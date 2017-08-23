@@ -1245,8 +1245,13 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
         });
     
   }
+  $scope.close_shipping_address_model=function()
+  {
+
+        $scope.shipping_addresses_model.hide(); 
 
 
+  }
   $scope.show_total=function(final_price)
   {
      
@@ -1303,20 +1308,32 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
                  }]
               }).then(function(res) 
               {
-                
-
+                  
                  if(res) 
                  {  
+                    $scope.shipping_addresses_model.hide(); 
                     UiServices.show_loader();
                     Services.webServiceCallPost(req_obj, 'create_order').then(function(response)
                     {
                       UiServices.hide_loader();
-                      $scope.shipping_addresses_model.hide(); 
+                     
                       $localStorage.selected_items=[];
                       $scope.selected_items=[];
-                      var div='Your Order has been Created successfully';
-                      UiServices.alert_popup(div);
-                      $state.go('app.dashboard');  
+                      var div='<center>Your Order has been Created successfully</center>';
+                      $ionicPopup.alert({
+                      template: div,
+                      buttons:[{
+                          text:'ok', type: 'button-assertive'
+                      }]
+                      }).then(function(res)
+                      {   
+
+
+//                        $ionicHistory.goBack();        
+                      });
+
+
+                        
                     });  
                  } 
                  
