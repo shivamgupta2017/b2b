@@ -1330,12 +1330,8 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
                       {   
                          $ionicHistory.goBack();        
                       });
-
-
-                        
                     });  
                  } 
-                 
               });
   }
   $ionicModal.fromTemplateUrl('templates/shipping_address_for_express.html',
