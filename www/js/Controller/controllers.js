@@ -886,8 +886,6 @@ $scope.doLogin = function()
 });
 
 app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope, $ionicPopup){
-
-
   	$scope.product_details=[];
 	  $ionicModal.fromTemplateUrl('templates/search.html', 
   	{
@@ -983,7 +981,6 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
     	{
       		$scope.total=$scope.total+value.product_details[0].quantity*value.product_details[0].unit.price;
     	});
-
      }
 
      $scope.go_back=function()
@@ -1010,11 +1007,8 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 
       $scope.removeItem=function(index)
       {
-      		
-
-    
       		var confirmPopup = $ionicPopup.confirm(
-	    	{
+  	    	{
 	                 title: 'Remove product',
 	                 template: '<center>Are you sure ?</center>',
 	                 buttons :[
@@ -1032,11 +1026,12 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 	                 if(res) 
 	                 {
     	        			$scope.product_details.splice(index, 1);
-    			    	   	$scope.total=0;
+                    $scope.total=0;
     			  		    angular.forEach($scope.product_details, function(value, key)
     			  		    {
-    			  		      $scope.total=$scope.total+value.data.product_details[0].quantity*value.data.product_details[0].unit.price;
+    			  		      $scope.total=$scope.total+value.product_details[0].quantity*value.product_details[0].unit.price;
     			  		    });
+                    
     			          	if($scope.product_details.length==0)
     			            {
                         $ionicPopup.alert({
