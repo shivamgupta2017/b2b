@@ -11,17 +11,21 @@
                       <label class="item item-input" style="background-color:rgba(0,0,0,0.4); border:1px solid #444; border-radius:5px; color: white;">
                         <span class="input-label" style="color: white;">Username</span>
                        
-                        <input type="text"  ng-model="loginData.email" style="color: white;">
+                        <input type="text" ng-model="loginData.email" style="border-left: 1px solid white; color: white; padding-left: 5px;">
                       </label>
                       <br><br>
                       <label class="item item-input" style="background-color:rgba(0,0,0,0.4); border:1px solid #444; border-radius:5px; color: white;">
                         <span class="input-label" style="color: white;">Password</span>
-                        <input type="password" ng-model="loginData.password" style="color: white;">
+                        <input type="password" ng-model="loginData.password" style="border-left: 1px solid white; color: white; padding-left: 5px;">
                       </label>        
                </div>
         </div>
     </div>  
 
+
+    <div style="bottom: 0px; width: 100vw; text-align: center; font-weight: bold;">
+      Want to get Associated with Minbazaar ? <br><span ng-click="open_kyc_form()" class="positive">Click here</span>
+    </div>
   </ion-content>
 
 

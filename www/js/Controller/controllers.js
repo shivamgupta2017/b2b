@@ -29,6 +29,7 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
               $ionicHistory.goBack();
             }
     }, 200);  
+ 
   $ionicModal.fromTemplateUrl('templates/raise_my_concern.html', 
   {
     scope: $scope
@@ -841,6 +842,11 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
 app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal, $localStorage, $state, UiServices, $rootScope)
 {
 
+
+
+  $scope.kyc_request={};
+
+
   $scope.$on('$ionicView.beforeEnter', function(e) 
   {
     $scope.loginData = {};
@@ -859,8 +865,8 @@ $scope.doLogin = function()
 {	
  	//$scope.loginData.player_id=$localStorage.player_id;
 	// $localStorage.player_id=null;
-   	$scope.loginData.player_id = '123456';
-	UiServices.show_loader();
+    $scope.loginData.player_id = '123456';
+	  UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
       if(response.data[1].response.status==1)
@@ -877,6 +883,45 @@ $scope.doLogin = function()
         UiServices.hide_loader();
       }
     });
+  }
+
+  $ionicModal.fromTemplateUrl('templates/kyc.html', 
+  {
+    scope: $scope
+  }).then(function(modal) 
+  {
+    $scope.kyc = modal;
+  });
+
+  $scope.open_kyc_form=function()
+  {
+    $scope.kyc.show();
+
+  }
+  $scope.close_syc_model=function()
+  {
+    $scope.kyc.hide();
+  }
+  $scope.submit_request_for_kyc=function()
+  {
+    UiServices.show_loader();
+    Services.webServiceCallPost($scope.kyc_request, 'kyc_request').then(function(response)
+    {
+      UiServices.show_loader();
+
+
+      $scope.kyc.hide();
+
+    })    
+
+
+
+
+
+  }
+  $scope.close_kyc_request=function()
+  {
+    $scope.kyc.hide();
   }
 
 });
