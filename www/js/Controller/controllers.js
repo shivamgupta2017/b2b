@@ -520,12 +520,14 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   {
       $scope.shipping_addresses_model.hide();
       
+	    var date = new Date();
+		date.setDate(date.getDate() + 1);
       	
       var options = 
       {
-        date: new Date(),
+        date: date,
         mode: 'date', // or 'time'
-        minDate: new Date() - 10000,
+        minDate: date - 10000,
         allowOldDates: true,
         allowFutureDates: false,
         doneButtonLabel: 'DONE',
@@ -1111,7 +1113,7 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 	 }
 });
 
-app.controller('express_shippingCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope, $localStorage, $ionicPopup){
+app.controller('express_shippingCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope, $localStorage, $ionicPopup, $cordovaDatePicker){
 
   $scope.selected_items=[];
   $ionicModal.fromTemplateUrl('templates/search.html', 
@@ -1382,15 +1384,11 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
    $scope.open_date_picker=function(add_id)
   	{
       $scope.shipping_addresses_model.hide();
- 
-      var date = new Date();
-	  date.setDate(date.getDate() + 1);
-
       var options = 
       {
-        date: date,
+        date: new Date(),
         mode: 'date', // or 'time'
-        minDate: date - 10000,
+        minDate: new Date() - 10000,
         allowOldDates: true,
         allowFutureDates: false,
         doneButtonLabel: 'DONE',
@@ -1401,7 +1399,6 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
 
     $cordovaDatePicker.show(options).then(function(date)
     { 
-
     	//emergency shipping
         $scope.order_now_emergency_products(date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate(), add_id);         
     });
