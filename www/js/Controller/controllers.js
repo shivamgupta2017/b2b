@@ -112,7 +112,6 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
     }
    }
 
-   
    $scope.focus_kiya=function()
    {
           if($scope.new_password.pass1!=undefined && $scope.new_password.pass2!=undefined)
@@ -266,9 +265,6 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
 //dashboard_controller
 app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, UiServices, Additional_services, $filter, $ionicModal, $localStorage, $state, $cordovaDatePicker, $q, $ionicPopup, $rootScope, $ionicHistory)  
 {
-
-
-
 	if($rootScope.is_pass_changed_status==0)
 	{
 		var confirmPopup = $ionicPopup.confirm({
@@ -523,11 +519,14 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   $scope.open_date_picker=function(add_id)
   {
       $scope.shipping_addresses_model.hide();
+      
+      	var date = new Date();
+   		date.setDate(date.getDate() + 1);
       var options = 
       {
-        date: new Date(),
+        date: date,
         mode: 'date', // or 'time'
-        minDate: new Date() - 10000,
+        minDate: date - 10000,
         allowOldDates: true,
         allowFutureDates: false,
         doneButtonLabel: 'DONE',
@@ -538,7 +537,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 
     $cordovaDatePicker.show(options).then(function(date)
     { 
-        $scope.save_order(date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate(), add_id);         
+        $scope.order_now_emergency_products(date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate(), add_id);         
     });
   }
   $scope.save_order=function(date, selected_address_id)
@@ -631,7 +630,6 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 
   $scope.open_shipping_address_page=function()
   {
-
     $scope.selected_address={};
     var temp_data=
     {
@@ -1290,14 +1288,16 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
   {
     $ionicHistory.goBack();
   }
-  $scope.order_now_emergency_products=function(shipping_address_id)
+  $scope.order_now_emergency_products=function(emergency_shipping_date ,shipping_address_id)
   {
+
+    alert('sffdfd');	
       var req_obj=
       {
         user_id: JSON.parse($localStorage.user_data).user_id,
         is_express: 1,
-        delivery_date : '',
-        selected_address_id: shipping_address_id 
+        delivery_date : emergency_shipping_date,
+        selected_address_id: shipping_address_id,
       };
 
       req_obj.order_products=[];
@@ -1365,7 +1365,6 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
   {
     $scope.shipping_addresses_model=modal;
   });
-
   $scope.open_shipping_address_page=function()
   {
     $scope.selected_address={};
@@ -1389,6 +1388,30 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
         }
       });
    }
+
+   $scope.open_date_picker=function(add_id)
+  	{
+
+      $scope.shipping_addresses_model.hide();
+      var options = 
+      {
+        date: new Date(),
+        mode: 'date', // or 'time'
+        minDate: new Date() - 10000,
+        allowOldDates: true,
+        allowFutureDates: false,
+        doneButtonLabel: 'DONE',
+        doneButtonColor: '#F2F3F4',
+        cancelButtonLabel: 'CANCEL',
+        cancelButtonColor: '#000000'
+      };
+
+    $cordovaDatePicker.show(options).then(function(date)
+    { /*save_order*/
+        $scope.save_order(date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate(), add_id);         
+    });
+  }
+
 
 
 
