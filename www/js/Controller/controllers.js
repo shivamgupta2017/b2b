@@ -298,7 +298,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
     Services.webServiceCallPost('', 'get_products').then(function(response)
     {
       $rootScope.data = response.data[0].data;
-       UiServices.hide_loader(); 
+      UiServices.hide_loader();
     });
 
     if($localStorage.selected_items.length>0)
@@ -329,37 +329,15 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
           });
         }
     }
-
-
-
-
-
-
-
-
-
   });
-  
-                
-
-
-
   if($localStorage.selected_items==undefined)
   {
     $localStorage.selected_items=[];
   }
+
   $scope.selected_items = $localStorage.selected_items;
-
-
-  
-  
   //alert('$localStorage.selected_items after :'+JSON.stringify($localStorage.selected_items));    
    //doing for price updation    
-
-
-
-   
-
 
   $ionicModal.fromTemplateUrl('templates/search.html', 
   {
@@ -370,7 +348,6 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
     $scope.modal = modal;
   });
 
-
   $ionicModal.fromTemplateUrl('templates/shipping_addresses.html',
   {
     scope: $scope
@@ -378,8 +355,6 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   {
     $scope.shipping_addresses_model=modal;
   });
-
-
 
 
   $scope.search_model=function()
@@ -400,14 +375,19 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   {
     $scope.shipping_addresses_model.hide();
   }
+
+
+//shivam gupta
+
   $scope.product_name_clicked=function(product_id)
   { 
         var check_index = -1;
         angular.forEach($localStorage.selected_items, function(value, key)
-        {
+        { 
           if(value.product_details[0].product_id===product_id)
           {
             check_index=0;
+            console.log('shivam :');
           }
         });
 	    var extra_data={
@@ -1113,12 +1093,15 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 	 { 
         var extra_data={product_id: product_id};
         var index=-1;
+
+
         angular.forEach($scope.product_details, function(value, key)
-        { 
+        {   
            if(value.product_details[0].product_id==product_id)
            {
               index=key;
            }
+
         });
         if(index==-1)
         {
