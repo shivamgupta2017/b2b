@@ -565,7 +565,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
                 req_obj.order_products.push(extra_data);
         });
         var confirmPopup = $ionicPopup.confirm({
-                 title: 'Create Order Confirmation',
+                 title: 'You Are placing Order',
                  template: '<center>Are you sure?</center>',
                  buttons :[
                  {
@@ -587,7 +587,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
                       UiServices.hide_loader();
                       $localStorage.selected_items=[];
                       $scope.selected_items=[];
-                      var div='<center>Your Order has been created successfully</center>';
+                      var div='<center>Your Order has been placed successfully</center>';
                       UiServices.alert_popup(div);
                       if($scope.open_order_details_model.isShown())
                           $scope.open_order_details_model.hide();
@@ -858,13 +858,10 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
 
 $scope.doLogin = function()
 {	
-   $scope.loginData.player_id=$localStorage.player_id;
+ 	//$scope.loginData.player_id=$localStorage.player_id;
 	// $localStorage.player_id=null;
-   //$scope.loginData.player_id = '123456';
-
-
-   //alert('$scope.loginData ;'+JSON.stringify($scope.loginData));
-	 UiServices.show_loader();
+   	$scope.loginData.player_id = '123456';
+	UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
       if(response.data[1].response.status==1)
@@ -1129,9 +1126,10 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
     $scope.modal = modal;
   });
 
+
   var res=JSON.parse($localStorage.user_data);
   var user_details={user_id: res.user_id};
-  UiServices.alert_popup('<center>Express Shipping contains some extra charges</center>');
+  UiServices.alert_popup('<center>Express Shipping may contain extra charges</center>');
   UiServices.show_loader();
   
   Services.webServiceCallPost(user_details, 'express_shipping_charges').then(function(res)
@@ -1346,7 +1344,7 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
                      
                       $localStorage.selected_items=[];
                       $scope.selected_items=[];
-                      var div='<center>Your Order has been Created successfully</center>';
+                      var div='<center>Your Order has been placed Successfully</center>';
                       $ionicPopup.alert({
                       template: div,
                       buttons:[{
