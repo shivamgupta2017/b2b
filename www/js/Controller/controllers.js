@@ -1147,21 +1147,14 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
 
   $scope.product_name_clicked=function(product_id)
   { 
-
-
        var check_index = -1;
        angular.forEach($scope.selected_items, function(value, key)
        {
-        
         if(value.product_details[0].product_id===product_id)
         {
           check_index=0;
         }
-
       });
-
-    
-    
     var extra_data={
       product_id: product_id
     }
@@ -1389,11 +1382,15 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
    $scope.open_date_picker=function(add_id)
   	{
       $scope.shipping_addresses_model.hide();
+ 
+      var date = new Date();
+	  date.setDate(date.getDate() + 1);
+
       var options = 
       {
-        date: new Date(),
+        date: date,
         mode: 'date', // or 'time'
-        minDate: new Date() - 10000,
+        minDate: date - 10000,
         allowOldDates: true,
         allowFutureDates: false,
         doneButtonLabel: 'DONE',
