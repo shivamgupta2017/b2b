@@ -520,13 +520,12 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   {
       $scope.shipping_addresses_model.hide();
       
-      	var date = new Date();
-   		date.setDate(date.getDate() + 1);
+      	
       var options = 
       {
-        date: date,
+        date: new Date(),
         mode: 'date', // or 'time'
-        minDate: date - 10000,
+        minDate: new Date() - 10000,
         allowOldDates: true,
         allowFutureDates: false,
         doneButtonLabel: 'DONE',
@@ -537,7 +536,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 
     $cordovaDatePicker.show(options).then(function(date)
     { 
-        $scope.order_now_emergency_products(date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate(), add_id);         
+        $scope.save_order(date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate(), add_id);         
     });
   }
   $scope.save_order=function(date, selected_address_id)
@@ -1123,13 +1122,11 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
   {
     $scope.modal = modal;
   });
-
-
   var res=JSON.parse($localStorage.user_data);
   var user_details={user_id: res.user_id};
   UiServices.alert_popup('<center>Express Shipping may contain extra charges</center>');
   UiServices.show_loader();
-  
+
   Services.webServiceCallPost(user_details, 'express_shipping_charges').then(function(res)
   {
     $scope.extra_charges=res.data[0].data.express_shipping_charges;
@@ -1234,7 +1231,6 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
 
   $scope.removeItem=function(index)
   { 
-
   	var confirmPopup = $ionicPopup.confirm(
     	{
                  title: 'Remove product',
@@ -1291,13 +1287,14 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
   $scope.order_now_emergency_products=function(emergency_shipping_date ,shipping_address_id)
   {
 
-    alert('sffdfd');	
       var req_obj=
       {
+      
         user_id: JSON.parse($localStorage.user_data).user_id,
         is_express: 1,
         delivery_date : emergency_shipping_date,
         selected_address_id: shipping_address_id,
+      
       };
 
       req_obj.order_products=[];
@@ -1391,7 +1388,6 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
 
    $scope.open_date_picker=function(add_id)
   	{
-
       $scope.shipping_addresses_model.hide();
       var options = 
       {
@@ -1407,8 +1403,10 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
       };
 
     $cordovaDatePicker.show(options).then(function(date)
-    { /*save_order*/
-        $scope.save_order(date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate(), add_id);         
+    { 
+
+    	//emergency shipping
+        $scope.order_now_emergency_products(date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate(), add_id);         
     });
   }
 
