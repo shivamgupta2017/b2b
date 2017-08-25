@@ -25,13 +25,16 @@
           </div>
         </div>
 
+        <div style="width: 100%;">
+          <div style="width: 50%;">
+            <button class="button button-assertive button-block button-small" ng-click="open_gallery()">Upload Supporting file</button>
+          </div>
+        </div>
 
-
-      <h4><center>Explain Your Problem</center></h4>
       <div class="signin-input-holder" style="width: 90%; margin: 3%;"> 
             <ion-list style="padding-top: 5%;">
               <ion-item class="item-input " style="border:1px solid #ddd;  margin-top:10px; padding:5px; border-radius:5px;">
-                <textarea name="message" placeholder="Let us know how can we serve you better ?"  rows="5" ng-model="concern.message" required autocomplete="off">
+                <textarea name="message" placeholder="Explain Your Problem "  rows="5" ng-model="concern.message" required autocomplete="off">
                 </textarea>
               </ion-item>
             </ion-list>
@@ -42,7 +45,7 @@
   </ion-content>
   <ion-footer-bar class="bar bar-dark">
       <div class="button-bar">
-        <button type="submit" ng-click="raise_my_concern_now();" class="button button-clear" ng-disabled="concern.message==undefined || concern.message.length==0">Submit</button>
+        <button type="submit" ng-click="raise_my_concern_now();" class="button button-dark" ng-disabled="concern.message==undefined || concern.message.length==0">Submit</button>
        </div>
   </ion-footer-bar>
 

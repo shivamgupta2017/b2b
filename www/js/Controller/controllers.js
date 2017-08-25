@@ -213,18 +213,38 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
       }
     });
   }
+  $scope.open_gallery=function()
+  {
+  	navigator.camera.getPicture(onSuccess, onFail, 
+    { 
+          quality: 50, 
+          destinationType: Camera.DestinationType.FILE_URI,
+          sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+    }); 
+      
+      function onSuccess(imageURI) 
+      {		
+      	$scope.imageURI=imageURI;
+
+      }
+      function onFail(message) 
+      {
+          alert('Failed because: ' + message);
+    }
+  }
   $scope.raise_my_concern_now=function()
   {
     $scope.concern.user_id=$scope.user_data.user_id;
-    UiServices.show_loader();
+    
+    /*UiServices.show_loader();
     Services.webServiceCallPost($scope.concern, 'store_concern').then(function(response)
     {
       if(response.data[1].response.status==1)
       {
         UiServices.hide_loader();
         $ionicPopup.alert({
-                template: '<center>Concern Registered successfully</center>',
-                buttons:[{
+        template: '<center>Concern Registered successfully</center>',
+        buttons:[{
                     text:'ok', type: 'button-assertive'
                 }]
                 }).then(function(res)
@@ -232,7 +252,48 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
 			        $scope.raise_concern_model.hide();
                 });
       }
-    });
+    });*/
+
+    	var win = function (r) 
+    	{
+		    if(r.responseCode==200)
+		    {	
+			    UiServices.hide_loader();
+			    $ionicPopup.alert({
+        		template: '<center>Concern Registered successfully</center>',
+        		buttons:[{
+                    text:'ok', type: 'button-assertive'
+                }]
+                }).then(function(res)
+                {   
+			        $scope.raise_concern_model.hide();
+                });
+
+		    }
+		}
+		var fail = function (error) 
+		{
+
+		    UiServices.hide_loader();
+		    $ionicPopup.alert({
+        		template: '<center>error</center>',
+        		buttons:[{
+                    text:'ok', type: 'button-assertive'
+                }]
+                }).then(function(res)
+                {   
+			        $scope.raise_concern_model.hide();
+                });
+		}
+  		var options = new FileUploadOptions();
+        options.fileKey = 'file';
+        options.fileName = $scope.imageURI.substr($scope.imageURI.lastIndexOf('/')+1);
+        options.mimeType = "image/jpeg";
+        options.params = $scope.concern;
+    	options.chunkedMode = false;
+    	var ft = new FileTransfer();
+        UiServices.show_loader();
+ 		ft.upload($scope.imageURI, encodeURI("http://192.168.1.138/admin/service/store_concern"), win, fail, options);
 
   }
   $scope.close_change_user_password=function()
