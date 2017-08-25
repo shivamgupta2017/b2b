@@ -112,39 +112,6 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
          UiServices.alert_popup('<center>password does not match</center>');
     }
    }
-
-   /*function onDeviceReady() 
-   {
-       var pictureSource=navigator.camera.PictureSourceType;
-       var destinationType=navigator.camera.DestinationType;
-        alert('ondeviceready');
-   }*/
-
-   $scope.test=function()
-   {
-
-      //Camera.DestinationType.FILE_URI
-      /*pictureSource=navigator.camera.PictureSourceType;
-        destinationType=navigator.camera.DestinationType;*/
-
-      navigator.camera.getPicture(onSuccess, onFail, 
-      { 
-          quality: 50, 
-          destinationType: Camera.DestinationType.FILE_URI,
-          sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM
-      }); 
-      function onSuccess(imageURI) 
-      {
-          var image = imageURI;
-          alert('shivam :'+JSON.stringify(image));
-      }
-      function onFail(message) 
-      {
-          alert('Failed because: ' + message);
-      }
-
-
-   }
    $scope.focus_kiya=function()
    {
           if($scope.new_password.pass1!=undefined && $scope.new_password.pass2!=undefined)
