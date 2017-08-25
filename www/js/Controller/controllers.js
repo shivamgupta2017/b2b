@@ -219,7 +219,11 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
     { 
           quality: 50, 
           destinationType: Camera.DestinationType.FILE_URI,
-          sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+          sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+          targetWidth: 512,
+          targetHeight: 512,
+          correctOrientation: true,
+          
     }); 
       
       function onSuccess(imageURI) 
@@ -235,26 +239,32 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   $scope.raise_my_concern_now=function()
   {
     $scope.concern.user_id=$scope.user_data.user_id;
-    
-    /*UiServices.show_loader();
-    Services.webServiceCallPost($scope.concern, 'store_concern').then(function(response)
-    {
-      if(response.data[1].response.status==1)
-      {
-        UiServices.hide_loader();
-        $ionicPopup.alert({
-        template: '<center>Concern Registered successfully</center>',
-        buttons:[{
-                    text:'ok', type: 'button-assertive'
-                }]
-                }).then(function(res)
-                {   
-			        $scope.raise_concern_model.hide();
-                });
-      }
-    });*/
+	
+	if($scope.imageURI==undefined)
+	{
 
-    	var win = function (r) 
+		UiServices.show_loader();
+	    Services.webServiceCallPost($scope.concern, 'store_concern').then(function(response)
+	    {
+	      if(response.data[1].response.status==1)
+	      {
+	        UiServices.hide_loader();
+	        $ionicPopup.alert({
+	        template: '<center>Concern Registered successfully</center>',
+	        buttons:[{
+	                    text:'ok', type: 'button-assertive'
+	                }]
+	                }).then(function(res)
+	                {   
+				        $scope.raise_concern_model.hide();
+	                });
+	      }
+	    });
+
+	}
+	else
+	{
+		var win = function (r) 
     	{
 		    if(r.responseCode==200)
 		    {	
@@ -294,6 +304,8 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
     	var ft = new FileTransfer();
         UiServices.show_loader();
  		ft.upload($scope.imageURI, encodeURI("http://192.168.1.138/admin/service/store_concern"), win, fail, options);
+
+	}    
 
   }
   $scope.close_change_user_password=function()
