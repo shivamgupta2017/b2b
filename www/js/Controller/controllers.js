@@ -365,7 +365,6 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 
   $scope.$on('$ionicView.enter', function(event)
   {
-    
     UiServices.show_loader(); 
     Services.webServiceCallPost('', 'get_products').then(function(response)
     {
@@ -406,7 +405,6 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   {
     $localStorage.selected_items=[];
   }
-
   $scope.selected_items = $localStorage.selected_items;
   //alert('$localStorage.selected_items after :'+JSON.stringify($localStorage.selected_items));    
    //doing for price updation    
@@ -461,62 +459,29 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 
   $scope.product_name_clicked=function(product_id)
   { 
-        
-        var check_index = -1;
-        angular.forEach($localStorage.selected_items, function(value, key)
-        { 
-          if(value.product_details[0].product_id===product_id)
-          {
-            check_index=key;
-          }
-        });
-  	    var extra_data=
-        {
-  	      product_id: product_id
-  	    }
+    	var extra_data=
+      {
+    	      product_id: product_id
+    	}
 
-   if(check_index==-1)
-   {
-    UiServices.show_loader(); 
-    Services.webServiceCallPost(extra_data, 'get_product_details').then(function(response)
-    {
-        UiServices.hide_loader(); 
-        if(response.data[1].response.status==1)
-        {          
+      UiServices.show_loader(); 
+      Services.webServiceCallPost(extra_data, 'get_product_details').then(function(response)
+      {
+          UiServices.hide_loader(); 
+          if(response.data[1].response.status==1)
+          {          
             var extra_data=
             {
-             quantity: 1,
-             final_price: 0
+               quantity: 1,
+               final_price: 0
             }
-          angular.extend(response.data[0].data.product_details[0], extra_data);
-          $scope.temp=[];
-          $scope.temp.push(response.data[0].data);
-          $scope.detailed_product_desc.show();
-
-        }
-
-    });
-
-  }
-   else if(check_index>=0)
-   {
-      alert('already added in cart man :'+check_index);
-   }
-   else
-   {
-   		$ionicPopup.alert({
-                template: '<center>Already added in the cart</center>',
-                buttons:[{
-                    text:'ok', type: 'button-assertive'
-                }]
-                }).then(function(res)
-                {   
-   					      $scope.modal.hide();
-                        
-                });
-
-   }
-
+            angular.extend(response.data[0].data.product_details[0], extra_data);
+            $scope.temp=[];
+            $scope.temp.push(response.data[0].data);
+            $scope.modal.hide();
+            $scope.detailed_product_desc.show();
+          }
+      });
   }
   $scope.dQuantity=function(index, quantity)
   {
@@ -712,20 +677,18 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
       });
    }
    $scope.add_product_to_cart_list=function()
-   {  
-
-          $scope.modal.hide();
-          alert('shivam :'+JSON.stringify($scope.temp));
-          /*angular.forEach($localStorage.selected_items, function(value, key) 
+   {    
+          $scope.detailed_product_desc.hide();
+          angular.forEach($localStorage.selected_items, function(value, key) 
           {
             $scope.temp.push(value);
           });
           $localStorage.selected_items=$scope.temp;
           $scope.selected_items = $localStorage.selected_items;
-          */
+          $scope.temp=[];
+          console.log('localStorage.selected_items :'+JSON.stringify($scope.selected_items));
    }
 
-      
 
 });
 app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localStorage, $ionicModal, $ionicHistory, UiServices, $ionicPopup){
