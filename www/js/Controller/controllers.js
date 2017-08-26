@@ -428,6 +428,14 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
     $scope.shipping_addresses_model=modal;
   });
 
+  $ionicModal.fromTemplateUrl('templates/detailed_product_selection.html',
+  {
+    scope: $scope
+  }).then(function(modal)
+  {
+    $scope.detailed_product_desc=modal;
+  });
+
 
   $scope.search_model=function()
   {
@@ -453,19 +461,19 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 
   $scope.product_name_clicked=function(product_id)
   { 
+        
         var check_index = -1;
         angular.forEach($localStorage.selected_items, function(value, key)
         { 
           if(value.product_details[0].product_id===product_id)
           {
-            check_index=0;
-            console.log('shivam :');
+            check_index=key;
           }
         });
-	    var extra_data={
-	      product_id: product_id
-	    }
-
+  	    var extra_data=
+        {
+  	      product_id: product_id
+  	    }
 
    if(check_index==-1)
    {
@@ -480,20 +488,19 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
              quantity: 1,
              final_price: 0
             }
-
           angular.extend(response.data[0].data.product_details[0], extra_data);
           $scope.temp=[];
           $scope.temp.push(response.data[0].data);
-          angular.forEach($localStorage.selected_items, function(value, key) 
-          {
-            $scope.temp.push(value);
-          });
-          $localStorage.selected_items=$scope.temp;
-          $scope.selected_items = $localStorage.selected_items;
+          $scope.detailed_product_desc.show();
+
         }
 
     });
-		$scope.modal.hide();
+
+  }
+   else if(check_index>=0)
+   {
+      alert('already added in cart man :'+check_index);
    }
    else
    {
@@ -504,7 +511,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
                 }]
                 }).then(function(res)
                 {   
-   					$scope.modal.hide();
+   					      $scope.modal.hide();
                         
                 });
 
@@ -674,14 +681,12 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
  }
   $scope.show_total=function(final_price)
   {
-     
     $scope.total=0;
     angular.forEach($localStorage.selected_items, function(value, key)
     {
       $scope.total=$scope.total+value.product_details[0].quantity*value.product_details[0].unit.price;
     });
   }
-
   $scope.open_shipping_address_page=function()
   {
     $scope.selected_address={};
@@ -705,6 +710,19 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
           UiServices.alert_popup('shipping address not available');
         }
       });
+   }
+   $scope.add_product_to_cart_list=function()
+   {  
+
+          $scope.modal.hide();
+          alert('shivam :'+JSON.stringify($scope.temp));
+          /*angular.forEach($localStorage.selected_items, function(value, key) 
+          {
+            $scope.temp.push(value);
+          });
+          $localStorage.selected_items=$scope.temp;
+          $scope.selected_items = $localStorage.selected_items;
+          */
    }
 
       
