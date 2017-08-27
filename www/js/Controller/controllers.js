@@ -679,14 +679,27 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
    $scope.add_product_to_cart_list=function()
    {    
           $scope.detailed_product_desc.hide();
+          var index=-1; 
+          console.log('$scope.open_detailed_design :'+JSON.stringify($scope.temp));
           angular.forEach($localStorage.selected_items, function(value, key) 
-          {
+          { 
+            if(value.product_details[0].product_id==$scope.temp[0].product_details[0].product_id)
+            {
+              if(value.product_details[0].unit.unit_product_mapping_id==$scope.temp[0].product_details[0].unit_product_mapping_id)
+              {
+                alert('product id and unit_mapping_id is matching');
+              }
+              else
+              {
+                alert('only product id is mathching');
+              }
+            }
+
             $scope.temp.push(value);
           });
-          $localStorage.selected_items=$scope.temp;
-          $scope.selected_items = $localStorage.selected_items;
+          //$localStorage.selected_items=$scope.temp;
+          //$scope.selected_items = $localStorage.selected_items;
           $scope.temp=[];
-          console.log('localStorage.selected_items :'+JSON.stringify($scope.selected_items));
    }
 
 
