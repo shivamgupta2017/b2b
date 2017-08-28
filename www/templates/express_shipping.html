@@ -45,9 +45,10 @@
         </div>
       <i style="font-size:12px; width:10%; float:right;" class="icon ion-android-close color-dark" ng-click="removeItem($index)"></i></div>
         <div style="height:25%; width:100%; text-align:left; float:left;">
-
-          <select  class="abc" ng-init="selected_items[$index].product_details[0].unit = data.unit_details[0]" ng-model="selected_items[$index].product_details[0].unit" ng-options="v.weight+' '+v.unit for v in data.unit_details" ng-change="show_total()">
-      </select>
+        {{data.product_details[0].unit.weight | number : 0}}{{'&nbsp;'+data.product_details[0].unit.unit}}
+          <!-- <select  class="abc" ng-init="selected_items[$index].product_details[0].unit = data.unit_details[0]" ng-model="selected_items[$index].product_details[0].unit" ng-options="v.weight+' '+v.unit for v in data.unit_details" ng-change="show_total()">
+        }
+      </select> -->
       </div>
       
       <div style="height:50%; width:100%; padding:5px;  text-align:left; float:left;  font-size:18px;">

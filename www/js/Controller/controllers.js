@@ -688,9 +688,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
               if(value.product_details[0].unit.unit_product_mapping_id===$scope.temp[0].product_details[0].unit.unit_product_mapping_id)
               {
                 index=key;
-                alert('product and unit id is already available there :');
                 $scope.temp=[];
-
               }
             }
             
@@ -701,8 +699,18 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
               $scope.selected_items = $localStorage.selected_items;
               $scope.temp=[];
            }
-           
-           console.log('shivam :'+JSON.stringify($scope.selected_items));
+           else
+           {
+                $ionicPopup.alert({
+                template: '<center>Already added in the cart</center>',
+                buttons:[{
+                    text:'ok', type: 'button-assertive'
+                }]
+                }).then(function(res)
+                {   
+                  $scope.modal.hide();
+                });
+           }
    }
 
 
@@ -985,6 +993,7 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
   	{
    	 $scope.modal = modal;
   	});
+
   	var sending_data=
   	{
   		order_id: $stateParams.order_id
@@ -999,11 +1008,13 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
           $scope.product_details=response.data[0].data;
         }
     });
+
+
      $scope.update_now=function()
      {
-
       sending_data.user_id=$scope.user_data.user_id;
       sending_data.product_details=[];
+      
       angular.forEach($scope.product_details, function(value, key)
       { 
         var my_extra_data=
@@ -1158,22 +1169,22 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 	 {
 	      $scope.modal.hide();    
 	 }
+
+
+
+   $ionicModal.fromTemplateUrl('templates/detailed_product_selection.html',
+  {
+    scope: $scope
+  }).then(function(modal)
+  {
+    $scope.detailed_product_desc=modal;
+  });
+
+
+   //update_orderCtrl
 	 $scope.product_name_clicked=function(product_id)
 	 { 
         var extra_data={product_id: product_id};
-        var index=-1;
-
-
-        angular.forEach($scope.product_details, function(value, key)
-        {   
-           if(value.product_details[0].product_id==product_id)
-           {
-              index=key;
-           }
-
-        });
-        if(index==-1)
-        {
             UiServices.show_loader(); 
             Services.webServiceCallPost(extra_data, 'get_product_details').then(function(response)
             {
@@ -1181,33 +1192,56 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
                   response.data[0].data.product_details[0].quantity=1;
                   $scope.temp=[];
                   $scope.temp.push(response.data[0].data);
-                  angular.forEach($scope.product_details, function(value, key)
-                  {
-                    $scope.temp.push(value);
-                  });
-                  $scope.product_details=$scope.temp;
+               	  $scope.modal.hide();
+                  $scope.detailed_product_desc.show();
+                  
             });
-        	$scope.modal.hide();
-        }
-        else
-   		{
-   		$ionicPopup.alert({
-                template: '<center>Already added in the card</center>',
+	 }
+
+   $scope.add_product_to_cart_list=function()
+   {      
+          $scope.detailed_product_desc.hide();
+          var index=-1;
+
+          if($scope.product_details.length>0)
+          {
+            angular.forEach($scope.product_details, function(value, key) 
+            { 
+              $scope.temp.push(value);
+
+              if(value.product_details[0].product_id==$scope.temp[0].product_details[0].product_id)
+              {
+                if(value.product_details[0].unit.unit_product_mapping_id===$scope.temp[0].product_details[0].unit.unit_product_mapping_id)
+                {
+                  index=key;
+                  $scope.temp=[];
+                }
+              }
+              
+            });
+          } 
+          
+           if(index==-1)
+           {
+              $scope.product_details=$scope.temp;
+              $scope.temp=[];
+           }
+           else
+           {
+                $ionicPopup.alert({
+                template: '<center>Already added in the cart</center>',
                 buttons:[{
                     text:'ok', type: 'button-assertive'
                 }]
                 }).then(function(res)
                 {   
-   					$scope.modal.hide();
-                        
+                  $scope.modal.hide();
                 });
-
-   		}
-
-      
+           }
+   }
 
 
-	 }
+
 });
 
 app.controller('express_shippingCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope, $localStorage, $ionicPopup, $cordovaDatePicker){
@@ -1244,64 +1278,87 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
       $scope.modal.hide();    
   }
 
+
+  $ionicModal.fromTemplateUrl('templates/detailed_product_selection.html',
+  {
+    scope: $scope
+  }).then(function(modal)
+  {
+    $scope.detailed_product_desc=modal;
+  });
+
+
+
   $scope.product_name_clicked=function(product_id)
   { 
-       var check_index = -1;
-       angular.forEach($scope.selected_items, function(value, key)
-       {
-        if(value.product_details[0].product_id===product_id)
-        {
-          check_index=0;
-        }
-      });
-    var extra_data={
+       //express shipping ctrl man
+    var extra_data=
+    {
       product_id: product_id
     }
-   if(check_index==-1)
-   {
-    UiServices.show_loader(); 
-    Services.webServiceCallPost(extra_data, 'get_product_details').then(function(response)
-    {
-        if(response.data[1].response.status==1)
-        {          
+    
+      UiServices.show_loader(); 
+      Services.webServiceCallPost(extra_data, 'get_product_details').then(function(response)
+      {
+          UiServices.hide_loader(); 
+          if(response.data[1].response.status==1)
+          {          
             var extra_data=
             {
-             quantity: 1,
-             final_price: 0
+               quantity: 1,
+               final_price: 0
             }
+            angular.extend(response.data[0].data.product_details[0], extra_data);
+            $scope.temp=[];
+            $scope.temp.push(response.data[0].data);
+            $scope.modal.hide();
+            $scope.detailed_product_desc.show();
+          }
+      });
+  }
 
-          UiServices.hide_loader();
-          angular.extend(response.data[0].data.product_details[0], extra_data);
-          $scope.temp=[];
-          $scope.temp.push(response.data[0].data);
-          angular.forEach($scope.selected_items, function(value, key) 
+
+
+
+  $scope.add_product_to_cart_list=function()
+   {      
+          $scope.detailed_product_desc.hide();
+          var index=-1; 
+          if($scope.selected_items.length>0)
           {
-            $scope.temp.push(value);
-          });
-          
-          $scope.selected_items=$scope.temp;
+            angular.forEach($scope.selected_items, function(value, key) 
+            { 
+              $scope.temp.push(value);
 
-          //$scope.selected_items = $localStorage.selected_items;
-           
-        }
-    });
-			$scope.modal.hide();
-   }
-   else
-   {
-   		$ionicPopup.alert({
-                template: '<center>Already added in the card</center>',
+              if(value.product_details[0].product_id==$scope.temp[0].product_details[0].product_id)
+              {
+                if(value.product_details[0].unit.unit_product_mapping_id===$scope.temp[0].product_details[0].unit.unit_product_mapping_id)
+                {
+                  index=key;
+                  $scope.temp=[];
+                }
+              }
+            });
+          }
+          
+           if(index==-1)
+           {
+              $scope.selected_items=$scope.temp;
+              $scope.temp=[];
+           }
+           else
+           {
+                $ionicPopup.alert({
+                template: '<center>Already added in the cart</center>',
                 buttons:[{
                     text:'ok', type: 'button-assertive'
                 }]
                 }).then(function(res)
                 {   
-   					$scope.modal.hide();
-                        
+                  $scope.modal.hide();
                 });
-
+           }
    }
-  }
 
   $scope.aQuantity=function(index, quantity)
   {   
