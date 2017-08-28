@@ -493,8 +493,6 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
     {
         $scope.removeItem(index);
     }
-
-
   }
   $scope.aQuantity=function(index, quantity)
   {
@@ -709,6 +707,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
                   $scope.modal.hide();
                 });
            }
+
    }
 
    $scope.detailed_product_quantity=function(index, quantity, status)
@@ -982,6 +981,7 @@ $scope.doLogin = function()
                       }]
                       }).then(function(res)
                       {   
+                      	$scope.kyc_request={};
 					    $scope.kyc.hide();
                       });
     	}
