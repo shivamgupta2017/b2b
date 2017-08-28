@@ -32,8 +32,8 @@
                 
                 <!-- <button ng-if="orders.status==0 || orders.status==1" style="width: 100%; border: 1px solid #ddd; background-color: #cd3333;" ng-click="get_order_details(orders.id)" class="button button-small button-block">{{'View'}}</button> -->
               
-                <button ng-if="orders.status==0" style="background-color: #cd3333; width: 100%; border: 1px solid #ddd;" ng-click="update_order(orders.id); $event.stopPropagation();" class="button button-small button-block">{{'Update Order'}}</button>
-              
+                <!-- <button ng-if="orders.status==0" style="background-color: #cd3333; width: 100%; border: 1px solid #ddd;" ng-click="update_order(orders.id); $event.stopPropagation();" class="button button-small button-block">{{'Update Order'}}</button>
+               -->
                 <button ng-if="orders.status==1" style="background-color: #cd3333; width: 100%; border: 1px solid #ddd;" ng-click="open_verification_model(orders.id); $event.stopPropagation();" class="button button-small button-block">{{'Verify Order'}}</button>
               
                 <button ng-if="orders.status==3" ng-click="open_pdf(orders.link)" style="background-color: #cd3333; width: 100%; border: 1px solid #ddd;" class="button button-small button-block">{{'View Invoice'}}</button>

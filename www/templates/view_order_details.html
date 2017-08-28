@@ -130,8 +130,8 @@
 
   <ion-footer-bar class="bar bar-dark">
       <div class="button-bar">
-          <button class="button button-dark" ng-click="accept_order()" ng-if="checked_items.indexOf(true)>=0">Accept Order</i></button>
-          <button class="button button-dark" ng-click="complete_order()">Finish Order</i></button>
+          <button style="border-right: 1px solid white;" class="button button-dark" ng-click="accept_order()" ng-if="checked_items.indexOf(true)>=0">Accept Order</i></button>
+          <button ng-if="order_verification==1" class="button button-dark" ng-click="complete_order()">Finish Order</i></button>
        </div>
   </ion-footer-bar>
 </ion-view>

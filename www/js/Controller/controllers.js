@@ -362,7 +362,6 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
 
               });	
 	}
-
   $scope.$on('$ionicView.enter', function(event)
   {
     UiServices.show_loader(); 
@@ -544,7 +543,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
       $scope.shipping_addresses_model.hide();
       
 	    var date = new Date();
-		date.setDate(date.getDate() + 1);
+  		date.setDate(date.getDate() + 1);
       	
       var options = 
       {
@@ -711,6 +710,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
                 });
            }
 
+
    }
 
    $scope.detailed_product_quantity=function(index, quantity, status)
@@ -853,6 +853,10 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
               {
                 UiServices.hide_loader();
                 UiServices.alert_popup('<center>Looks like Your Order is already Verified</center>');
+
+
+
+                
               }
           });
     } 
@@ -888,7 +892,6 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
             UiServices.show_loader();
             Services.webServiceCallPost(sending_data, 'get_order_details').then(function(response)
             {  
-                  $scope.checked_items=[];
                 if(response.data[1].response.status==1)
                 {
                   UiServices.hide_loader();
@@ -901,8 +904,15 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
                   }]
                   }).then(function(res)
                   {   
+                    $scope.checked_items=[];
 
                   });
+                }
+                else
+                {
+                  UiServices.hide_loader();
+                  $ionicHistory.goBack(-1);
+
                 }
             });
           }
@@ -972,7 +982,7 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
   });
 $scope.doLogin = function()
 {	
- 	//$scope.loginData.player_id=$localStorage.player_id;
+ 	//    $scope.loginData.player_id=$localStorage.player_id;
 	// $localStorage.player_id=null;
     $scope.loginData.player_id = '123456';
 	  UiServices.show_loader();
@@ -1227,9 +1237,6 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 	 {
 	      $scope.modal.hide();    
 	 }
-
-
-
    $ionicModal.fromTemplateUrl('templates/detailed_product_selection.html',
   {
     scope: $scope
@@ -1237,8 +1244,6 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
   {
     $scope.detailed_product_desc=modal;
   });
-
-
    //update_orderCtrl
 	 $scope.product_name_clicked=function(product_id)
 	 { 
@@ -1258,9 +1263,9 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 
    $scope.add_product_to_cart_list=function()
    {      
+
           $scope.detailed_product_desc.hide();
           var index=-1;
-
           if($scope.product_details.length>0)
           {
             angular.forEach($scope.product_details, function(value, key) 
@@ -1269,8 +1274,10 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
 
               if(value.product_details[0].product_id==$scope.temp[0].product_details[0].product_id)
               {
+
                 if(value.product_details[0].unit.unit_product_mapping_id===$scope.temp[0].product_details[0].unit.unit_product_mapping_id)
                 {
+                  alert('key'+key);
                   index=key;
                   $scope.temp=[];
                 }
