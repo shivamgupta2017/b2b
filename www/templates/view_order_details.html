@@ -80,7 +80,7 @@
         </div>
       </ion-item> -->
 
-
+<!-- order_verification==1 -->
 
       <ion-list ng-if="order_verification==1">
         <ion-item  ng-repeat="orders in order_details track by $index" style="display: list-item; height: 50%; padding: 0px;">
@@ -95,9 +95,8 @@
             </ion-checkbox>
         </ion-item>
       </ion-list>
-
+   
       <ion-list ng-if="order_verification==2">
-
       <ion-item  ng-repeat="order_history in order_history_data track by $index" style="padding: 0; border-style: none;">
                     <div class="row">
                       <div class="col col-60">
@@ -126,20 +125,13 @@
 
                   </div>
               </ion-item>
-
-
-
-
-
-
       </ion-list>
-
-
 </ion-content>
 
-  <ion-footer-bar class="bar bar-dark" ng-if="checked_items.indexOf(true)>=0">
+  <ion-footer-bar class="bar bar-dark">
       <div class="button-bar">
-          <button class="button button-dark" ng-click="accept_order()">Accept Order</i></button>
+          <button class="button button-dark" ng-click="accept_order()" ng-if="checked_items.indexOf(true)>=0">Accept Order</i></button>
+          <button class="button button-dark" ng-click="complete_order()">Finish Order</i></button>
        </div>
   </ion-footer-bar>
 </ion-view>

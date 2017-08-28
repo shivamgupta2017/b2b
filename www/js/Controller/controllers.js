@@ -791,7 +791,7 @@ app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localSto
     }
 
     $scope.open_shipping_address_page=function()
-   {
+    {
       $scope.selected_address={};
       var temp_data=
       {
@@ -812,7 +812,7 @@ app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localSto
           UiServices.alert_popup('shipping address not available');
         }
       });
-   }
+    }
    $scope.get_order_history=function(order_id)
    {
        $state.go('app.view_order_details', {order_id: order_id, order_verification: 2});
@@ -821,7 +821,7 @@ app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localSto
 
 });
 
-app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services, $ionicHistory, UiServices) 
+app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services, $ionicHistory, UiServices, $ionicPopup) 
 {
 
     $scope.checked_items=[];   
@@ -855,13 +855,7 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
                 UiServices.alert_popup('<center>Looks like Your Order is already Verified</center>');
               }
           });
-
-
     } 
-
-
-
-     
       $scope.go_back=function()
       {
         $ionicHistory.goBack();
@@ -869,47 +863,96 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
       $scope.accept_order=function()
       {
       	var req_data={};
-      	req_data.order_id= $scope.order_details[0].order_id; 
-      	 req_data.order_details= [];
+      	req_data.order_id = $scope.order_details[0].order_id;
+        req_data.status = '0'; 
+      	req_data.order_details= [];
       	angular.forEach($scope.checked_items, function(value, key)
       	{
       		if(value)
-      		{	
-      			req_data.order_details.push($scope.order_details[key].product_id);	  		
+      		{
+            var Data={
+              product_id: $scope.order_details[key].product_id,
+              size: $scope.order_details[key].size,
+            };	
+            
+      			req_data.order_details.push(Data);	  		
       		}
       	});
-      	req_data.order_details=JSON.stringify(req_data.order_details);
 
+        req_data.order_details=JSON.stringify(req_data.order_details);
         UiServices.show_loader();
-      	Services.webServiceCallPost(req_data, 'verify_order').then(function(response)
+        Services.webServiceCallPost(req_data, 'verify_order').then(function(response)
       	{
-      		UiServices.hide_loader();
-       	    $ionicHistory.goBack();
-
-          /*var disco=JSON.parse(req_data.order_details);
-          for(var i=0; i<$scope.order_details.length; i++)
+          if(response.data[1].response.status==1)
           {
-            for(var j=0; j<disco.length; j++)
-            {
-              if($scope.order_details[i].product_id==disco[j])
-              {
-                $scope.order_details.splice(i, 1);
-                alert('order_details :'+JSON.stringify($scope.order_details));
-                $scope.checked_items=[];
-                if($scope.order_details.length==0)
+            UiServices.show_loader();
+            Services.webServiceCallPost(sending_data, 'get_order_details').then(function(response)
+            {  
+                  $scope.checked_items=[];
+                if(response.data[1].response.status==1)
                 {
-                  alert('shivam length : 0');
+                  UiServices.hide_loader();
+                  $scope.order_details=response.data[0].data;
 
+                  $ionicPopup.alert({
+                  template: '<center>Updated Successfully!</center>',
+                  buttons:[{
+                      text:'ok', type: 'button-assertive'
+                  }]
+                  }).then(function(res)
+                  {   
+
+                  });
                 }
-              }
-            }
-          }*/
-
+            });
+          }
       	});
       }
-      
-
-
+      $scope.complete_order=function()
+      {
+        var confirmPopup = $ionicPopup.confirm(
+        {
+                   title: 'Complete Order',
+                   template: '<center>Are you sure ?</center>',
+                   buttons :[
+                   {
+                    text: 'cancel'
+                   },
+                   {
+                    text: 'Confirm', type: 'button-assertive',
+                    onTap: function(e) {
+                      return 1;
+                    }
+                   }]
+        }).then(function(res) 
+          {
+            if(res)
+            {
+              var req_data={};
+              req_data.order_details = [];        
+              req_data.order_id = $scope.order_details[0].order_id;
+              req_data.status = '1';
+              req_data.order_details=JSON.stringify(req_data.order_details);      
+              UiServices.show_loader();
+              Services.webServiceCallPost(req_data, 'verify_order').then(function(response)
+              { 
+                if(response.data[1].response.status==1)
+                {   
+                    UiServices.hide_loader();
+                    $ionicPopup.alert({
+                    template: '<center>Updated successfully !</center>',
+                    buttons:[{
+                        text:'ok', type: 'button-assertive'
+                    }]
+                    }).then(function(res)
+                    {   
+                      $ionicHistory.goBack();
+                    });                    
+                }
+              });
+            }
+          })
+      }
 });
 app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal, $localStorage, $state, UiServices, $rootScope, $ionicPopup)
 {
@@ -929,9 +972,9 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
   });
 $scope.doLogin = function()
 {	
- 	$scope.loginData.player_id=$localStorage.player_id;
+ 	//$scope.loginData.player_id=$localStorage.player_id;
 	// $localStorage.player_id=null;
- //   $scope.loginData.player_id = '123456';
+    $scope.loginData.player_id = '123456';
 	  UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
@@ -970,6 +1013,7 @@ $scope.doLogin = function()
   }
   $scope.submit_request_for_kyc=function()
   {
+
     UiServices.show_loader();
     Services.webServiceCallPost($scope.kyc_request, 'store_kyc_request').then(function(response)
     {
@@ -978,7 +1022,7 @@ $scope.doLogin = function()
     	{	
   		    UiServices.hide_loader();
   		    		$ionicPopup.alert({
-                       template: '<center>Request Submitted Successfully we will Contact you shortly</center>',
+                       template: '<center>Request Submitted Successfully!<br>We will Contact you shortly</center>',
                        buttons:[{
                           text:'ok', type: 'button-assertive'
                       }]
