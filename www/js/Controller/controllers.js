@@ -909,14 +909,9 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
 
 
 });
-app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal, $localStorage, $state, UiServices, $rootScope)
+app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal, $localStorage, $state, UiServices, $rootScope, $ionicPopup)
 {
-
-
-
   $scope.kyc_request={};
-
-
   $scope.$on('$ionicView.beforeEnter', function(e) 
   {
     $scope.loginData = {};
@@ -930,7 +925,6 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
     }
 
   });
-
 $scope.doLogin = function()
 {	
  	//$scope.loginData.player_id=$localStorage.player_id;
@@ -975,19 +969,23 @@ $scope.doLogin = function()
   $scope.submit_request_for_kyc=function()
   {
     UiServices.show_loader();
-    Services.webServiceCallPost($scope.kyc_request, 'kyc_request').then(function(response)
+    Services.webServiceCallPost($scope.kyc_request, 'store_kyc_request').then(function(response)
     {
-      UiServices.show_loader();
 
-
-      $scope.kyc.hide();
-
-    })    
-
-
-
-
-
+    	if(response.data[1].response.status==1)
+    	{	
+  		    UiServices.hide_loader();
+  		    		$ionicPopup.alert({
+                       template: '<center>Request Submitted Successfully we will Contact you shortly</center>',
+                       buttons:[{
+                          text:'ok', type: 'button-assertive'
+                      }]
+                      }).then(function(res)
+                      {   
+					    $scope.kyc.hide();
+                      });
+    	}
+    });   
   }
   $scope.close_kyc_request=function()
   {
