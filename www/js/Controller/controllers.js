@@ -371,14 +371,17 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
       $rootScope.data = response.data[0].data;
       UiServices.hide_loader();
     });
-    /*if($localStorage.selected_items.length>0)
+
+
+    if($localStorage.selected_items.length>0)
     {
         var requesting_data=[];    
         angular.forEach($scope.selected_items, function(value, key)
         { 
           var d=
           {
-            product_id: value.product_details[0].product_id
+            product_id: value.product_details[0].product_id,
+            unit_product_mapping_id: value.product_details[0].unit.unit_product_mapping_id
           };
           requesting_data.push(d);
         });
@@ -393,12 +396,12 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
                value.product_details[0].quantity = $localStorage.selected_items[key].product_details[0].quantity;
                value.product_details[0].final_price = $localStorage.selected_items[key].product_details[0].final_price;
             });
-            $localStorage.selected_items = response.data[0].data;
-            $scope.selected_items=$localStorage.selected_items;
 
+     	       $localStorage.selected_items = response.data[0].data;
+       		   $scope.selected_items=$localStorage.selected_items;
           });
         }
-    }*/
+    }
   });
   if($localStorage.selected_items==undefined)
   {
@@ -926,9 +929,9 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
   });
 $scope.doLogin = function()
 {	
- 	//$scope.loginData.player_id=$localStorage.player_id;
+ 	$scope.loginData.player_id=$localStorage.player_id;
 	// $localStorage.player_id=null;
-    $scope.loginData.player_id = '123456';
+ //   $scope.loginData.player_id = '123456';
 	  UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
