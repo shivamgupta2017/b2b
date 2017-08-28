@@ -503,8 +503,6 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   }
   $scope.removeItem=function(index)
   { 
-
-
   	var confirmPopup = $ionicPopup.confirm(
     	{
                  title: 'Remove product',
@@ -713,7 +711,22 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
            }
    }
 
-
+   $scope.detailed_product_quantity=function(index, quantity, status)
+   {
+   	if(status==0)
+   	{
+   		if(quantity>1)
+	   		$scope.temp[index].product_details[0].quantity=quantity-1;
+   	}
+   	else if(status==1)
+   	{
+	   	$scope.temp[index].product_details[0].quantity=quantity+1;
+   	}
+   }
+   $scope.close_detailed_product_desc=function()
+   {
+   	$scope.detailed_product_desc.hide();
+   }
 });
 app.controller('recent_ordersCtrl', function(Services, $scope, $state, $localStorage, $ionicModal, $ionicHistory, UiServices, $ionicPopup){
     var req_data=
@@ -1240,6 +1253,23 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
            }
    }
 
+   $scope.detailed_product_quantity=function(index, quantity, status)
+   {
+   	if(status==0)
+   	{
+   		if(quantity>1)
+	   		$scope.temp[index].product_details[0].quantity=quantity-1;
+   	}
+   	else if(status==1)
+   	{
+	   	$scope.temp[index].product_details[0].quantity=quantity+1;
+   	}
+   }
+
+   $scope.close_detailed_product_desc=function()
+   {
+   	$scope.detailed_product_desc.hide();
+   }
 
 
 });
@@ -1414,10 +1444,7 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
   }
   $scope.close_shipping_address_model=function()
   {
-
         $scope.shipping_addresses_model.hide(); 
-
-
   }
   $scope.show_total=function(final_price)
   {
@@ -1557,10 +1584,23 @@ app.controller('express_shippingCtrl', function($scope, $stateParams, Services, 
         $scope.order_now_emergency_products(date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate(), add_id);         
     });
   }
+   $scope.detailed_product_quantity=function(index, quantity, status)
+   {
+   	if(status==0)
+   	{
+   		if(quantity>1)
+	   		$scope.temp[index].product_details[0].quantity=quantity-1;
+   	}
+   	else if(status==1)
+   	{
+	   	$scope.temp[index].product_details[0].quantity=quantity+1;
+   	}
+   }
 
-
-
-
+   $scope.close_detailed_product_desc=function()
+   {
+   	$scope.detailed_product_desc.hide();
+   }
 
 });
 app.controller('no_network_ConnectionCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope, $localStorage, $ionicPopup){
