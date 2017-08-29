@@ -1269,20 +1269,16 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
             angular.forEach($scope.product_details, function(value, key) 
             { 
               $scope.temp.push(value);
-
               if(value.product_details[0].product_id==$scope.temp[0].product_details[0].product_id)
               {
-
                 if(value.product_details[0].unit.unit_product_mapping_id===$scope.temp[0].product_details[0].unit.unit_product_mapping_id)
                 {
                   index=key;
                   $scope.temp=[];
                 }
               }
-              
             });
           } 
-          
            if(index==-1)
            {
               $scope.product_details=$scope.temp;
@@ -1301,7 +1297,6 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
                 });
            }
    }
-
    $scope.detailed_product_quantity=function(index, quantity, status)
    {
    	if(status==0)
