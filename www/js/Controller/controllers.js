@@ -317,6 +317,7 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   $scope.close_change_user_password=function()
   {
     $scope.change_password_model.hide();
+    $scope.new_password={}; 
   }
   $scope.close_raise_concern_model = function() 
   {
@@ -562,6 +563,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
         cancelButtonColor: '#000000'
       };
 
+
     $cordovaDatePicker.show(options).then(function(date)
     { 
         $scope.save_order(date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate(), add_id);         
@@ -614,9 +616,23 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
                       $localStorage.selected_items=[];
                       $scope.selected_items=[];
                       var div='<center>Your Order has been placed successfully</center>';
-                      UiServices.alert_popup(div);
-                      if($scope.open_order_details_model.isShown())
-                          $scope.open_order_details_model.hide();
+                      $ionicPopup.alert({
+		                template: div,
+		                buttons:[{
+		                    text:'ok', type: 'button-assertive'
+		                }]
+		                }).then(function(res)
+		                {   
+		                     if($scope.open_order_details_model.isShown())
+		                      {
+		                          $scope.open_order_details_model.hide();
+		                      }
+
+		                });
+
+
+
+                      
                     });  
                  } 
                  else 
@@ -655,6 +671,7 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
   }
   $scope.open_shipping_address_page=function()
   {
+
     $scope.selected_address={};
     var temp_data=
     {
@@ -669,6 +686,10 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
            UiServices.hide_loader();
            $scope.shipping_address_data=response.data[0].data;
            $scope.selected_address.id=$scope.shipping_address_data[0].shipping_add_id;
+           if($scope.open_order_details_model.isShown())
+		    {
+		    	  $scope.open_order_details_model.hide();
+		    }
            $scope.shipping_addresses_model.show();
         }
         else
@@ -934,18 +955,7 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
                 }
             });
           }
-          else
-          {
-            $ionicPopup.alert({
-                  template: '<center>You have not Accepted any Product</center>',
-                  buttons:[{
-                      text:'ok', type: 'button-assertive'
-                  }]
-                  }).then(function(res)
-                  {   
-                    $scope.checked_items=[];
-                  });
-          }
+          
       	});
       }
       $scope.complete_order=function()
@@ -988,6 +998,20 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
                     {   
                       $ionicHistory.goBack();
                     });                    
+                }
+                else
+                {
+                  UiServices.hide_loader();
+                  $ionicPopup.alert({
+                        template: '<center>You have not Accepted any Product</center>',
+                        buttons:[{
+                            text:'ok', type: 'button-assertive'
+                        }]
+                        }).then(function(res)
+                        {   
+                          $scope.checked_items=[];
+                          ionicHistory.goBack();
+                        });
                 }
               });
             }

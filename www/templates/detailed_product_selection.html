@@ -24,9 +24,9 @@
 }
 </style>
     <ion-list>
-      <ion-item ng-repeat="item in temp" style="padding:0">
+      <ion-item ng-repeat="item in temp" style="padding:0; border: none;">
        
-        <div style="width:95vw; margin-left:50%; transform:translate(-50%,0%); display:inline-block; padding:10px; height:95vw;  border:1px solid #ddd; border-radius:20%; background-image:url({{constant_image_url+item.product_details[0].image}}); background-size:cover; background-repeat:no-repeat; background-position:center">     
+        <div style="width:95vw; margin-left:50%; transform:translate(-50%,0%); display:inline-block; padding:10px; height:95vw;  border:1px solid #ddd; border-radius:20%; background-image:url({{constant_image_url+item.product_details[0].image}}); background-size:contain ; background-repeat:no-repeat; background-position:center">     
         </div>
        <br>
         <div style="display:block; text-align:center; padding-left:3px; ">
