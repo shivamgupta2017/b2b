@@ -246,11 +246,9 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
   }
   $scope.raise_my_concern_now=function()
   {
-    $scope.concern.user_id=$scope.user_data.user_id;
-	
+  $scope.concern.user_id=$scope.user_data.user_id;
 	if($scope.imageURI==undefined)
 	{
-
 		UiServices.show_loader();
 	    Services.webServiceCallPost($scope.concern, 'store_concern').then(function(response)
 	    {
@@ -311,7 +309,7 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
     	options.chunkedMode = false;
     	var ft = new FileTransfer();
         UiServices.show_loader();
- 		ft.upload($scope.imageURI, encodeURI("http://192.168.1.138/admin/service/store_concern"), win, fail, options);
+ 		ft.upload($scope.imageURI, encodeURI("http://minbazaar.com/admin/service/store_concern"), win, fail, options);
 
 	}    
 
