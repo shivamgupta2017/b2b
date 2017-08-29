@@ -1273,9 +1273,8 @@ app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ion
               if(value.product_details[0].product_id==$scope.temp[0].product_details[0].product_id)
               {
 
-                if((value.product_details[0].unit.unit===$scope.temp[0].product_details[0].unit.unit)&&(value.product_details[0].unit.weight==$scope.temp[0].product_details[0].unit.weight))
+                if(value.product_details[0].unit.unit_product_mapping_id===$scope.temp[0].product_details[0].unit.unit_product_mapping_id)
                 {
-                  
                   index=key;
                   $scope.temp=[];
                 }
