@@ -233,8 +233,16 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
       }
       function onFail(message) 
       {
-          alert('Failed because: ' + message);
-    }
+          $ionicPopup.alert({
+          template: '<center>Failed Try Again</center>',
+          buttons:[{
+                      text:'ok', type: 'button-assertive'
+                  }]
+                  }).then(function(res)
+                  {   
+
+                  });
+      }
   }
   $scope.raise_my_concern_now=function()
   {
@@ -276,7 +284,7 @@ app.controller('AppCtrl', function($scope, $ionicModal, $timeout, Services, Cons
                 }]
                 }).then(function(res)
                 {   
-			        $scope.raise_concern_model.hide();
+			             $scope.raise_concern_model.hide();
                 });
 
 		    }
@@ -851,10 +859,6 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
               {
                 UiServices.hide_loader();
                 UiServices.alert_popup('<center>Looks like Your Order is already Verified</center>');
-
-
-
-                
               }
           });
     } 
@@ -876,11 +880,9 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
               product_id: $scope.order_details[key].product_id,
               size: $scope.order_details[key].size,
             };	
-            
       			req_data.order_details.push(Data);	  		
       		}
       	});
-
         req_data.order_details=JSON.stringify(req_data.order_details);
         UiServices.show_loader();
         Services.webServiceCallPost(req_data, 'verify_order').then(function(response)
@@ -894,7 +896,6 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
                 {
                   UiServices.hide_loader();
                   $scope.order_details=response.data[0].data;
-
                   $ionicPopup.alert({
                   template: '<center>Updated Successfully!</center>',
                   buttons:[{
@@ -903,13 +904,39 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
                   }).then(function(res)
                   {   
                     $scope.checked_items=[];
-
                   });
                 }
                 else
                 {
                   UiServices.hide_loader();
-                  $ionicHistory.goBack(-1);
+                  var req_data={};
+                  req_data.order_details = [];        
+                  req_data.order_id = $scope.order_details[0].order_id;
+                  req_data.status = '1';
+                  req_data.order_details=JSON.stringify(req_data.order_details);      
+                  UiServices.show_loader();
+                  Services.webServiceCallPost(req_data, 'verify_order').then(function(response)
+                  { 
+                    if(response.data[1].response.status==1)
+                    {   
+                        UiServices.hide_loader();
+                        $ionicPopup.alert({
+                        template: '<center>Updated successfully !</center>',
+                        buttons:[{
+                            text:'ok', type: 'button-assertive'
+                        }]
+                        }).then(function(res)
+                        {   
+                          $ionicHistory.goBack();
+                        });                    
+                    }
+                  });
+
+
+
+
+
+
 
                 }
             });
