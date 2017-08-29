@@ -370,8 +370,6 @@ app.controller('dashboardCtrl', function($scope, Services, $timeout,  Constant, 
       $rootScope.data = response.data[0].data;
       UiServices.hide_loader();
     });
-
-
     if($localStorage.selected_items.length>0)
     {
         var requesting_data=[];    
