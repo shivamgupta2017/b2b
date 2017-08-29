@@ -881,6 +881,8 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
       			req_data.order_details.push(Data);	  		
       		}
       	});
+
+
         req_data.order_details=JSON.stringify(req_data.order_details);
         UiServices.show_loader();
         Services.webServiceCallPost(req_data, 'verify_order').then(function(response)
@@ -929,15 +931,20 @@ app.controller('view_order_detailsCtrl', function($scope, $stateParams, Services
                         });                    
                     }
                   });
-
-
-
-
-
-
-
                 }
             });
+          }
+          else
+          {
+            $ionicPopup.alert({
+                  template: '<center>You have not Accepted any Product</center>',
+                  buttons:[{
+                      text:'ok', type: 'button-assertive'
+                  }]
+                  }).then(function(res)
+                  {   
+                    $scope.checked_items=[];
+                  });
           }
       	});
       }
