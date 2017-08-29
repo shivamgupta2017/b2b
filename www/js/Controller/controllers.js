@@ -980,9 +980,9 @@ app.controller('loginCtrl', function($scope, $stateParams, Services, $ionicModal
   });
 $scope.doLogin = function()
 {	
- 	//    $scope.loginData.player_id=$localStorage.player_id;
+ 	   $scope.loginData.player_id=$localStorage.player_id;
 	// $localStorage.player_id=null;
-    $scope.loginData.player_id = '123456';
+   // $scope.loginData.player_id = '123456';
 	  UiServices.show_loader();
    Services.webServiceCallPost($scope.loginData, 'login').then(function(response)
    {
