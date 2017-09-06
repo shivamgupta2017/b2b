@@ -22,9 +22,3 @@ app.factory('Services', function($http, $rootScope, $timeout,$ionicLoading, $q, 
         }
     }
 });
-
-
-        
-
-
-

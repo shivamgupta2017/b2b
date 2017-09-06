@@ -1103,6 +1103,29 @@ $scope.doLogin = function()
     $scope.kyc.hide();
   }
 
+  $scope.googleSignIn = function() 
+  {
+    alert('shivam');
+    window.plugins.googleplus.login(
+      {
+
+            'scopes' : 'profile email',
+            'offline' : true
+
+      },
+      function (user_data) 
+      {
+        alert('user_data ;'+JSON.stringify(user_data));
+      },
+      function (msg) {
+        
+
+        alert('msg :'+JSON.stringify(msg));
+      }
+    );
+  }
+
+
 });
 
 app.controller('update_orderCtrl', function($scope, $stateParams, Services, $ionicModal, $ionicHistory, $state, UiServices, $timeout, $rootScope, $ionicPopup){
