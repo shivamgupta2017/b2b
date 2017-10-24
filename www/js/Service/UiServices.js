@@ -1,5 +1,5 @@
 "use strict";
-app.factory('UiServices', function($http, $rootScope, $timeout,$ionicLoading, $q, Constant, $ionicPopup, $state)	{
+app.factory('UiServices', function($http, $rootScope, $timeout,$ionicLoading, $q, $ionicPopup, $state)	{
 		return {
              confirmation_popup: function(title, template) 
             {
@@ -31,7 +31,7 @@ app.factory('UiServices', function($http, $rootScope, $timeout,$ionicLoading, $q
             {
                $ionicLoading.show(
                 {   showBackdrop: false,
-                    template: '<ion-spinner icon="bubbles" class="spinner-assertive"></ion-spinner>' 
+                    template: '<ion-spinner icon="android" class="spinner-positive"></ion-spinner>' 
                 });                 
             },
             hide_loader: function()
@@ -52,18 +52,3 @@ app.factory('Additional_services', function()
     };
 }); 	
 
-app.factory('$cordovaDatePicker', ['$window', '$q', function ($window, $q) {
-    
-    return {
-      show: function (options) {
-        var q = $q.defer();
-        options = options || {date: new Date(), mode: 'date'};
-        $window.datePicker.show(options, function (date) {
-          q.resolve(date);
-        }, function (error){
-          q.reject(error);
-        });
-        return q.promise;
-      }
-    };
-  }]);

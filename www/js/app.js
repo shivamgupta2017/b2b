@@ -11,21 +11,7 @@ app.run(function($ionicPlatform, $state, $localStorage, $ionicHistory)
   {
     document.addEventListener("offline", offline, false);
     document.addEventListener("online", online, false);
-    window.plugins.OneSignal.getIds(function(ids) 
-    { 
-        $localStorage.player_id=ids.userId;
-    });
     
-    var notificationOpenedCallback = function(jsonData) 
-    {
-      var state=jsonData.notification.payload.additionalData.state;
-     delete jsonData.notification.payload.additionalData.state;
-     $state.go(state,jsonData.notification.payload.additionalData);
-    };
-      window.plugins.OneSignal.startInit("93c7e511-bea9-41fe-93e5-6226c84c3619").handleNotificationOpened(notificationOpenedCallback).endInit();
-      window.plugins.OneSignal.startInit("93c7e511-bea9-41fe-93e5-6226c84c3619").inFocusDisplaying(window.plugins.OneSignal.OSInFocusDisplayOption.Notification)
-      .endInit();
-
     function offline() 
     {
       $state.go('network_connection');
@@ -35,9 +21,9 @@ app.run(function($ionicPlatform, $state, $localStorage, $ionicHistory)
       $ionicHistory.goBack(-1);
     }
 
+      
 
-
-   
+    
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
@@ -58,25 +44,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
     templateUrl: 'templates/menu.html',
     controller: 'AppCtrl'
   })
-
-  .state('app.search', {
-    url: '/search',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/search.html'
-      }
-    }
-  })
-
-  .state('app.recent_orders', {
-      url: '/recent_orders',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/recent_orders.html',
-          controller: 'recent_ordersCtrl'
-        }
-      }
-    })
     .state('app.dashboard', {
       url: '/dashboard',
       views: {
@@ -86,46 +53,133 @@ app.config(function($stateProvider, $urlRouterProvider) {
         }
       }
     })
-    
-    .state('app.express_shipping', {
-      url: '/express_shipping',
+
+    .state('app.last_recharge', {
+      url: '/recent_orders',
       views: {
         'menuContent': {
-          templateUrl: 'templates/express_shipping.html',
-          controller: 'express_shippingCtrl'
+          templateUrl: 'templates/last_recharge.html',
+          controller: 'lastRechargeCtrl'
         }
       }
     })
 
-  .state('app.view_order_details', {
-    url: '/view_order_details/:order_id/:order_verification/',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/view_order_details.html',
-        controller: 'view_order_detailsCtrl'
+    .state('app.ewallet_transaction_history', {
+      url: '/recent_wallet_trans',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/ewallet_trans_history.html',
+          controller: 'ewallet_transaction_historyCtrl'
+        }
       }
-    }
-  })
+    })
+/**/
+  
+  .state('app.add_wallet_balance_now', {
+      url: '/add_wallet_balance_now',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/add_wallet_balance.html',
+          controller: 'add_walletCtrl'
+        }
+      }
+    })
+
+
+   .state('app.recharge', {
+      url: '/recharges/:item/',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/recharge_page.html',
+          controller: 'rechargeCtrl'
+        }
+      }
+    })
+
+   .state('app.datacard', {
+      url: '/recharges/:item/',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/datacard_recharge_page.html',
+          controller: 'rechargeCtrl'
+        }
+      }
+    })
+   .state('app.dth', {
+      url: '/recharges/:item/',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/dth_recharge_page.html',
+          controller: 'rechargeCtrl'
+        }
+      }
+    })
+   .state('app.landline', {
+      url: '/recharges/:item/',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/landline_recharge_page.html',
+          controller: 'rechargeCtrl'
+        }
+      }
+    })
+
+   .state('app.electricity', {
+      url: '/recharges/:item/',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/electricity_recharge_page.html',
+          controller: 'rechargeCtrl'
+        }
+      }
+    })
+   .state('app.gas', {
+      url: '/recharges/:item/',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/gas_recharge_page.html',
+          controller: 'rechargeCtrl'
+        }
+      }
+    })
+   .state('app.insurance', {
+      url: '/recharges/:item/',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/insurance_recharge_page.html',
+          controller: 'rechargeCtrl'
+        }
+      }
+    })
+
+
+ 
   .state('login', {
     url: '/login',
         templateUrl: 'templates/login.html',
         controller: 'loginCtrl'
     
   })
+  .state('signup', {
+    url: '/signup',
+        templateUrl: 'templates/signup.html',
+        controller: 'signupCtrl'
+    
+  })
+
+  .state('landing', {
+    url: '/landing',
+        templateUrl: 'templates/landing.html',
+        controller: 'landingpageCtrl'
+    
+  })
+
   .state('network_connection', {
     url: '/network_connection',
     templateUrl: 'templates/network_connection.html',
     controller: 'no_network_ConnectionCtrl'
-  })
-
-  .state('app.update_order_details' ,{
-     url: '/update_order/:order_id',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/update_order.html',
-        controller: 'update_orderCtrl'
-      }
-    }
   });
-  $urlRouterProvider.otherwise('/login');
+
+  
+  $urlRouterProvider.otherwise('/landing');
 });

@@ -1,0 +1,36 @@
+<ion-modal-view style="transform:none !important;">
+  <ion-header-bar style="background-color:#cd3333; border-bottom:none;">
+    <div class="buttons">
+          <button class="button back-button buttons button-clear header-item" style="margin-top:5px; color:white" ng-click="close_recharge_now_modal()">
+            <i class="icon ion-android-arrow-back"></i>
+          </button>
+    </div>
+    
+      <div class="title light" style="text-align: center; margin-top:5px;">Recharge</div>    
+  </ion-header-bar >
+    <ion-content class="has-header padding-top" style="margin-top: 0%">
+
+
+            <label class="item item-input item-floating-label">
+              <span class="input-label">Enter Mobile no</span>
+              <input type="tel" placeholder="Enter Mobile no" required ng-model="recharge_amount.recharge_mobile_no" required="required">
+            </label>
+
+           <div class="list">
+            <label class="item item-input item-floating-label">
+              <span class="input-label">Enter Recharge amount</span>
+              <input type="tel" placeholder="Enter amount" required ng-model="recharge_amount.amount" required="required">
+            </label>
+
+
+          </div>
+    </ion-content>
+
+  <ion-footer-bar class="bar bar-dark">
+      <div class="button-bar">
+        <button class="button button-dark" ng-click="recharge_now()">Submit</button>
+       </div>
+  </ion-footer-bar>
+
+
+</ion-modal-view>

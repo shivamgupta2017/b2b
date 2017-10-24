@@ -1,0 +1,23 @@
+<ion-modal-view style="transform:none !important;">
+  <ion-header-bar style="background-color:#cd3333; border-bottom:none;">
+    <div class="buttons">
+          <button class="button back-button buttons button-clear header-item" style="margin-top:5px; color:white" ng-click="close_circle_selector_model()">
+            <i class="icon ion-android-arrow-back"></i>
+          </button>
+    </div>
+
+      <div class="title light" style="text-align: center; margin-top:5px;">Select Region</div>    
+  </ion-header-bar>
+
+  <ion-content overflow-scroll-y="true" padding="true" class="has-header padding-top" style="margin-top: 2%;"> 
+    <ion-radio ng-repeat="data in circle_data.Circle" ng-click="circle_selected(data.CircleID, selected_operator_code)"
+                         ng-value=data.CircleID
+                   >
+          {{data.CircleName}}
+    </ion-radio>   
+  </ion-content>
+
+</ion-modal-view>
+<!-- 
+                         ng-change="selected_operator(data.OperatorID)"
+ -->

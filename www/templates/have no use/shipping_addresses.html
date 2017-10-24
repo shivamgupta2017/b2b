@@ -1,0 +1,35 @@
+<ion-modal-view style="transform:none !important;">
+  <ion-header-bar style="background-color:#cd3333; border-bottom:none;">
+    <div class="buttons">
+          <button class="button back-button buttons button-clear header-item" style="margin-top:5px; color:white" ng-click="close_shipping_address_model()">
+            <i class="icon ion-android-arrow-back"></i>
+          </button>
+    </div>
+      <div class="title light" style="text-align: center; margin-top:5px;">Select Shipping Address</div>    
+  </ion-header-bar >
+  <ion-content class="has-header padding-top" style="margin-top: 0%">
+     <div class="list">
+        <ion-radio ng-repeat="addresses in shipping_address_data" ng-model="selected_address.id" ng-value="addresses.shipping_add_id">
+                    <div>
+                      {{addresses.shipping_address_1}}  
+                    </div>
+                    <div>
+                      {{addresses.shipping_address_2 | limitTo: 25}}{{addresses.shipping_address_2.length>25 ? '...' : ''}}, {{addresses.shipping_zip}}
+                    </div>
+                    <div>
+                    {{addresses.shipping_phone}}
+                    </div>
+                    
+       </ion-radio>
+    </div>
+
+  </ion-content>
+
+  <ion-footer-bar class="bar bar-dark">
+      <div class="button-bar">
+        <button class="button button-dark" ng-click="open_date_picker(selected_address.id)">Submit</button>
+       </div>
+  </ion-footer-bar>
+
+
+</ion-modal-view>

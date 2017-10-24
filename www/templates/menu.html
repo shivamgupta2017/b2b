@@ -1,7 +1,7 @@
 <ion-side-menus enable-menu-with-back-views="false">
   <ion-side-menu-content drag-content="false">
-    <ion-nav-bar class="bar-assertive header-shadow" nav-transition="android" style="height:100px !important; background-color:black !important;">
-      <ion-nav-back-button class="button-icon icon ion-ios7-arrow-back">
+    <ion-nav-bar class="bar-dark header-shadow" nav-transition="android" style="height:100px !important; background-color:black !important;">
+      <ion-nav-back-button class="button-icon button-clear icon ion-ios7-arrow-back">
       </ion-nav-back-button>
 
       <ion-nav-buttons side="left" style="margin-top:10px;">
@@ -11,58 +11,40 @@
     </ion-nav-bar>
       <ion-nav-view class="slide-left-right" name="menuContent" animation="slide-left-right"></ion-nav-view>
   </ion-side-menu-content>
-  <ion-side-menu side="left">
-    <ion-header-bar class="bar-light padding-bottom padding-top" style="height: 15%; background-image: url("img/back_profile.jpg"); back">
-      <a class="item-thumbnail-left item-icon-right" menu-close >
-        <img ng-src="img/icon.png"  alt="image">
-          
-          <div style="width: 100%; text-align: center;">
-
-          
-            <h5 style="color: black;">{{user_data.first_name+' '+user_data.last_name}}</h5>
-          
-
-          </div>
-      
-      </a>
-    </ion-header-bar>
-    <ion-content class="has-header padding-top" style="margin-top: 17%; ">
+  <ion-side-menu side="left" style="background-color:#444444">
+     <header class="bar bar-header bar-dark" style="height:100px; border:none;">
+      <div style="height:100px; display:inline-block; width:50%; padding:20px; 	boder:1px solid white;float:left; "><div style="height:100%; width:100%; background-image:url('img/icon.png'); background-position:right; background-size:contain; background-repeat:no-repeat"></div></div><div style="height:100px; display:flex;     justify-content: space-between;
+    align-items: center; width:50%; boder:1px solid white;float:right;"><div>{{usrname}}<br>{{mobile}}</div></div>
+    </header>
+    <ion-content class="has-header" style="margin-top:60px">
       <ion-list style="font-style: oblique;">
-        
-        <ion-item no-lines class="item-icon-left margin-left" style="border-style: none;" menu-close ng-click="login()" ng-show="user_data==''">
-        <i class="icon ion-log-in"></i>
-         <ion-icon name="heart"></ion-icon> 
-          Login
+        <ion-item class="item-icon-left item-dark" style="border:1px solid rgba(255,255,255,0.4);" menu-close ng-click="openSomething('app.recharge',1)">
+          <i class="icon ion-android-phone-portrait" style="font-size: 150%;" ></i>
+          Mobile Recharge
         </ion-item>
-        
-        
-        
-        <ion-item class="item-icon-left" menu-close ng-click="recent_orders()">
-          <i class="icon ion-clipboard" style="font-size: 150%;"></i>         
-          Recent Orders
+        <ion-item class="item-icon-left item-dark" style="border:1px solid rgba(255,255,255,0.4);" menu-close ng-click="get_last_recharges()">
+          <i class="icon ion-clipboard" style="font-size: 150%;"></i>
+          Recharge History
         </ion-item>
-        
-        <ion-item  class="item-icon-left" style="border-style: none;" menu-close ng-click="raise_my_concern()">
-          <i class="icon ion-android-drafts"  style="font-size: 150%;"></i>
-          Raise Concern
+        <ion-item class="item-icon-left item-dark" style="border:1px solid rgba(255,255,255,0.4);" menu-close ng-click="add_wallet_balance_now()">
+          <i class="icon ion-cash" style="font-size: 150%;"></i>
+          Add Cash
         </ion-item>
-        
-        <ion-item class="item-icon-left" style="border-style: none;" menu-close ng-click="open_express_shipping()">
-          <i class="icon ion-ios-fastforward"></i>
-          Express Shipping
+        <ion-item class="item-icon-left item-dark" style="border:1px solid rgba(255,255,255,0.4);" menu-close ng-click="open_wallet_to_wallet(0)">
+          <i class="icon ion-clipboard" style="font-size: 150%;"></i>
+          Fund Transfer
         </ion-item>
-        <!-- ng-show="is_pass_changed_status==0" -->
-        <ion-item class="item-icon-left" style="border-style: none;"  menu-close ng-click="change_password_open()">
-          <i class="icon ion-edit"  style="font-size: 150%;"></i>
+        <ion-item class="item-icon-left item-dark" style="border:1px solid rgba(255,255,255,0.4);" menu-close ng-click="open_ewallet_transactions()">
+          <i class="icon ion-arrow-swap" style="font-size: 150%;"></i>
+          Transactions
+        </ion-item>
+
+        <ion-item class="item-icon-left item-dark" style="border:1px solid rgba(255,255,255,0.4);" menu-close ng-click="change_password_open()">
+          <i class="icon ion-edit" style="font-size: 150%;"></i>
           Change Password
         </ion-item>
 
-        <ion-item class="item-icon-left" style="border-style: none;" menu-close ng-click="open_address_model()">
-          <i class="icon ion-plus-round" style="font-size: 150%;"></i>
-          Add Address
-        </ion-item>
-
-        <ion-item  class="item-icon-left margin-left" style="border-style: none;" menu-close ng-click="logout()" ng-show="user_data!=''" >
+        <ion-item  class="item-icon-left margin-left item-dark" style="border:1px solid rgba(255,255,255,0.4);" menu-close ng-click="logout()" ng-show="user_data!=''" >
           <i class="icon ion-log-out" style="font-size: 150%;"></i>
           Logout
         </ion-item>

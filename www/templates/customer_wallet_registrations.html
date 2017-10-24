@@ -1,0 +1,47 @@
+<ion-modal-view style="transform:none !important;">
+  <ion-header-bar style="background-color:#444444; border-bottom:none;">
+    <div class="buttons">
+          <button class="button back-button buttons button-clear header-item" style="margin-top:5px; color:white" ng-click="close_syc_model()">
+            <i class="icon ion-android-arrow-back"></i>
+          </button>
+    </div>
+    
+      <div class="title light" style="text-align: center; margin-top:5px;">Registration for money transfer</div>    
+  </ion-header-bar >
+    <ion-content class="has-header padding-top" style="margin-top: 0%">
+           <div class="list">
+            
+            <label class="item item-input item-floating-label">
+              <span class="input-label">mobile no</span>
+              <input type="text" placeholder="mobile no" readonly ng-model="user_data.mobile_no" required="required">
+            </label>
+
+            <label class="item item-input item-floating-label">
+              <span class="input-label">password</span>
+              <input type="password" placeholder="password" readonly ng-model="user_data.password" required="required">
+            </label>
+
+            <label class="item item-input item-floating-label">
+              <span class="input-label">Pincode</span>
+              <input type="password" placeholder="Pincode" required maxlength="6" ng-model="user_data.pincode" required="required">
+            </label>
+
+            <!-- <label ng-show="(user_data.otp_sent)" class="item item-input item-floating-label">
+              <span class="input-label">Pincode</span>
+              <input type="tel" placeholder="Pincode" readonly required maxlength="6" ng-model="user_data.pincode" required="required">
+            </label> -->
+
+            
+
+
+          </div>
+    </ion-content>
+
+  <ion-footer-bar class="bar bar-dark">
+      <div class="button-bar">
+        <button class="button button-dark" ng-click="regiter_customer_wallet_to_bank()">Submit</button>
+       </div>
+  </ion-footer-bar>
+
+
+</ion-modal-view>

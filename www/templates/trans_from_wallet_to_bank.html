@@ -1,0 +1,33 @@
+<ion-modal-view style="transform:none !important;">
+  <ion-header-bar style="background-color:#444444; border-bottom:none;">
+    <div class="buttons">
+      <button class="button back-button buttons button-clear header-item" style="margin-top:5px; color:white" ng-click="close_transfer_wallet_bank()">
+        <i class="icon ion-android-arrow-back"></i>
+      </button>
+    </div>
+
+
+    <div class="title light" style="text-align: center; margin-top:5px;">Transfer to bank</div>
+  </ion-header-bar>
+  <ion-content class="has-header padding-top margin-top" style="margin-top:25%; width: 98vw; background-color: #FFFFFF;"> 
+    <div class="list">
+                <label class="item item-input item-stacked-label">
+                  <input type="tel" placeholder="Enter Amount" width="5" ng-change="get_surcharge()" ng-model="data.amount">
+                  <span ng-show="data.surcharge_amount!=undefined">+
+                    <input type="text"  readonly placeholder="Surcharge" ng-model="data.surcharge_amount">
+                  </span>
+                </label>
+    </div>
+                    
+
+		
+                 <button ng-click="done_wallet_transfer()" class="button button-block button-positive" style="width:95vw; margin:0 auto">Proceed</button>
+              
+
+
+
+
+   </ion-content> 
+
+
+</ion-modal-view>

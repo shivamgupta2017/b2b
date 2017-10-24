@@ -1,0 +1,32 @@
+<ion-modal-view style="transform:none !important;">
+  <ion-header-bar style="background-color:#444444; border-bottom:none;">
+    <div class="buttons">
+          <button class="button back-button buttons button-clear header-item" style="margin-top:5px; color:white" ng-click="close_otp_model()">
+            <i class="icon ion-android-arrow-back"></i>
+          </button>
+    </div>
+      <div class="title light" style="text-align: center; margin-top:5px;">Submit Otp</div>    
+  </ion-header-bar >
+  <ion-content class="has-header padding-top" style="margin-top: 0%;">
+     	
+
+     	<div class="signin-input-holder padding-top">
+			<ion-list>
+				<ion-item class="item-input">
+					<input type="text" placeholder="Enter Otp" ng-model="otp.val" required>
+				</ion-item>
+			</ion-list>
+		</div>
+		<div class="footer-button ">
+			<button class="button button-dark button-block button-small button-round" ng-click="submit_otp()">{{'Submit Otp'}}</button>
+			<button class="button button-dark button-block button-round button-small" ng-click="resend_otp()" >{{'Send it back'}}
+			</button>
+		</div>
+
+
+
+
+
+  </ion-content>
+
+</ion-modal-view>

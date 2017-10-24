@@ -1,0 +1,51 @@
+<ion-view style=" background-image:url(img/image.jpg); background-size:cover; ">
+    <div style="display:absolute; height:100vh; width:100vw; background-color:rgba(255,255,255,.3)"></div>
+        <form ng-submit="signup_now()">
+
+          <ion-content class="">
+            <!-- <img src="img/12.jpg" height="100" style="margin-top:20px; margin-left:50%; transform: translate(-50%, 0);">    
+ -->
+
+              <div style="margin-top:50%; transform: translate(0,-20%); ">
+
+
+                <div style="background-color:rgba(255,255,255,0.8); border:1px solid #ddd;  padding:10px; width:95vw; margin:0 auto; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                        <div class="list" style="width:85vw; margin:0 auto; ">
+                              
+                              <label class="item item-input" style="background-color:rgba(255,255,255,0.4); border:1px solid #ddd; border-radius:5px; color: white;">
+                                <span class="input-label" style="color: #444; width:100px">Mobile no</span>
+                                <input type="tel" ng-model="user_data.mobile_no" style="border-left: 1px solid #444; color: black; padding-left: 5px;" required="">
+                              </label>
+                              <br><br>
+                              <label class="item item-input" style="background-color:rgba(255,255,255,0.4); border:1px solid #ddd; border-radius:5px; color: white;">
+                                <span class="input-label" style="color: #444; width:100px">Email</span>
+                                <input type="email" ng-model="user_data.email" style="border-left: 1px solid #444; color: black; padding-left: 5px;" required>
+                              </label>
+                              <br><br>
+                              <label class="item item-input" style="background-color:rgba(255,255,255,0.4); border:1px solid #ddd; border-radius:5px; color: white;">
+                                <span class="input-label" style="color: #444; width:100px">Password</span>
+                                <input type="password" ng-model="user_data.password" style="border-left: 1px solid #444; color: black; padding-left: 5px;" required>
+                              </label>
+
+                              <br><br>
+                              <label class="item item-input" style="background-color:rgba(255,255,255,0.4); border:1px solid #ddd; border-radius:5px; color: white;">
+                                <span class="input-label" style="color: #444; width:100px">sponser ID</span>
+                                <input type="text" ng-model="user_data.sponserID" maxlength="10" style="border-left: 1px solid #444; color: black; padding-left: 5px;">
+                              </label>
+
+                              <br><br>
+                              <label class="item item-input" style="background-color:rgba(255,255,255,0.4); border:1px solid #ddd; border-radius:5px; color: white;">
+                                <span class="input-label" style="color: #444; width:100px">Name</span>
+                                <input type="text" ng-model="user_data.name" style="border-left: 1px solid #444; color: black; padding-left: 5px;" required>
+                              </label>
+
+
+				
+			<button   type="submit" class="button button-block button-positive" style="margin-top:30px">Sign up </button>    
+                       </div>
+                </div>
+            </div>  
+  </ion-content>
+     
+    </form>
+</ion-view>

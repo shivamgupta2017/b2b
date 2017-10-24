@@ -1,0 +1,74 @@
+<ion-modal-view style="transform:none !important;">
+  <ion-header-bar style="background-color:#444444; border-bottom:none;">
+    <div class="buttons">
+          <button class="button back-button buttons button-clear header-item" style="margin-top:5px; color:white" ng-click="close_add_beneficiary_model()">
+            <i class="icon ion-android-arrow-back"></i>
+          </button>
+    </div>
+    
+      <div class="title light" style="text-align: center; margin-top:5px;">Add new beneficiary</div>    
+  </ion-header-bar>
+  <ion-content class="has-header padding-top" style="margin-top: 0%">
+
+           <div class="list">
+            
+              <label ng-show="!(add_beneficiary.show_otp_input)" class="item item-input item-floating-label">
+                <span class="input-label">Benefiacry name</span>
+                <input type="text" placeholder="Beneficiary name" ng-model="add_beneficiary.bname">
+              </label>
+              
+              <label ng-show="(add_beneficiary.show_otp_input)" class="item item-input item-floating-label">
+                <span class="input-label">Benefiacry name</span>
+                <input type="text" placeholder="Benefiacry name" readonly ng-model="add_beneficiary.bname">
+              </label>
+
+
+              <label class="item item-input item-floating-label" ng-show="!(add_beneficiary.show_otp_input)">
+                <span class="input-label">Mobile no</span>
+                <input type="tel" placeholder="Mobile no" ng-model="add_beneficiary.mobile">
+              </label>
+
+              <label class="item item-input item-floating-label" ng-show="(add_beneficiary.show_otp_input)">
+                <span class="input-label">Mobile no</span>
+                <input type="tel" placeholder="Mobile no" ng-model="add_beneficiary.mobile" readonly >
+              </label>
+
+
+              <label ng-show="!(add_beneficiary.show_otp_input)" class="item item-input item-floating-label">
+                <span class="input-label">Account NO</span>
+                <input type="tel" placeholder="Beneficiary Account no" ng-model="add_beneficiary.acc_no" >
+              </label>
+
+              <label ng-show="(add_beneficiary.show_otp_input)" class="item item-input item-floating-label">
+                <span class="input-label">Account NO</span>
+                <input type="tel" placeholder="Beneficiary Account no" readonly required ng-model="add_beneficiary.acc_no" >
+              </label>
+
+
+              <label ng-show="!(add_beneficiary.show_otp_input)" class="item item-input item-floating-label">
+                <span class="input-label">Ifsc Details</span>
+                <input type="text" placeholder="Ifsc Details" ng-model="add_beneficiary.ifsc">
+              </label>
+
+              <label ng-show="(add_beneficiary.show_otp_input)" class="item item-input item-floating-label">
+                <span class="input-label">Ifsc Details</span>
+                <input type="text" placeholder="Ifsc Details" readonly  ng-model="add_beneficiary.ifsc">
+              </label>
+
+
+              <label ng-show="(add_beneficiary.show_otp_input)" class="item item-input item-floating-label">
+                <span class="input-label"> OTP</span>
+                <input type="text" placeholder="Enter OTP" ng-model="add_beneficiary.otp">
+              </label>
+
+
+
+          </div>
+
+
+   <button class="button button-block button-positive" style="width:95vw; margin:0 auto" ng-click="press_button_add_new_beneficiary()">Submit</button>
+
+  </ion-content>
+
+
+</ion-modal-view>

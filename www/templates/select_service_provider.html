@@ -1,0 +1,22 @@
+<ion-modal-view style="transform:none !important;">
+  <ion-header-bar style="background-color:#cd3333; border-bottom:none;">
+    <div class="buttons">
+          <button class="button back-button buttons button-clear header-item" style="margin-top:5px; color:white" ng-click="close_service_provider_model()">
+            <i class="icon ion-android-arrow-back"></i>
+          </button>
+    </div>
+
+      <div class="title light" style="text-align: center; margin-top:5px;">Select Operator</div>    
+  </ion-header-bar>
+
+  <ion-content overflow-scroll-y="true" padding="true" class="has-header padding-top" style="margin-top: 2%;"> 
+    <ion-radio ng-repeat="data in service_provider_data"
+                        ng-model=data1.serverSide
+                         ng-value=data.OperatorID
+                         ng-change="selected_operator(data.OperatorID)"
+                   >
+          {{data.OperatorName}}
+    </ion-radio>   
+  </ion-content>
+
+</ion-modal-view>

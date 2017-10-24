@@ -1,0 +1,52 @@
+<ion-modal-view style="transform:none !important;">
+  <ion-header-bar style="background-color:#444444; border-bottom:none;">
+    <div class="buttons">
+      <button class="button back-button buttons button-clear header-item" style="margin-top:5px; color:white" ng-click="close_wallet_to_wallet_modal()">
+        <i class="icon ion-android-arrow-back"></i>
+      </button>
+    </div>
+
+
+    <div class="title light" style="text-align: center; margin-top:5px;">Wallet Transfer</div>
+  </ion-header-bar>
+  <ion-content class="has-header padding-top margin-top" style="margin-top:5%; width: 98vw; background-color: #FFFFFF;"> 
+    
+   <!-- <ion-toggle ng-model="a.airplaneMode" ng-checked="a.airplaneMode" ng-change="change()"toggle-class="toggle-calm">wallet transfer/wallet to bank</ion-toggle> -->
+
+    <div class="list" ng-if="!(a.airplaneMode)">
+      <label class="item item-input item-floating-label">
+        <span class="input-label">mobile no</span>
+        <input type="tel" ng-model="wallet_transfer.to" placeholder="Transfer to">
+      </label>
+      <label class="item item-input item-floating-label">
+        <span class="input-label">Amount</span>
+        <input type="tel" ng-model="wallet_transfer.amount" placeholder="Amount">
+      </label>
+      <label class="item item-input item-floating-label">
+        <span class="input-label">Password</span>
+        <input type="password" ng-model="wallet_transfer.password" placeholder="Password">
+      </label>
+    </div>
+
+    <ion-list class="dark" ng-if="(a.airplaneMode)">
+
+	<ion-item>
+        <div ng-show="(a.airplaneMode)" style="text-align: center;" ng-click="add_new_beneficiary()" style="margin-bottom:10px"><i style="font-size: 150%;" class="icon ion-plus-circled"> Add new beneficiary</i></div>
+	</ion-item>
+        <ion-item class="item-text-wrap container" ng-repeat="data in customer_beneficiary" style="padding: 2%;" ng-click="open_modal_for_wallet_money_transfer(data.beneficiaryId)">
+        <div>
+          <a >{{data.beneficiaryName}}</a>
+          <a style="float: right;" ng-click="delete_beneficiary_now(data.beneficiaryId); $event.stopPropagation(); "><i style="font-size: 180%;" class="icon ion-android-delete	"></i></a>
+          <span><h5>{{data.beneficiaryMobileNumber}}</h5></span>
+          <span style="text-align: right;"><h5>{{data.beneficiaryAccountNumber}}</h5></span>
+        </div>
+        </ion-item>
+    </ion-list>
+
+<button ng-show="!(a.airplaneMode)" ng-disabled=" (wallet_transfer.to==undefined || wallet_transfer.to.length!=10) || (wallet_transfer.amount==undefined || wallet_transfer.amount.length==0)" class="button button-block button-positive" style="width:95vw; margin:0 auto" ng-click="done_wallet_transfer()">Proceed</button>
+
+
+  </ion-content>
+
+
+</ion-modal-view>

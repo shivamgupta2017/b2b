@@ -1,0 +1,75 @@
+<ion-modal-view style="transform:none !important;">
+  <ion-header-bar style="background-color:#cd3333; border-bottom:none;">
+    <div class="buttons">
+      <button class="button back-button buttons button-clear header-item button-dark" style="margin-top:5px; color:white" ng-click="close_detailed_product_desc()">
+        <i class="icon ion-android-arrow-back"></i>
+      </button>
+    </div>
+
+     <div class="title light" style="text-align: center; margin-top:5px;">Selected Products</div>
+  </ion-header-bar>
+  <ion-content class="has-header padding-top padding-bottom" style="margin-top: 5%; margin-bottom: 5%;">
+
+<style>
+.abc{
+  border:1px solid #ddd;
+  border-radius:4px;
+  background-color:white;
+  text-align:center;
+  color:black;
+  text-align: center;
+  width: 50vw;
+
+
+}
+</style>
+    <ion-list>
+      <ion-item ng-repeat="item in temp" style="padding:0; border: none;">
+       
+        <div style="width:95vw; margin-left:50%; transform:translate(-50%,0%); display:inline-block; padding:10px; height:95vw;  border:1px solid #ddd; border-radius:20%; background-image:url({{constant_image_url+item.product_details[0].image}}); background-size:contain ; background-repeat:no-repeat; background-position:center">     
+        </div>
+       <br>
+        <div style="display:block; text-align:center; padding-left:3px; ">
+          <strong>{{item.product_details[0].product_name}}</strong>
+        </div>
+       
+        <div style="margin-left:50%; transform:translate(-50%,0%);">
+          <select class="abc" ng-init="temp[$index].product_details[0].unit = item.unit_details[0]" ng-model="temp[$index].product_details[0].unit" ng-options="v.weight+' '+v.unit for v in item.unit_details" ng-change="show_total()">
+          </select>
+
+        </div>
+        <div style="height:50px; width:100%; padding:15px; margin-top:5px;  text-align:left; float:left;  font-size:18px;">
+
+        <div ng-click="detailed_product_quantity($index, item.product_details[0].quantity, 0)" class="button button-small button-assertive"  style="float:left; display:inline-block; height:25px; width:25px; font-size:20px; background-color:#cd3333;">
+          -
+        </div>
+                      <div class="item item-input text-center" style="float:left;  display:inline-block;height:29px; margin:0 auto; padding:2px; width:70px; margin-left:3px;">
+                          <span class="checkout-product-price ng-binding" style="height:20px" >{{item.product_details[0].quantity}}</span>
+                      </div>
+                      <div ng-click="detailed_product_quantity($index, item.product_details[0].quantity, 1)" class="button button-small button-assertive"  style="float:left; display:inline-block; height:25px; width:25px; margin-left:3px; font-size:20px; background-color:#cd3333;">
+          +
+        </div>
+
+        <div style="float:right; margin-right:25px; font-size:25px;">
+            &#8377;{{item.product_details[0].quantity*item.product_details[0].unit.price}}
+        </div>
+      </div>
+
+
+
+
+
+      </ion-item>
+    </ion-list>
+
+  </ion-content>
+
+      <ion-footer-bar class="bar bar-dark">
+        <div class="button-bar">
+          <button class="button button-dark" ng-click="add_product_to_cart_list();">{{'Add to Order List'}}</button>
+        </div>
+      </ion-footer-bar>
+
+
+</ion-modal-view>
+<!--  -->

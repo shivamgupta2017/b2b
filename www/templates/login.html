@@ -1,43 +1,30 @@
-<ion-view style=" background-image:url(img/image.jpg); background-size:cover; ">
-  <div style="display:absolute; height:100vh; width:100vw; background-color:rgba(255,255,255,.7)"></div>
+<ion-view style="background-image:url(img/image.jpg); background-size:cover; background-position:center; background-repeat:no-repeat">
+  <div style="display:absolute; height:100vh; width:100vw; background-color:rgba(255,255,255,.3);"></div>
   <form ng-submit="doLogin()">
-    <ion-content class="has-header padding-top">
-        <img src="img/l5.png" height="50" style="margin-top:20px; margin-left:50%; transform: translate(-50%, 0);">    
-      <div style="margin-top:30vh; transform: translate(0,-50%); ">
-        <div style="background-color:rgba(0,0,0,0.5); border:1px solid #444;  padding:10px; width:95vw; margin:0 auto; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);  ">
+    <ion-content class="">
+        <!-- <img src="img/l5.png" height="50" style="margin-top:20px; margin-left:50%; transform: translate(-50%, 0);"> -->    
+      <div style="margin-top:50%; transform: translate(0,-20%); ">
+        <div style="background-color:rgba(255,255,255,0.8); border:1px solid #ddd;  padding:10px; width:95vw; margin:0 auto; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 1, 1, 0.19);  ">
                 <div class="list" style="width:85vw; margin:0 auto;">
             
                      <!-- make left border white -->
-                      <label class="item item-input" style="background-color:rgba(0,0,0,0.4); border:1px solid #444; border-radius:5px; color: white;">
-                        <span class="input-label" style="color: white;">Username</span>
+                      <label class="item item-input" style="background-color:rgba(255,255,255,0.4); border:1px solid #ddd; border-radius:5px; color: black;">
+                        <span class="input-label" style="color: #444;">Mobile no</span>
                        
-                        <input type="text" ng-model="loginData.email" style="border-left: 1px solid white; color: white; padding-left: 5px;">
+                        <input type="tel" ng-model="loginData.mobile" style="border-left: 1px solid #444; color: black; padding-left: 5px;">
                       </label>
                       <br><br>
-                      <label class="item item-input" style="background-color:rgba(0,0,0,0.4); border:1px solid #444; border-radius:5px; color: white;">
-                        <span class="input-label" style="color: white;">Password</span>
-                        <input type="password" ng-model="loginData.password" style="border-left: 1px solid white; color: white; padding-left: 5px;">
-                      </label>        
+                      <label class="item item-input" style="background-color:rgba(255,255,255,0.4); border:1px solid #ddd; border-radius:5px; color: white;">
+                        <span class="input-label" style="color: #444;">Password</span>
+                        <input type="password" ng-model="loginData.password" style="border-left: 1px solid #444; color: black; padding-left: 5px;">
+                      </label> 
+			
+			<button   type="submit" class="button button-block button-positive" style="margin-top:30px" ng-disabled="((loginData.mobile==undefined || loginData.mobile.length!=10) || (loginData.password==undefined || loginData.password.length==0))">Log in </button>    
+			   
                </div>
         </div>
     </div>  
-
-    <a class="google-sign-in button button-block" ng-click="googleSignIn()">Sign in with Google</a>
-    
-
-    <div style="bottom: 0px; width: 100vw; text-align: center; font-weight: bold;">
-      Want to get Associated with Minbazaar ? <br><span ng-click="open_kyc_form()" class="positive">Click here</span>
-    </div>
-
-
   </ion-content>
-
-
-      <ion-footer-bar class="bar bar-dark" style="background-color:#cd3333">
-        <div class="button-bar">
-          <button type="submit" class="button button-clear" ng-disabled="((loginData.email==undefined || loginData.email.length==0) || (loginData.password==undefined || loginData.password.length==0))">Log in</button>
-        <!-- open_date_picker(); -->
-       </div>
-      </ion-footer-bar>
+    
     </form>
 </ion-view>
